@@ -1,0 +1,68 @@
+.report-form-table {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    /* You must set a size manually */
+    width: 350px;
+    height: 550px;
+
+    /* Set negative margins equal to half the size */
+    margin-left: -175px;
+    margin-top: -275px;
+
+    background: none;
+
+    z-index: 7
+}
+.report-form-table td{
+    width: 25%;
+    height: 25px;
+    text-align: center;
+}
+.report-form-table td input {
+    width: 100%;
+    padding: 0px 5px;
+    margin: 0px;
+}
+.report-table-back {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    /* You must set a size manually */
+    width: 400px;
+    height: 600px;
+
+    /* Set negative margins equal to half the size */
+    margin-left: -200px;
+    margin-top: -300px;
+
+    border-radius: 15px;
+
+    background: #37b7cd;
+
+    z-index: 5
+}
+.report-table-box-background {
+    position: fixed; /* Sit on top of the page content */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: #00148c;
+
+    opacity: 0.3;
+
+    z-index: 4;
+}
+.inner-report-form-table {
+    /* You must set a size manually */
+    width: 100%;
+    height: 70px;
+
+    z-index: 7
+}

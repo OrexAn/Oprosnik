@@ -1,0 +1,54 @@
+.image-pic-table {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    /* You must set a size manually */
+    width: 300px;
+    height: 200px;
+
+    /* Set negative margins equal to half the size */
+    margin-left: -150px;
+    margin-top: -100px;
+
+    background: none;
+
+    z-index: 7
+}
+.image-pic-table td{
+    text-align: center;
+}
+.img-tab-back {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    /* You must set a size manually */
+    width: 350px;
+    height: 250px;
+
+    /* Set negative margins equal to half the size */
+    margin-left: -175px;
+    margin-top: -125px;
+
+    border-radius: 15px;
+
+    background: #37b7cd;
+
+    z-index: 5
+}
+.img-tbl-box-background {
+    position: fixed; /* Sit on top of the page content */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: #00148c;
+
+    opacity: 0.3;
+
+    z-index: 4;
+}
