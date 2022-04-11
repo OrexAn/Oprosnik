@@ -2,13 +2,13 @@ package com.game.qask.view;
 
 import com.game.qask.api.documents.QuestionnaireStatus;
 import com.game.qask.api.documents.QuestionnaireType;
+import com.game.qask.model.*;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class QuestionnaireVO {
-    private Long id;
     private String title;
     private QuestionnaireType questionnaireType;
     private LocalDateTime date;
@@ -16,8 +16,9 @@ public class QuestionnaireVO {
     private String creatorName;
     private Long creatorID;
 
-    public QuestionnaireVO(Long id, String title, QuestionnaireType questionnaireType, LocalDateTime date, QuestionnaireStatus status, String creatorName, Long creatorID) {
-        this.id = id;
+    private Map<String, Object> questionnaireVO;
+
+    public QuestionnaireVO(String title, QuestionnaireType questionnaireType, LocalDateTime date, QuestionnaireStatus status, String creatorName, Long creatorID) {
         this.title = title;
         this.questionnaireType = questionnaireType;
         this.date = date;
@@ -26,12 +27,17 @@ public class QuestionnaireVO {
         this.creatorID = creatorID;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public QuestionnaireVO(Questionnaire questionnaire){
+        this(questionnaire.getTitle(), questionnaire.getQuestionnaireType(), questionnaire.getDate(),
+                questionnaire.getStatus(), questionnaire.getCreatorName(), questionnaire.getCreatorID());
+        switch (questionnaire.getQuestionnaireType()){
+            case QUESTION:
+                buildQuestionnaireQuestionVO(questionnaire);
+                break;
+            case ANSWER:
+                buildQuestionnaireAnswerVO(questionnaire);
+                break;
+        }
     }
 
     public String getTitle() {
@@ -82,10 +88,24 @@ public class QuestionnaireVO {
         this.creatorID = creatorID;
     }
 
+    public void buildQuestionnaireQuestionVO(Questionnaire questionnaire){
+        QuestionnaireQuestion qq = (QuestionnaireQuestion) questionnaire;
+        ArrayList<Object> pages = getPagesSet(qq);
+        questionnaireVO = getBaseParameters();
+        questionnaireVO.put("id", qq.getId().toString());
+        questionnaireVO.put("pages", pages);
+    }
 
-    public Map<String, String> getMapParameters(){
-        HashMap<String, String> questionnaireAnswerVOParameters = new HashMap<>();
-        questionnaireAnswerVOParameters.put("id", getId().toString());
+    public Map<String, Object> buildQuestionnaireAnswerVO(Questionnaire questionnaire){
+        QuestionnaireAnswer qa = (QuestionnaireAnswer) questionnaire;
+        Map<String, Object> params;
+        params = getBaseParameters();
+
+        return params;
+    }
+
+    public Map<String, Object> getBaseParameters(){
+        Map<String, Object> questionnaireAnswerVOParameters = new TreeMap<>();
         questionnaireAnswerVOParameters.put("title", getTitle());
         questionnaireAnswerVOParameters.put("date", getDate().toString());
         questionnaireAnswerVOParameters.put("status", getStatus().toString());
@@ -94,5 +114,15 @@ public class QuestionnaireVO {
         questionnaireAnswerVOParameters.put("creatorID", getCreatorID().toString());
 
         return questionnaireAnswerVOParameters;
+    }
+
+    private ArrayList<Object> getPagesSet(QuestionnaireQuestion qq){
+        ArrayList<Object> params = new ArrayList<>();
+        qq.getQuestionnairePages().forEach(qp -> params.add(qp.getVO()));
+        return params;
+    }
+
+    public Map<String, Object> get(){
+        return questionnaireVO;
     }
 }

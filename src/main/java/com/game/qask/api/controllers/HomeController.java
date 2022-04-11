@@ -28,7 +28,7 @@ public class HomeController {
 
     @GetMapping("/home")
     public ModelAndView getHomePage(HttpServletRequest request){
-        ModelAndView mav = new ModelAndView("questionnaire");
+        ModelAndView mav = new ModelAndView("builder");
         mav.addObject("name", "home");
         mav.addObject("title", "home");
 

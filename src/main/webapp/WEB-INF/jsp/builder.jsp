@@ -8,12 +8,81 @@
 <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/builder.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/builder.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/RubaXa/Sortable/Sortable.min.js"></script>
 
 <style>
     .add-item-cell:hover{
     background-color: #f0f8ff;
-}
+    }
+    .sort-item-container .form-control:focus{
+        box-shadow: none;
+    }
+    .sort-item-container .col{
+        cursor: default;
+        margin: 0;
+    }
+    #createNewQ .container{
+        padding: 0;
+    }
+    .rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center
+    }
+
+    .rating>input {
+        display: none
+    }
+
+    .rating>label {
+        position: relative;
+        width: 30px;
+        font-size: 40px;
+        color: #FFD600;
+        cursor: pointer
+    }
+
+    .rating>label::before {
+        content: "\2605";
+        position: absolute;
+        opacity: 0
+    }
+
+    .rating>label:hover:before,
+    .rating>label:hover~label:before {
+        opacity: 1 !important
+    }
+
+    .rating>input:checked~label:before {
+        opacity: 1
+    }
+
+    .rating:hover>input:checked~label:before {
+        opacity: 0.4
+    }
+
+    h1,
+    p {
+        text-align: center
+    }
+
+    h1 {
+        margin-top: 150px
+    }
+
+    p {
+        font-size: 1.2rem
+    }
+
+    @media only screen and (max-width: 600px) {
+        h1 {
+            font-size: 14px
+        }
+
+        p {
+            font-size: 12px
+        }
+    }
 </style>
 
 <!DOCTYPE html>
@@ -37,27 +106,148 @@
                     <div id="answersContainerId" class="col d-flex justify-content-center flex-column">
                         <div class="row py-2">
                             <div class="col">
-                                <label for="newTitleInputId">Вопрос</label>
+                                <label for="newTitleInputId">Заголовок</label>
                                 <input id="newTitleInputId" class="form-control" type="text" value="">
                             </div>
                         </div>
-                        <div class="row py-2">
+                        <div class="row py-2 d-none">
                             <div class="col">
                                 <label for="selectQ_1">Ответ 1</label>
                                 <input id="selectQ_1" class="form-control choose-question" type="text" value="">
                             </div>
                         </div>
-                        <div id="addAnswerContainerId" class="row py-2">
+                        <div class="row py-2 d-none">
                             <div class="col">
-                                <button type="button" class="btn btn-outline-success w-100" onclick="addAnswer()">+ Добавить ответ</button>
+                                <div class="container">
+                                    <div class="rating" id="create-star-container-id">
+                                        <input type="radio" name="rating" value="1" id="1">
+                                        <label for="1">☆</label>
+                                        <input type="radio" name="rating" value="2" id="2">
+                                        <label for="2">☆</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row py-2 d-none">
+                            <div class="col sort-item-container" id="demo1">
+                                <div class="row m-0 list-group-item">
+                                    <div class="col">
+                                        <input class="form-control sort-item" type="text" value="Вариант 1">
+                                    </div>
+                                </div>
+                                <div class="row m-0 list-group-item">
+                                    <div class="col">
+                                        <input class="form-control sort-item" type="text" value="Вариант 2">
+                                    </div>
+                                </div>
+                                <div class="row m-0 list-group-item">
+                                    <div class="col">
+                                        <input class="form-control sort-item" type="text" value="Вариант 3">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row py-2 d-none">
+                            <div class="col cont">
+                                <div class="row">
+                                    <div class="col-3 d-flex justify-content-center align-self-center" onclick="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="col d-flex justify-content-between">
+                                        <label>-1</label>
+                                        <label>0</label>
+                                        <label>1</label>
+                                    </div>
+                                    <div class="col-3 d-flex justify-content-center align-self-center" onclick="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="row py-2">
+                                    <div class="col-3">
+                                        <input class="form-control" type="text" value="Вариант 1">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="range" class="form-range" min="1" max="3" id="customRange1">
+                                    </div>
+                                    <div class="col-3">
+                                        <input class="form-control" type="text" value="Вариант 1">
+                                    </div>
+                                </div>
+                                <div class="row py-2">
+                                    <div class="col-3">
+                                        <input class="form-control" type="text" value="Вариант 2">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="range" class="form-range" min="1" max="3" id="customRange2">
+                                    </div>
+                                    <div class="col-3">
+                                        <input class="form-control" type="text" value="Вариант 2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row py-2 d-none">
+                            <div class="col cont">
+                                <div class="row py-2">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <input class="form-control" type="text" value="Ответ 1">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-11">
+                                                <input type="range" style="width: 100%; height: 30px;" min="0" max="100" id="customRange11" value="0">
+                                            </div>
+                                            <div class="col-1">
+                                                <label>0</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row py-2">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <input class="form-control" type="text" value="Ответ 2">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-11">
+                                                <input type="range" style="width: 100%; height: 30px;" min="0" max="100" id="customRange22" value="0">
+                                            </div>
+                                            <div class="col-1">
+                                                <label>15</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="addAnswerContainerId" class="row py-2">
+                            <div class="col d-none">
+                                <button type="button" class="btn btn-outline-success w-100" onclick="addSuggestion()">+ Добавить ответ</button>
+                            </div>
+                            <div class="col d-none">
+                                <button type="button" class="btn btn-outline-success w-100" onclick="addStar()">+ Добавить звезду</button>
+                            </div>
+                            <div class="col d-none">
+                                <button type="button" class="btn btn-outline-success w-100" onclick="addSortedItem()">+ Добавить элемент</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-success w-100" onclick="addRangeItem()">+ Добавить элемент</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-primary" onclick="createSelectedType()">Создать</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="beforeCloseModal()" >Закрыть</button>
+                <button id="addModalQuestionId" type="button" class="btn btn-primary" onclick="createSelectedType(this)">Создать</button>
             </div>
         </div>
     </div>
@@ -67,7 +257,7 @@
 <main class="px-3 text-center">
     <div class="row py-1 border">
         <div class="col d-flex justify-content-end">
-            <button type="button" class="btn btn-success">Опубликовать</button>
+            <button type="button" class="btn btn-success" onclick="publish()">Опубликовать</button>
         </div>
     </div>
     <div class="row">
@@ -145,43 +335,109 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="carousel-item">
+                                <div class="carousel-item questionsPage">
                                     <div class="row">
                                         <div class="col">
                                             <h5>Page 1</h5>
                                         </div>
                                     </div>
                                     <div style="height: 100%;overflow-y: auto;overflow-x: hidden;" class="d-flex justify-content-center flex-column">
-                                        <div id="selectQuestionType_1" class="row py-2 border-top border-bottom d-flex justify-content-center d-none">
-                                            <div class="col-2 d-flex justify-content-center flex-column border-end">
-                                                <a>Выберите тип вопроса</a>
-                                            </div>
-                                            <div class="col-2 add-item-cell" onclick="typeSelected('Одиночный выбор')">
-                                                <div class="row py-2">
-                                                    <div class="col">
-                                                        <a style="font-size: small;">Одиночный выбор</a>
+                                        <div id="selectQuestionType_1" class="row py-2 d-flex justify-content-center d-none">
+                                            <div class="col-8">
+                                                <div class="row border-top border-bottom">
+                                                    <div class="col-2 d-flex justify-content-center flex-column border-end">
+                                                        <a>Выберите тип вопроса</a>
                                                     </div>
-                                                </div>
-                                                <div class="row py-2">
                                                     <div class="col">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
-                                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-2 add-item-cell" onclick="typeSelected('Множественный выбор')">
-                                                <div class="row py-2">
-                                                    <div class="col">
-                                                        <a style="font-size: small;">Множественный выбор</a>
-                                                    </div>
-                                                </div>
-                                                <div class="row py-2">
-                                                    <div class="col">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
-                                                            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"></path>
-                                                            <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"></path>
-                                                        </svg>
+                                                        <div class="row d-flex justify-content-between">
+                                                            <div class="col-3 add-item-cell" onclick="typeSelected('SINGLE')">
+                                                                <div class="row py-2" style="height: 55px;">
+                                                                    <div class="col align-self-center">
+                                                                        <a style="font-size: small;">Одиночный выбор</a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row py-2">
+                                                                    <div class="col">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                                                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"></path>
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-3 add-item-cell" onclick="typeSelected('MULTI')">
+                                                                <div class="row py-2" style="height: 55px;">
+                                                                    <div class="col align-self-center">
+                                                                        <a style="font-size: small;">Множественный выбор</a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row py-2">
+                                                                    <div class="col">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
+                                                                            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"></path>
+                                                                            <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"></path>
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-3 add-item-cell" onclick="typeSelected('RATING')">
+                                                                <div class="row py-2" style="height: 55px;">
+                                                                    <div class="col align-self-center">
+                                                                        <a style="font-size: small;">Рейтинг</a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row py-2">
+                                                                    <div class="col">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                                                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row d-flex justify-content-between">
+                                                            <div class="col-3 add-item-cell" onclick="typeSelected('SORTED')">
+                                                                <div class="row py-2" style="height: 55px;">
+                                                                    <div class="col align-self-center">
+                                                                        <a style="font-size: small;">Ранжирование</a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row py-2">
+                                                                    <div class="col">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
+                                                                            <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"/>
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-3 add-item-cell" onclick="typeSelected('SEMANTIC')">
+                                                                <div class="row py-2" style="height: 55px;">
+                                                                    <div class="col align-self-center">
+                                                                        <a style="font-size: small;">Дифференцированный выбор</a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row py-2">
+                                                                    <div class="col">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+                                                                            <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-3 add-item-cell" onclick="typeSelected('DISTRIBUTE')">
+                                                                <div class="row py-2" style="height: 55px;">
+                                                                    <div class="col align-self-center">
+                                                                        <a style="font-size: small;">Распределение значений</a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row py-2">
+                                                                    <div class="col">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-filter-left" viewBox="0 0 16 16">
+                                                                            <path d="M2 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -225,7 +481,7 @@
                 <div class="col-2 d-flex justify-content-center flex-column border-end">
                     <a>Выберите тип вопроса</a>
                 </div>
-                <div class="col-2 add-item-cell" onclick="typeSelected('Одиночный выбор')">
+                <div class="col-2 add-item-cell" onclick="typeSelected('SINGLE')">
                     <div class="row py-2">
                         <div class="col">
                             <a style="font-size: small;">Одиночный выбор</a>
@@ -239,7 +495,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-2 add-item-cell" onclick="typeSelected('Множественный выбор')">
+                <div class="col-2 add-item-cell" onclick="typeSelected('MULTI')">
                     <div class="row py-2">
                         <div class="col">
                             <a style="font-size: small;">Множественный выбор</a>

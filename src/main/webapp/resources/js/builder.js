@@ -9,6 +9,17 @@ $(window).on('load',function(){
 });
 
 $(document).ready(function(){
+    Sortable.create(demo1, {
+        animation: 100,
+        group: 'list-1',
+        draggable: '.list-group-item',
+        handle: '.list-group-item',
+        sort: true,
+        filter: '.sortable-disabled',
+        chosenClass: 'active'
+    });
+    // Rating Initialization
+    //$('#rateMe2').mdbRate();
     // Activate Carousel
     $("#carouselExampleSlidesOnly").carousel();
 
@@ -66,11 +77,17 @@ function newQuestion() {
 function typeSelected(typeName){
     $('#newQuestionTriggerId_' + carouselPage).removeClass("d-none");
     $('#selectQuestionType_' + carouselPage).addClass("d-none");
-    $('#exampleModalLabel').text(typeName);
+    if(typeName === "SINGLE"){
+        $('#exampleModalLabel').text("Одиночный выбор");
+    }else if(typeName === "MULTI"){
+        $('#exampleModalLabel').text("Множественный выбор");
+    }
+
+    $('#addModalQuestionId').attr("qType", typeName);
     $('#myModal').modal('show');
 }
-function createSelectedType(){
-    var newQuestion = buildQuestion();
+function createSelectedType(element){
+    var newQuestion = buildQuestion(element);
     var selectQuestionTypeContainer = $('#selectQuestionType_' + carouselPage);
     $(newQuestion).insertBefore(selectQuestionTypeContainer);
 
@@ -80,16 +97,20 @@ function createSelectedType(){
     }
     $('#newTitleInputId').val('');
     $('#myModal').modal('hide');
+
+    var createStarContainer = $('#create-star-container-id').get();
+    $( createStarContainer ).empty();
+    createStar(createStarContainer, 0);
+    createStar(createStarContainer, 1);
 }
-function buildQuestion(){
+function buildQuestion(element){
     var questionTitle = $('#newTitleInputId').val();
     var questions = [];
-
-
     var questions = $('.choose-question');
 
     const node1 = document.createElement("div");
-    node1.className += "row py-2 border-top border-bottom d-flex justify-content-center";
+    node1.className += "row py-2 border-top border-bottom d-flex justify-content-center question-block";
+    node1.setAttribute("qType", $(element).attr("qType"));
     node1.id = "q_" + questionId;
     questionId++;
     const node2 = document.createElement("div");
@@ -117,6 +138,7 @@ function addChooseRow(parent, id, text){
     node3.classList.add("form-control");
     node3.setAttribute("disabled", "true");
     node3.setAttribute("readonly", "true");
+    node3.setAttribute("name", "suggestion");
 
     node2.appendChild(node3);
     node1.appendChild(node2);
@@ -129,6 +151,7 @@ function addQuestionTitle(parent, id, text){
     const node2 = document.createElement("div");
     node2.className += "col d-flex justify-content-start";
     const node3 = document.createElement("a");
+    node3.setAttribute("name", "title");
     const textNode = document.createTextNode(text);
 
     node3.appendChild(textNode);
@@ -137,7 +160,7 @@ function addQuestionTitle(parent, id, text){
     parent.appendChild(node1);
 }
 
-function addAnswer(){
+function addSuggestion(){
     var insertBeforeElement = $('#addAnswerContainerId');
     var answersContainer = $('#answersContainerId');
     var questions = $('.choose-question');
@@ -172,7 +195,7 @@ function addCarouselItem(){
     pageCount++;
     carouselPage = (pageCount - 1);
     var newItem = $( '.pattern-item' ).first().clone();
-    $( newItem ).removeClass("d-none").removeClass('pattern-item');
+    $( newItem ).removeClass("d-none").removeClass('pattern-item').addClass("questionsPage");
     $( newItem ).find( '.page-name' ).first().text('Page ' + carouselPage);
     $( newItem ).find( '.select-question-type' ).first().attr('id', 'selectQuestionType_' + carouselPage);
     $( newItem ).find( '.new-question-trigger' ).first().attr('id', 'newQuestionTriggerId_' + carouselPage);
@@ -189,4 +212,99 @@ function addCarouselItem(){
     });
     $( newPageButton ).insertBefore($('#newPageButtonContainerId'));
 
+}
+
+function publish(){
+    var questionBlocks = $('.question-block');
+    var questionnairePages = $('.questionsPage');
+
+    var currentdate = new Date();
+    var datetime = currentdate.getUTCFullYear() + "-"
+        + ("0" + (currentdate.getUTCMonth()+1)).slice(-2)  + "-"
+        + ("0" + currentdate.getUTCDate()).slice(-2) + "T"
+        + ("0" + currentdate.getUTCHours()).slice(-2) + ":"
+        + ("0" + currentdate.getUTCMinutes()).slice(-2) + ":"
+        + ("0" + currentdate.getUTCSeconds()).slice(-2);
+
+    var page = {"number" : 1, "questions" : []};
+    var question = {};
+    var questionnaire = {
+        "questionnairePages" : [],
+        "title" : "Some title",
+        "date" : datetime,
+        "creatorName" : "Some name",
+        "creatorID" : 1,
+        "questionnaireType" : "QUESTION",
+        "status" : "PUBLISHED"
+    };
+
+    var suggestion;
+
+    for(var count = 0; count < questionnairePages.length; count++){
+        questionBlocks = $(questionnairePages[count]).find('.question-block');
+
+        page["orderNum"] = count;
+        page["questions"] = [];
+
+        for(var i = 0; i < questionBlocks.length; i++){
+            var title = $( questionBlocks[i] ).find( "[name='title']" ).first().text();
+            var suggestionsList = $( questionBlocks[i] ).find( "[name='suggestion']" );
+
+            question["questionType"] = $( questionBlocks[i] ).attr("qType");
+            question["title"] = title;
+            question["orderNum"] = i;
+            question["suggestions"] = [];
+
+            for(var j = 0; j < suggestionsList.length; j++){
+                suggestion = { text : suggestionsList[j].value, orderNum : j };
+                question["suggestions"].push(suggestion);
+            }
+
+            page["questions"].push(question);
+            question = {}
+        }
+
+        questionnaire["questionnairePages"].push(page);
+        page = {};
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/questionnaire/build",
+        data: JSON.stringify(questionnaire),
+        success: function() {
+            alert("success");
+        },
+        contentType: "application/json"
+    });
+}
+
+function addStar(){
+    var createStarContainer = $('#create-star-container-id').get();
+    var stars = $(createStarContainer).find("[name='rating']");
+
+    if(stars.length < 15){
+        createStar(createStarContainer, stars.length);
+    }
+}
+function createStar(createStarContainer, count){
+    const input = document.createElement("input");
+    input.name = "rating";
+    input.type = "radio";
+    input.setAttribute("value", count + 1);
+    input.id = count + 1;
+    const label = document.createElement("label");
+    label.setAttribute("for", count + 1);
+    const textNode1 = document.createTextNode('☆');
+
+    label.appendChild(textNode1);
+
+    $(createStarContainer).append(input);
+    $(createStarContainer).append(label);
+}
+function beforeCloseModal(){
+    var createStarContainer = $('#create-star-container-id').get();
+    $( createStarContainer ).empty();
+    createStar(createStarContainer, 0);
+    createStar(createStarContainer, 1);
 }

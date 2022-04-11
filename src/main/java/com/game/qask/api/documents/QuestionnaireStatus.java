@@ -1,6 +1,7 @@
 package com.game.qask.api.documents;
 
 public enum QuestionnaireStatus {
+    PUBLISHED("published"),
     PASSED("passed"),
     PAUSED("paused"),
     REJECTED("rejected"),

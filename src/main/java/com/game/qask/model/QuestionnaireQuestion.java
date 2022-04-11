@@ -1,9 +1,13 @@
 package com.game.qask.model;
 
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 @Entity
 @DynamicInsert
@@ -13,8 +17,9 @@ public class QuestionnaireQuestion extends Questionnaire{
     @SequenceGenerator(name="GeneratorQQ1", sequenceName = "seqQQ1", allocationSize = 1)
     @Column(name = "id")
     private Long id;
-    @OneToMany(mappedBy="questionnaireQuestion")
-    private Set<Question> questions;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="questionnaireQuestion")
+    @SortNatural
+    private List<QuestionnairePage> questionnairePages;
 
     public QuestionnaireQuestion(Long id) {
         this.id = id;
@@ -28,11 +33,11 @@ public class QuestionnaireQuestion extends Questionnaire{
         return id;
     }
 
-    public Set<Question> getQuestions() {
-        return questions;
+    public ArrayList<QuestionnairePage> getQuestionnairePages() {
+        return new ArrayList<>(questionnairePages);
     }
 
-    public void setQuestions(Set<Question> questions) {
-        this.questions = questions;
+    public void setQuestionnairePages(ArrayList<QuestionnairePage> questionnairePages) {
+        this.questionnairePages = questionnairePages;
     }
 }

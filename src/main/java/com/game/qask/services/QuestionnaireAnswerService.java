@@ -1,7 +1,6 @@
 package com.game.qask.services;
 
 import com.game.qask.api.documents.QuestionnaireStatus;
-import com.game.qask.api.documents.QuestionnaireView;
 import com.game.qask.dao.QuestionnaireAnswerDAO;
 import com.game.qask.model.QuestionnaireAnswer;
 import com.game.qask.view.QuestionnaireVO;
@@ -27,7 +26,7 @@ public class QuestionnaireAnswerService {
     public QuestionnaireAnswer addQuestionnaireAnswer(QuestionnaireAnswer questionnaireAnswer){
         return questionnaireAnswerDAO.save(questionnaireAnswer);
     }
-    public Map<String, Object> getQuestionnaireAnswerById(Long id){
+    /*public Map<String, Object> getQuestionnaireAnswerById(Long id){
         Map<String, Object> resultMap = new HashMap<>();
         if(!id.equals(-1L)){
             Optional<QuestionnaireAnswer> optionalQuestionnaireAnswer = questionnaireAnswerDAO.findById(id);
@@ -43,7 +42,7 @@ public class QuestionnaireAnswerService {
             resultMap.put("id", new Long(-1));
         }
         return resultMap;
-    }
+    }*/
 
     public Optional<QuestionnaireAnswer> getQuestionnaireAnswerOptionalById(Long id){
         return questionnaireAnswerDAO.findById(id);
@@ -65,14 +64,14 @@ public class QuestionnaireAnswerService {
         return Optional.ofNullable(questionnaireAnswerDAO.save(oldQuestionnaireAnswer));
     }
 
-    public Map<String, Map<String, String>> getQuestionnaireAnswerVOArrayView(ArrayList<QuestionnaireVO> questionnaireAnswerVOs){
+    /*public Map<String, Map<String, String>> getQuestionnaireAnswerVOArrayView(ArrayList<QuestionnaireVO> questionnaireAnswerVOs){
 
         HashMap<String, Map<String, String>> questionnaireAnswerVOsResult = new LinkedHashMap<>();
         for(int i = 0; i < questionnaireAnswerVOs.size(); i++){
             questionnaireAnswerVOsResult.put(String.valueOf(i), questionnaireAnswerVOs.get(i).getMapParameters());
         }
         return questionnaireAnswerVOsResult;
-    }
+    }*/
 
     public Optional<QuestionnaireAnswer> updateStatusById(Long id, QuestionnaireStatus newStatus){
         QuestionnaireAnswer oldQuestionnaire = questionnaireAnswerDAO.findById(id).orElse(null);

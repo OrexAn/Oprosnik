@@ -2,12 +2,12 @@ package com.game.qask.model;
 
 import com.game.qask.api.documents.QuestionnaireStatus;
 import com.game.qask.api.documents.QuestionnaireType;
+import com.game.qask.view.QuestionnaireVO;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.TreeMap;
 
 @MappedSuperclass
 public abstract class Questionnaire {
@@ -24,7 +24,7 @@ public abstract class Questionnaire {
     private String creatorName;
     @Column(name = "creator_id")
     private Long creatorID;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user", nullable=false)
     private User user;
 
@@ -82,5 +82,10 @@ public abstract class Questionnaire {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Map<String, Object> getVO(){
+        QuestionnaireVO questionnaireVO = new QuestionnaireVO(this);
+        return questionnaireVO.get();
     }
 }

@@ -118,7 +118,6 @@
             </tbody>
         </table>
     </div>
-    <h2 class="hello-title" id="hello-id" style="display: none">Hello ${user.name}!</h2>
 </main>
 <div class="container" id="login-container" style="display: none">
     <jsp:include page="login-form.jsp" />

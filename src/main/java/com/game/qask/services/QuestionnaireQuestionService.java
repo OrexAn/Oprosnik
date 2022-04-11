@@ -1,7 +1,6 @@
 package com.game.qask.services;
 
 import com.game.qask.api.documents.QuestionnaireStatus;
-import com.game.qask.api.documents.QuestionnaireView;
 import com.game.qask.dao.QuestionnaireQuestionDAO;
 import com.game.qask.model.QuestionnaireQuestion;
 import com.game.qask.view.QuestionnaireVO;
@@ -27,29 +26,16 @@ public class QuestionnaireQuestionService {
     public QuestionnaireQuestion addQuestionnaireQuestion(QuestionnaireQuestion questionnaireQuestion){
         return questionnaireQuestionDAO.save(questionnaireQuestion);
     }
-    public Map<String, Object> getQuestionnaireQuestionById(Long id){
-        Map<String, Object> resultMap = new HashMap<>();
-        if(!id.equals(-1L)){
-            Optional<QuestionnaireQuestion> optionalQuestionnaireQuestion = questionnaireQuestionDAO.findById(id);
-            QuestionnaireView questionnaireQuestionView;
-            try {
-                questionnaireQuestionView = new QuestionnaireView(optionalQuestionnaireQuestion.get());
-                resultMap = questionnaireQuestionView.getParams();
-            }catch (NoSuchElementException nsEx){
-                nsEx.printStackTrace();
-            }
-        }
-        else{
-            resultMap.put("id", (long) -1);
-        }
-        return resultMap;
+    public QuestionnaireQuestion getQuestionnaireQuestionById(Long id){
+        Optional<QuestionnaireQuestion> optionalQuestionnaireQuestion = questionnaireQuestionDAO.findById(id);
+        return optionalQuestionnaireQuestion.get();
     }
 
     public Optional<QuestionnaireQuestion> getQuestionnaireQuestionOptionalById(Long id){
         return questionnaireQuestionDAO.findById(id);
     }
 
-    public Optional<QuestionnaireQuestion> updateQuestionnaireQuestionById(Long id, QuestionnaireQuestion newQuestionnaireQuestion){
+    /*public Optional<QuestionnaireQuestion> updateQuestionnaireQuestionById(Long id, QuestionnaireQuestion newQuestionnaireQuestion){
         QuestionnaireQuestion oldQuestionnaireQuestion = questionnaireQuestionDAO.findById(id).orElse(null);
         if(oldQuestionnaireQuestion == null){
             return Optional.empty();
@@ -63,14 +49,21 @@ public class QuestionnaireQuestionService {
         oldQuestionnaireQuestion.setTitle(newQuestionnaireQuestion.getTitle());
         oldQuestionnaireQuestion.setUser(newQuestionnaireQuestion.getUser());
         return Optional.ofNullable(questionnaireQuestionDAO.save(oldQuestionnaireQuestion));
-    }
+    }*/
 
-    public Map<String, Map<String, String>> getQuestionnaireQuestionVOArrayView(ArrayList<QuestionnaireVO> questionnaireQuestionVOs){
+    /*public Map<String, Map<String, String>> getQuestionnaireQuestionVOArrayView(ArrayList<QuestionnaireVO> questionnaireQuestionVOs){
 
         HashMap<String, Map<String, String>> questionnaireQuestionVOsResult = new LinkedHashMap<>();
         for(int i = 0; i < questionnaireQuestionVOs.size(); i++){
             questionnaireQuestionVOsResult.put(String.valueOf(i), questionnaireQuestionVOs.get(i).getMapParameters());
         }
+        return questionnaireQuestionVOsResult;
+    }*/
+
+    public Map<String, Object> getQuestionnaireQuestionVO(QuestionnaireQuestion questionnaireQuestion){
+
+        Map<String, Object> questionnaireQuestionVOsResult = questionnaireQuestion.getVO();
+
         return questionnaireQuestionVOsResult;
     }
 
