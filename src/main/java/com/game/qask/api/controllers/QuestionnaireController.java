@@ -21,11 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 @RequestMapping("questionnaire")
 @Controller
@@ -58,9 +55,25 @@ public class QuestionnaireController {
         return new ResponseEntity<>(questionnaireView, HttpStatus.OK);
     }
 
+    @GetMapping("/builder/{id}")
+    public ModelAndView getBuilderPage(@PathVariable("id") Long id, HttpServletRequest request){
+        ModelAndView mav = new ModelAndView("builder");
+        mav.addObject("questionnaireId", id);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getAuthorities());
+        if (auth != null && !auth.getName().equalsIgnoreCase("anonymousUser")) {
+            mav.addObject("isAuth", "true");
+            User user = userService.getUserByName(auth.getName()).orElse(new User());
+            mav.addObject("person", user);
+        }
+        return mav;
+    }
+
     @GetMapping("/{id}")
     public ModelAndView getQuestionnairePage(@PathVariable("id") Long id, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("questionnaire");
+        mav.addObject("questionnaireId", id);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(auth.getAuthorities());
@@ -80,6 +93,36 @@ public class QuestionnaireController {
         Map<String, Object> questionnaireQuestionVO = qqService.getQuestionnaireQuestionVO(qq);
 
         return new ResponseEntity<>(questionnaireQuestionVO, HttpStatus.OK);
+    }
+
+    @GetMapping("/results/{id}")
+    public ModelAndView getResultsPage(@PathVariable("id") Long id, HttpServletRequest request){
+        ModelAndView mav = new ModelAndView("results");
+        mav.addObject("questionnaireId", id);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getAuthorities());
+        //TODO при каждом запросе нужно проверять, авторизован ли пользователь.
+        // Если да, то передавать isAuth = true;
+        // Если страница подразумевает наличие авторизации, то просто отправяем isAuth = true
+        mav.addObject("isAuth", "true");
+
+        return mav;
+    }
+
+    @GetMapping("/share/{id}")
+    public ModelAndView getSharePage(@PathVariable("id") Long id, HttpServletRequest request){
+        ModelAndView mav = new ModelAndView("share");
+        mav.addObject("questionnaireId", id);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getAuthorities());
+        //TODO при каждом запросе нужно проверять, авторизован ли пользователь.
+        // Если да, то передавать isAuth = true;
+        // Если страница подразумевает наличие авторизации, то просто отправяем isAuth = true
+        mav.addObject("isAuth", "true");
+
+        return mav;
     }
     /*private final DocumentService documentService;
     private final PersonService personService;

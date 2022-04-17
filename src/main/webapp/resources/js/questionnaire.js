@@ -3,7 +3,8 @@ var carouselPage = 0;
 var pageCount = 1;
 
 $(document).ready(function(){
-    $.get("/questionnaire/load/1", function(data, status){
+    var questionnaireId = $("[name='questionnaireId']").first().val();
+    $.get("/questionnaire/load/" + questionnaireId, function(data, status){
         var pages = $(".carousel-item");
         var questionsBlocks;
         var suggestions;
@@ -80,20 +81,41 @@ function addCarouselItem(page){
 
 function buildQuestionBlock(question){
     var questionTitle = question.title;
-
     var suggestions = question.suggestions;
+    var qType = question.type;
 
     const node1 = document.createElement("div");
     node1.className += "row py-2 border-top border-bottom d-flex justify-content-center question-block";
     node1.id = "q_" + questionId;
+    $(node1).attr('qType', qType);
     questionId++;
     const node2 = document.createElement("div");
     node2.className += "col-5 d-flex justify-content-center flex-column";
 
     addQuestionBlockTitle(node2, questionTitle);
 
-    for(var i = 0; i < suggestions.length; i++){
-        addSuggestion(node2, suggestions[i].text, node1.id, question.type);
+    if(qType === "SINGLE" || qType === "MULTI"){
+        for(var i = 0; i < suggestions.length; i++){
+            addSimpleSuggestion(node2, suggestions[i].text, qType);
+        }
+    }
+    else if(qType === "RATING"){
+        addRating(node2, suggestions[0].text);
+    }
+    else if(qType === "SORTED"){
+        addSorting(node2, suggestions);
+    }
+    else if(qType === "SEMANTIC"){
+        addPoints(node2, suggestions[0].text);
+        for(var i = 0; i < suggestions.length; i++){
+            addSemantic(node2, suggestions[i].text);
+        }
+    }
+    else if(qType === "DISTRIBUTE"){
+        addDistributePoints(node2, suggestions[0].text);
+        for(var i = 0; i < suggestions.length; i++){
+            addDistribute(node2, suggestions[i].text);
+        }
     }
 
     node1.appendChild(node2);
@@ -116,7 +138,7 @@ function addQuestionBlockTitle(parent, text){
     parent.appendChild(node1);
 }
 
-function addSuggestion(parent, text, questionBlockId, questionType){
+function addSimpleSuggestion(parent, text, questionType){
     const node1 = document.createElement("div");
     node1.className += "row py-2";
     const node2 = document.createElement("div");
@@ -132,11 +154,218 @@ function addSuggestion(parent, text, questionBlockId, questionType){
     node3.setAttribute("readonly", "true");
     node3.setAttribute("name", "suggestion");
     $(node3).attr("qType", questionType);
-    $(node3).attr("questionBlockId", questionBlockId);
 
     node2.appendChild(node3);
     node1.appendChild(node2);
     parent.appendChild(node1);
+}
+
+function addRating(parent, text){
+    const node1= document.createElement("div");
+    node1.className += "row py-2";
+    const node2 = document.createElement("div");
+    node2.className += "col";
+    const node3 = document.createElement("div");
+    node3.className += "container border-top border-bottom";
+    const node4 = document.createElement("div");
+    node4.className += "rating";
+
+    var starsCount = parseInt(text);
+
+    for(var i = 0; i < starsCount; i++){
+        createStar(node4, i);
+    }
+
+    node3.appendChild(node4);
+    node2.appendChild(node3);
+    node1.appendChild(node2);
+    parent.appendChild(node1);
+}
+
+function createStar(createStarContainer, count){
+    const input = document.createElement("input");
+    input.name = "rating";
+    input.type = "radio";
+    input.setAttribute("value", count + 1);
+    input.id = count + 1;
+    const label = document.createElement("label");
+    label.setAttribute("for", count + 1);
+    const textNode1 = document.createTextNode('☆');
+
+    label.appendChild(textNode1);
+
+    $(createStarContainer).append(input);
+    $(createStarContainer).append(label);
+}
+
+function addSorting(parent, suggestions){
+    Sortable.create(parent, {
+        animation: 100,
+        group: 'list-1',
+        draggable: '.list-group-item',
+        handle: '.list-group-item',
+        sort: true,
+        filter: '.sortable-disabled',
+        chosenClass: 'active'
+    });
+    for(var i = 0; i < suggestions.length; i++){
+        createSortedItem(parent, suggestions[i].text);
+    }
+}
+
+function createSortedItem(createSortedItemContainer, text){
+    var node = $('.pattern-sorted-item').first().clone().get();
+    $( node ).removeClass("d-none").removeClass('pattern-sorted-item');
+
+    var sortItem = $( node ).find("[name='suggestion']").first();
+    $( sortItem ).val(text);
+    $( sortItem ).attr("disabled", "true");
+
+    $(createSortedItemContainer).append(node);
+}
+
+function addPoints(parent, text){
+    const myArray = text.split("|");
+    var length = myArray[1];
+    var node = $('.semantic-pattern').first().clone().get();
+    $( node ).removeClass("d-none").removeClass('semantic-pattern');
+
+    var semanticPointsContainer = $( node ).find("span").first().parent();
+    $( semanticPointsContainer ).empty();
+
+    var maxPointValue = parseInt(length/2);
+
+    var node3;
+    var textNode1;
+
+    for(var i = 0; i < length; i++){
+        node3 = document.createElement("span");
+        textNode1 = document.createTextNode(((maxPointValue - i) * (-1)) + "");
+        if((maxPointValue - i) > 0){
+            $(node3).css('margin-left', -6 + 'px');
+        }
+        node3.appendChild(textNode1);
+        $(semanticPointsContainer).append(node3);
+    }
+
+    $(parent).append(node);
+}
+
+function addSemantic(parent, text){
+    const myArray = text.split("|");
+    var leftText = myArray[0];
+    var length = myArray[1];
+    var rightText = myArray[2];
+    var maxPointValue = parseInt(length/2);
+
+    var node = $('.semantic-element-pattern').first().clone().get();
+    $( node ).removeClass("d-none").removeClass('semantic-element-pattern');
+    $( node ).attr("name", "semanticChoice");
+
+    var range = $( node ).find("[name='range']");
+    $(range).attr("min", (maxPointValue * (-1)));
+    $(range).attr("max", maxPointValue);
+    $(range).attr("value", 0);
+
+    var leftTextNode = $( node ).find("[name='newLeftText']").first();
+    $( leftTextNode ).attr("name", "leftText");
+    $(leftTextNode).attr("disabled", "true");
+    $(leftTextNode).val(leftText);
+    var rightTextNode = $( node ).find("[name='newRightText']").first();
+    $( rightTextNode ).attr("name", "rightText");
+    $(rightTextNode).attr("disabled", "true");
+    $(rightTextNode).val(rightText);
+    $(parent).append(node);
+}
+
+function addDistributePoints(parent, text){
+    const myArray = text.split("|");
+    var pointsValueText = myArray[1];
+
+    const node1 = document.createElement("div");
+    node1.className += "row py-2";
+
+    const node2 = document.createElement("div");
+    node2.className += "col-5 d-flex justify-content-start";
+
+    const node21 = document.createElement("span");
+    node21.setAttribute("name", "distributePointsTitle");
+
+    const textNode21 = document.createTextNode("Осталось распределить:");
+
+    const node3 = document.createElement("div");
+    node3.className += "col d-flex justify-content-start";
+
+    const node31 = document.createElement("span");
+    node31.setAttribute("name", "distributePointsValue");
+
+    const textNode31 = document.createTextNode(pointsValueText);
+
+    node21.appendChild(textNode21);
+    node2.appendChild(node21);
+
+    node31.appendChild(textNode31);
+    node3.appendChild(node31);
+
+    node1.appendChild(node2);
+    node1.appendChild(node3);
+
+    parent.appendChild(node1);
+}
+
+function addDistribute(parent, text){
+    const myArray = text.split("|");
+    var distributeText = myArray[0];
+    var maxValue = myArray[1];
+    var node = $('.distribute-row-pattern').first().clone().get();
+    $( node ).removeClass("d-none").removeClass('distribute-row-pattern');
+    $( node ).attr("name", "distributeRow");
+
+    $( node ).find("[name='constMaxValue']").val(maxValue);
+
+
+    var customRange = $( node ).find("[name='customRange']");
+    $(customRange).attr("min", 0);
+    $(customRange).attr("max", maxValue);
+    $(customRange).attr("value", 0);
+    $(customRange).on("input", function (event){
+        updateDistribute(this, event);
+    });
+
+    var distributeRowText = $( node ).find("[name='distributeRowText']").first();
+    $(distributeRowText).attr("disabled", "true");
+    $(distributeRowText).val(distributeText);
+
+    $(parent).append(node);
+}
+
+function updateDistribute(element, event){
+    $(element).addClass("current");
+    var rangesList = $(element).closest(".question-block").find("[name='customRange']");
+
+    var sum = parseInt(0);
+    for(var i = 0; i < rangesList.length; i++){
+        sum += parseInt($(rangesList[i]).val());
+    }
+
+    var constMaxValueText = $( element ).parent().find("[name='constMaxValue']").val();
+    var constMaxValue = parseInt(constMaxValueText);
+
+    if((constMaxValue - sum) <= 0){
+        var leftRangesList = $(element).closest(".question-block").find("[name='customRange']:not(.current)");
+        var sum2 = parseInt(0);
+        for(var i = 0; i < leftRangesList.length; i++){
+            sum2 += parseInt($(leftRangesList[i]).val());
+        }
+        $(element).val((constMaxValue - sum2));
+        $(element).closest("[name='customRangeContainer']").find("span").text($(element).val());
+        var distributePointsValueElement = $(element).closest(".question-block").find("[name='distributePointsValue']").first().text("0");
+    }else{
+        var distributePointsValueElement = $(element).closest(".question-block").find("[name='distributePointsValue']").first();
+        $(distributePointsValueElement).text((constMaxValue - sum));
+        $(element).closest("[name='customRangeContainer']").find("span").text($(element).val());
+    }
+    $(element).removeClass("current");
 }
 
 function suggestionSelected(element){
@@ -146,7 +375,7 @@ function suggestionSelected(element){
     }else{
         var qType = $(element).attr("qType");
         if(qType === "SINGLE"){
-            var questionsInBlock = $("#" + $(element).attr("questionBlockId")).find("[name='suggestion']");
+            var questionsInBlock = $("#" + $(element).closest('.question-block')).find("[name='suggestion']");
             for(var i = 0; i < questionsInBlock.length; i++){
                 $(questionsInBlock[i]).removeClass("selected");
             }

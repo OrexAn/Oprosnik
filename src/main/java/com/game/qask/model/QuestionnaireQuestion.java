@@ -6,8 +6,6 @@ import org.hibernate.annotations.SortNatural;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
 
 @Entity
 @DynamicInsert

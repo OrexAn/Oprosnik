@@ -28,9 +28,10 @@ public class HomeController {
 
     @GetMapping("/home")
     public ModelAndView getHomePage(HttpServletRequest request){
-        ModelAndView mav = new ModelAndView("builder");
+        ModelAndView mav = new ModelAndView("home");
         mav.addObject("name", "home");
         mav.addObject("title", "home");
+        mav.addObject("questionnaireId", "1");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(auth.getAuthorities());

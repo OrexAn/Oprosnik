@@ -17,6 +17,13 @@ public class Suggestion implements Comparable<Suggestion>{
     @ManyToOne
     @JoinColumn(name="question_id", nullable=false)
     private Question question;
+
+    /*
+    for Rating - 3 -> 3 stars in question
+    for Sorted - text
+    for Semantic - text|3|text -> text left + number of point variants + text right
+    for Distribute - text|100 -> suggestion text + maximum points
+     */
     @Column(name = "text")
     private String text;
     @Column(name = "order_num")

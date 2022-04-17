@@ -15,7 +15,6 @@ public abstract class Questionnaire {
     private String title;
     @Column(name = "questionnaire_type")
     private QuestionnaireType questionnaireType;
-    //private DocType qType;
     @Column(name = "date")
     private LocalDateTime date;
     @Column(name = "status")

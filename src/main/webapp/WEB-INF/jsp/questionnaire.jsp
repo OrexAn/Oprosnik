@@ -8,6 +8,7 @@
 <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/questionnaire.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/RubaXa/Sortable/Sortable.min.js"></script>
 
 <style>
     .indicator{
@@ -42,6 +43,76 @@
         border: 1px solid #ced4da;
         box-shadow: none;
     }
+
+    .sort-item-container .form-control:focus{
+        box-shadow: none;
+    }
+    .sort-item-container .col{
+        cursor: default;
+        margin: 0;
+    }
+    #createNewQ .container{
+        padding: 0;
+    }
+    .rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center
+    }
+
+    .rating>input {
+        display: none
+    }
+
+    .rating>label {
+        position: relative;
+        width: 30px;
+        font-size: 40px;
+        color: #FFD600;
+        cursor: pointer
+    }
+
+    .rating>label::before {
+        content: "\2605";
+        position: absolute;
+        opacity: 0
+    }
+
+    .rating>label:hover:before,
+    .rating>label:hover~label:before {
+        opacity: 1 !important
+    }
+
+    .rating>input:checked~label:before {
+        opacity: 1
+    }
+
+    .rating:hover>input:checked~label:before {
+        opacity: 0.4
+    }
+
+    h1,
+    p {
+        text-align: center
+    }
+
+    h1 {
+        margin-top: 150px
+    }
+
+    p {
+        font-size: 1.2rem
+    }
+
+    @media only screen and (max-width: 600px) {
+        h1 {
+            font-size: 14px
+        }
+
+        p {
+            font-size: 12px
+        }
+    }
 </style>
 
 <script>
@@ -66,7 +137,7 @@
         </div>
     </div>
 </header>
-
+<input type="hidden" name="questionnaireId" value="${questionnaireId}">
 <main class="px-3 text-center d-flex justify-content-center flex-column main-height">
     <div class="row">
         <div class="col-12">
@@ -174,6 +245,66 @@
             </div>--%>
         </div>
     </div>
+    <%--Pattern sorted item--%>
+    <div class="row m-0 list-group-item d-flex d-none pattern-sorted-item">
+        <div class="col">
+            <input class="form-control sort-item" name="suggestion" type="text" placeholder="прим. Вариант">
+        </div>
+        <div class="col-1 d-flex align-items-center px-0 justify-content-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"/>
+            </svg>
+        </div>
+    </div>
+    <%-----------------------------------------------------%>
+    <%--Pattern semantic numbers--%>
+    <div class="row py-2 d-none semantic-pattern">
+        <div class="col-3">
+
+        </div>
+        <div class="col d-flex justify-content-between" name="availablePointsContainer">
+            <span>-1</span>
+            <span>0</span>
+            <span>1</span>
+        </div>
+        <div class="col-3">
+
+        </div>
+    </div>
+    <%-----------------------------------------------------%>
+    <%--Pattern semantic element--%>
+    <div class="row py-2 d-none semantic-element-pattern">
+        <div class="col-3">
+            <input class="form-control" name="newLeftText" type="text" placeholder="прим. Вариант">
+        </div>
+        <div class="col-6 d-flex align-items-center">
+            <input type="range" name="range" class="form-range" min="1" max="3">
+        </div>
+        <div class="col-3">
+            <input class="form-control" name="newRightText" type="text" placeholder="прим. Вариант">
+        </div>
+    </div>
+    <%-----------------------------------------------------%>
+    <%--Pattern distribute row--%>
+    <div class="row py-2 d-none distribute-row-pattern">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <input class="form-control" name="distributeRowText" type="text" placeholder="прим. Вариант">
+                </div>
+            </div>
+            <div class="row" name="customRangeContainer">
+                <div class="col-11">
+                    <input type="hidden" name="constMaxValue">
+                    <input type="range" name="customRange" style="width: 100%; height: 30px;" min="0" max="100" step="1" value="0">
+                </div>
+                <div class="col-1">
+                    <span>0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%-----------------------------------------------------%>
 
 </main>
 
