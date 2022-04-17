@@ -463,8 +463,8 @@ function publish(){
     }
 
     $.ajax({
-        type: "POST",
-        url: "/questionnaire/build",
+        type: "PUT",
+        url: "/questionnaire/public",
         data: JSON.stringify(questionnaire),
         success: function() {
             alert("success");

@@ -5,7 +5,8 @@ public enum QuestionnaireStatus {
     PASSED("passed"),
     PAUSED("paused"),
     REJECTED("rejected"),
-    HIDDEN("hidden");
+    HIDDEN("hidden"),
+    CREATED("created");
 
     private final String label;
 

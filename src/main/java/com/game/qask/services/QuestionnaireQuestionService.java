@@ -35,21 +35,21 @@ public class QuestionnaireQuestionService {
         return questionnaireQuestionDAO.findById(id);
     }
 
-    /*public Optional<QuestionnaireQuestion> updateQuestionnaireQuestionById(Long id, QuestionnaireQuestion newQuestionnaireQuestion){
+    public Optional<QuestionnaireQuestion> updateQuestionnaireQuestionById(Long id, QuestionnaireQuestion newQuestionnaireQuestion){
         QuestionnaireQuestion oldQuestionnaireQuestion = questionnaireQuestionDAO.findById(id).orElse(null);
         if(oldQuestionnaireQuestion == null){
             return Optional.empty();
         }
         oldQuestionnaireQuestion.setDate(newQuestionnaireQuestion.getDate());
         oldQuestionnaireQuestion.setQuestionnaireType(newQuestionnaireQuestion.getQuestionnaireType());
-        oldQuestionnaireQuestion.setQuestions(newQuestionnaireQuestion.getQuestions());
+        oldQuestionnaireQuestion.setQuestionnairePages(newQuestionnaireQuestion.getQuestionnairePages());
         oldQuestionnaireQuestion.setStatus(newQuestionnaireQuestion.getStatus());
         oldQuestionnaireQuestion.setCreatorID(newQuestionnaireQuestion.getCreatorID());
         oldQuestionnaireQuestion.setCreatorName(newQuestionnaireQuestion.getCreatorName());
         oldQuestionnaireQuestion.setTitle(newQuestionnaireQuestion.getTitle());
         oldQuestionnaireQuestion.setUser(newQuestionnaireQuestion.getUser());
         return Optional.ofNullable(questionnaireQuestionDAO.save(oldQuestionnaireQuestion));
-    }*/
+    }
 
     /*public Map<String, Map<String, String>> getQuestionnaireQuestionVOArrayView(ArrayList<QuestionnaireVO> questionnaireQuestionVOs){
 

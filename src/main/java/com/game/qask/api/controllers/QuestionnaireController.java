@@ -38,9 +38,9 @@ public class QuestionnaireController {
         this.userService = userService;
     }
 
-    @PostMapping("build")
+    @PutMapping("public")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> addQuestionnaire(@RequestBody QuestionnaireQuestion questionnaire){
+    public ResponseEntity<Map<String, Object>> updateQuestionnaire(@RequestBody QuestionnaireQuestion questionnaire){
         HashMap<String, Object> questionnaireView = new HashMap<>();
         questionnaireView.put("QuestionnaireQuestion", "received");
         questionnaire.setUser(userService.getUserById(questionnaire.getCreatorID()).orElse(new User()));
@@ -51,11 +51,24 @@ public class QuestionnaireController {
                 q.getSuggestions().forEach(s -> s.setQuestion(q));
             });
         });
-        qqService.addQuestionnaireQuestion(questionnaire);
+        qqService.updateQuestionnaireQuestionById(questionnaire.getId(), questionnaire);
         return new ResponseEntity<>(questionnaireView, HttpStatus.OK);
     }
 
-    @GetMapping("/builder/{id}")
+    @PostMapping("new")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> createNewQuestionnaire(@RequestBody QuestionnaireQuestion questionnaire){
+        HashMap<String, Object> questionnaireView = new HashMap<>();
+
+
+        questionnaire.setUser(userService.getUserById(questionnaire.getCreatorID()).orElse(new User()));
+        QuestionnaireQuestion qq = qqService.addQuestionnaireQuestion(questionnaire);
+        questionnaireView.put("newQuestionnaireId", qq.getId());
+
+        return new ResponseEntity<>(questionnaireView, HttpStatus.OK);
+    }
+
+    @GetMapping("builder/{id}")
     public ModelAndView getBuilderPage(@PathVariable("id") Long id, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("builder");
         mav.addObject("questionnaireId", id);
