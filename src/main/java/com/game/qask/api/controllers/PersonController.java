@@ -10,6 +10,8 @@ import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.game.qask.model.User;
+import com.game.qask.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,21 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("person")
 @Controller
 public class PersonController {
+    private final UserService userService;
+
+    @Autowired
+    public PersonController(UserService userService) {
+        this.userService = userService;
+    }
+    @PostMapping("/submit_register")
+    public ModelAndView addNewPerson(@RequestBody @Valid User user){
+        ModelAndView mav = new ModelAndView("registered");
+        mav.addObject("isAuth", "false");
+        BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
+        user.setPassword(pe.encode(user.getPassword()));
+        userService.addNewUser(user);
+        return mav;
+    }
     /*private final PersonService personService;
 
     @Autowired

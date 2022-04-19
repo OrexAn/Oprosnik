@@ -75,4 +75,16 @@ public class QuestionnaireQuestionService {
         oldQuestionnaire.setStatus(newStatus);
         return Optional.ofNullable(questionnaireQuestionDAO.save(oldQuestionnaire));
     }
+
+    public ArrayList<String[]> getTitlesAndIdsByCreatorName(String creatorName) {
+        ArrayList<QuestionnaireQuestion> qqs = questionnaireQuestionDAO.getQuestionnaireQuestionsByCreatorName(creatorName);
+        ArrayList<String[]> titlesAndIds = new ArrayList<>();
+        qqs.forEach(qq -> {
+            String[] titlesAndIdsPair = new String[2];
+            titlesAndIdsPair[0] = qq.getTitle();
+            titlesAndIdsPair[1] = qq.getId().toString();
+            titlesAndIds.add(titlesAndIdsPair);
+        });
+        return titlesAndIds;
+    }
 }

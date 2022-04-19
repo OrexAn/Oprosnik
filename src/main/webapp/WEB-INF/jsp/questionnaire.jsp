@@ -138,6 +138,7 @@
     </div>
 </header>
 <input type="hidden" name="questionnaireId" value="${questionnaireId}">
+<input type="hidden" name="questionnaireAId" value="${questionnaireId}">
 <main class="px-3 text-center d-flex justify-content-center flex-column main-height">
     <div class="row">
         <div class="col-12">
@@ -181,24 +182,6 @@
                             <div id="carouselItemsContainerId" class="carousel-inner" style="min-height: 800px;">
                                 <div class="carousel-item active" page="0">
                                     <div style="height: 100%;overflow-y: auto;overflow-x: hidden;" id="qBlockContainer_0" class="d-flex justify-content-center flex-column">
-                                        <%--<div class="row py-2 border-top border-bottom d-flex justify-content-center question-block" id="q_0">
-                                            <div class="col-5 d-flex justify-content-center flex-column">
-                                                <div class="row py-2">
-                                                    <div class="col d-flex justify-content-start">
-                                                        <a name="title">123</a>
-                                                    </div>
-                                                </div>
-                                                <div class="row py-2">
-                                                    <div class="col">
-                                                        <input type="text" class="form-control" name="suggestion" readonly="true" value="1!" style="cursor: pointer">
-                                                    </div>
-                                                </div>
-                                                <div class="row py-2">
-                                                    <div class="col">
-                                                        <input type="text" class="form-control selected" name="suggestion" readonly="true" value="2!" style="cursor: pointer">
-                                                    </div>
-                                                </div>
-                                            </div>--%>
                                         </div>
                                     </div>
                                 </div>
@@ -209,7 +192,7 @@
             </div>
             <div class="row py-2 d-flex justify-content-end">
                 <div class="col-1">
-                    <button type="button" class="btn btn-primary w-100 left">Finish</button>
+                    <button type="button" class="btn btn-primary w-100 left" onclick="finishAnswer();">Finish</button>
                 </div>
                 <div class="col-1">
                     <button type="button" class="btn btn-primary w-100 left" onclick="prev();">&lt;</button>

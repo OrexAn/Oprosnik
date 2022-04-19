@@ -25,7 +25,7 @@ function registerPerson(){
 		url: "person/submit_register",
 		data: JSON.stringify(data),
 		success: function(){
-			window.location.replace("http://localhost:8080/mp/registered");
+			window.location.replace("http://localhost:8080/registered");
 		},
 		contentType : "application/json"
 	});

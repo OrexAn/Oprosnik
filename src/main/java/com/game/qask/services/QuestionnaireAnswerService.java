@@ -53,14 +53,14 @@ public class QuestionnaireAnswerService {
         if(oldQuestionnaireAnswer == null){
             return Optional.empty();
         }
-        oldQuestionnaireAnswer.setDate(oldQuestionnaireAnswer.getDate());
-        oldQuestionnaireAnswer.setQuestionnaireType(oldQuestionnaireAnswer.getQuestionnaireType());
-        oldQuestionnaireAnswer.setAnswers(oldQuestionnaireAnswer.getAnswers());
-        oldQuestionnaireAnswer.setStatus(oldQuestionnaireAnswer.getStatus());
-        oldQuestionnaireAnswer.setCreatorID(oldQuestionnaireAnswer.getCreatorID());
-        oldQuestionnaireAnswer.setCreatorName(oldQuestionnaireAnswer.getCreatorName());
-        oldQuestionnaireAnswer.setTitle(oldQuestionnaireAnswer.getTitle());
-        oldQuestionnaireAnswer.setUser(oldQuestionnaireAnswer.getUser());
+        oldQuestionnaireAnswer.setDate(newQuestionnaireAnswer.getDate());
+        oldQuestionnaireAnswer.setQuestionnaireType(newQuestionnaireAnswer.getQuestionnaireType());
+        oldQuestionnaireAnswer.setAnswers(newQuestionnaireAnswer.getAnswers());
+        oldQuestionnaireAnswer.setStatus(newQuestionnaireAnswer.getStatus());
+        oldQuestionnaireAnswer.setCreatorID(newQuestionnaireAnswer.getCreatorID());
+        oldQuestionnaireAnswer.setCreatorName(newQuestionnaireAnswer.getCreatorName());
+        oldQuestionnaireAnswer.setTitle(newQuestionnaireAnswer.getTitle());
+        oldQuestionnaireAnswer.setUser(newQuestionnaireAnswer.getUser());
         return Optional.ofNullable(questionnaireAnswerDAO.save(oldQuestionnaireAnswer));
     }
 

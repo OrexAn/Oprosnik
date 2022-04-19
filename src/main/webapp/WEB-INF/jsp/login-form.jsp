@@ -13,39 +13,54 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Login Form</title>
 </head>
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#loginTrigger').click(function (){
+            $('#loginModal').modal('show');
+        });
+    });
+
+</script>
 <body>
 <main>
 
 </main>
 <div class="container">
     <div class="box-background"></div>
-    <div class="log-tab-back"></div>
 
-    <form action="submit_login" method="post">
-        <%--<div class="center round1"></div>--%>
-        <table class="log-tab">
-            <tr>
-                <th style="width: 30%"></th>
-                <th style="width: 70%"></th>
-            </tr>
-            <tr>
-                <td><label for="inputUserName">UserName</label></td>
-                <%--<td><input type="text" name="username" style="font-size: 14pt"/></td>--%>
-                <td><input type="text" class="form-control" id="inputUserName" name="username" placeholder="username"></td>
-            </tr>
-            <tr>
-                <td><label for="inputPassword">Password</label></td>
-                <%--<td><input type="password" name="password" style="font-size: 14pt" /></td>--%>
-                <td><input type="password" class="form-control" id="inputPassword" name="password" placeholder="password" autocomplete="on"></td>
-            </tr>
-            <tr>
-                <td colspan="2" style="text-align: center">
-                    <button type="submit" class="btn btn-primary">Log-in</button>
-                </td>
-            </tr>
-        </table>
-        <input type="hidden" name="page" id="page-url" value=""/>
-    </form>
+    <!-- Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="container py-4" style="width: 380px; height: 100%;">
+                    <div class="row">
+                        <div class="col-4">
+                            <h4>Войти</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <form action="submit_login" method="post" class="m-0">
+                                <div class="form-group py-2 m-0">
+                                    <label for="inputUserName">Username</label>
+                                    <input type="text" class="form-control" id="inputUserName" autocomplete="off" placeholder="Enter username">
+                                </div>
+                                <div class="form-group py-2 m-0">
+                                    <label for="inputPassword">Password</label>
+                                    <input type="password" class="form-control" id="inputPassword" name="password" autocomplete="off" placeholder="Password">
+                                </div>
+                                <div class="form-group py-2 m-0">
+                                    <button type="submit" class="btn btn-primary py-2">Submit</button>
+                                </div>
+                                <input type="hidden" name="page" id="page-url" value=""/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%-----------------------------------------------------------%>
 </div>
 
 

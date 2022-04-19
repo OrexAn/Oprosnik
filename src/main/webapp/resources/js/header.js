@@ -4,7 +4,7 @@ $(document).ready(function(){
 var user_id;
 function initHead(){
 	var sOutBtn = document.getElementById("sign-out");
-	var sInBtn = document.getElementById("sign-in");
+	var sInBtn = document.getElementById("loginTrigger");
 	var isAuth = document.getElementById("auth");
 	var prof = document.getElementById("profile-link");
 	user_id = localStorage.getItem("user_id");
@@ -22,13 +22,13 @@ function initHead(){
 		sOutBtn.style.display = "none";
 	}
 
-	$("#sign-in").click(function() {
+	$("#loginTrigger").click(function() {
 		var logForm = document.getElementById("login-container");
 		if(logForm !== null){
 			logForm.style.display = "block";
 			$("#page-url").val(window.location.pathname);
 		}else{
-			window.location.replace("http://localhost:8080/mp/login");
+			window.location.replace("http://localhost:8080/login");
 		}
 	});
 
@@ -57,5 +57,5 @@ function reloadNav(isAuth){
 }
 
 function goToHomePage(){
-	window.location.replace("http://localhost:8080/mp/home");
+	window.location.replace("http://localhost:8080/home");
 }
