@@ -56,19 +56,6 @@
         opacity: 0
     }
 
-    /*.rating>label:hover:before,
-    .rating>label:hover~label:before {
-        opacity: 1 !important
-    }*/
-
-    /*.rating>input:checked~label:before {
-        opacity: 1
-    }*/
-
-    /*.rating:hover>input:checked~label:before {
-        opacity: 0.4
-    }*/
-
     h1,
     p {
         text-align: center
@@ -315,8 +302,8 @@
                                     <div style="height: 100%;overflow-y: auto;overflow-x: hidden;" class="d-flex justify-content-center flex-column">
 
                                         <div class="row py-2 border-top border-bottom d-flex justify-content-center add-item-cell">
-                                            <div class="col-2 d-flex justify-content-center flex-column">
-                                                <h4>Название</h4>
+                                            <div class="col-6 d-flex justify-content-center flex-column">
+                                                <h4 id="questionnaireTitleId">${questionnaireTitle}</h4>
                                             </div>
                                         </div>
                                         <div class="row py-2 border-top border-bottom d-flex justify-content-center add-item-cell">

@@ -341,6 +341,8 @@ function addCarouselItem(){
 function publish(){
     var questionBlocks = $('.question-block');
     var questionnairePages = $('.questionsPage');
+    var questionnaireId = $("[name='questionnaireId']").first().val();
+    var questionnaireTitle = $('#questionnaireTitleId').text();
 
     var currentdate = new Date();
     var datetime = currentdate.getUTCFullYear() + "-"
@@ -353,8 +355,9 @@ function publish(){
     var page = {"number" : 1, "questions" : []};
     var question = {};
     var questionnaire = {
+        "id" : questionnaireId,
         "questionnairePages" : [],
-        "title" : "Some title",
+        "title" : questionnaireTitle,
         "date" : datetime,
         "creatorName" : "Some name",
         "creatorID" : 1,
@@ -463,8 +466,8 @@ function publish(){
     }
 
     $.ajax({
-        type: "POST",
-        url: "/questionnaire/build",
+        type: "PUT",
+        url: "/questionnaire/public",
         data: JSON.stringify(questionnaire),
         success: function() {
             alert("success");

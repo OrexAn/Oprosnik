@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,9 +39,9 @@ public class QuestionnaireController {
         this.userService = userService;
     }
 
-    @PostMapping("build")
+    @PutMapping("public")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> addQuestionnaire(@RequestBody QuestionnaireQuestion questionnaire){
+    public ResponseEntity<Map<String, Object>> updateQuestionnaire(@RequestBody QuestionnaireQuestion questionnaire){
         HashMap<String, Object> questionnaireView = new HashMap<>();
         questionnaireView.put("QuestionnaireQuestion", "received");
         questionnaire.setUser(userService.getUserById(questionnaire.getCreatorID()).orElse(new User()));
@@ -51,14 +52,52 @@ public class QuestionnaireController {
                 q.getSuggestions().forEach(s -> s.setQuestion(q));
             });
         });
-        qqService.addQuestionnaireQuestion(questionnaire);
+        qqService.updateQuestionnaireQuestionById(questionnaire.getId(), questionnaire);
         return new ResponseEntity<>(questionnaireView, HttpStatus.OK);
     }
 
-    @GetMapping("/builder/{id}")
+    @PutMapping("update/answer")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> updateQuestionnaire(@RequestBody QuestionnaireAnswer questionnaire){
+        HashMap<String, Object> questionnaireView = new HashMap<>();
+        questionnaireView.put("QuestionnaireAnswer", "received");
+        questionnaire.setUser(userService.getUserById(questionnaire.getCreatorID()).orElse(new User()));
+        questionnaire.getAnswers().forEach(a -> {
+            a.setQuestionnaireAnswer(questionnaire);
+        });
+        qaService.updateQuestionnaireAnswerById(questionnaire.getId(), questionnaire);
+        return new ResponseEntity<>(questionnaireView, HttpStatus.OK);
+    }
+
+    @PostMapping("new/question")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> createNewQuestionnaireQuestion(@RequestBody QuestionnaireQuestion questionnaire){
+        HashMap<String, Object> questionnaireView = new HashMap<>();
+        questionnaire.setUser(userService.getUserById(questionnaire.getCreatorID()).orElse(new User()));
+        QuestionnaireQuestion qq = qqService.addQuestionnaireQuestion(questionnaire);
+        questionnaireView.put("newQuestionnaireId", qq.getId());
+
+        return new ResponseEntity<>(questionnaireView, HttpStatus.OK);
+    }
+
+    @PostMapping("new/answer")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> createNewQuestionnaireAnswer(@RequestBody QuestionnaireAnswer questionnaire){
+        HashMap<String, Object> questionnaireView = new HashMap<>();
+        questionnaire.setUser(userService.getUserById(questionnaire.getCreatorID()).orElse(new User()));
+        QuestionnaireAnswer qq = qaService.addQuestionnaireAnswer(questionnaire);
+        questionnaireView.put("newQuestionnaireId", qq.getId());
+
+        return new ResponseEntity<>(questionnaireView, HttpStatus.OK);
+    }
+
+    @GetMapping("builder/{id}")
     public ModelAndView getBuilderPage(@PathVariable("id") Long id, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("builder");
+        QuestionnaireQuestion qq = qqService.getQuestionnaireQuestionById(id);
         mav.addObject("questionnaireId", id);
+        mav.addObject("questionnaireTitle", qq.getTitle());
+        mav.addObject("questionnaireStatus", qq.getStatus());
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(auth.getAuthorities());
@@ -93,6 +132,14 @@ public class QuestionnaireController {
         Map<String, Object> questionnaireQuestionVO = qqService.getQuestionnaireQuestionVO(qq);
 
         return new ResponseEntity<>(questionnaireQuestionVO, HttpStatus.OK);
+    }
+
+    @GetMapping("/links/{userName}")
+    @ResponseBody
+    public ResponseEntity<ArrayList<String[]>> getQuestionnairesLinks(@PathVariable("userName") String userName, HttpServletRequest request){
+        ArrayList<String[]> titlesAndIds = qqService.getTitlesAndIdsByCreatorName(userName);
+
+        return new ResponseEntity<>(titlesAndIds, HttpStatus.OK);
     }
 
     @GetMapping("/results/{id}")

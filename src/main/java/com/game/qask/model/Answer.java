@@ -1,5 +1,7 @@
 package com.game.qask.model;
 
+import com.game.qask.api.documents.AnswerType;
+import com.game.qask.api.documents.QuestionType;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -12,7 +14,13 @@ public class Answer {
     @SequenceGenerator(name="GeneratorAn1", sequenceName = "seqAn1", allocationSize = 1)
     @Column(name = "id")
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "text")
+    private String text;
+    @Column(name = "answer_type")
+    private AnswerType answerType;
+    @Column(name = "order_num")
+    private String orderNum;
+    @ManyToOne
     @JoinColumn(name="questionnaire_answer_id", nullable=false)
     private QuestionnaireAnswer questionnaireAnswer;
 
@@ -36,5 +44,29 @@ public class Answer {
 
     public Long getId() {
         return id;
+    }
+
+    public AnswerType getAnswerType() {
+        return answerType;
+    }
+
+    public void setAnswerType(AnswerType answerType) {
+        this.answerType = answerType;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(String orderNum) {
+        this.orderNum = orderNum;
     }
 }

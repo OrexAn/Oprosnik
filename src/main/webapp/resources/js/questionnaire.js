@@ -1,8 +1,10 @@
 var questionId = 0; //{last id + 1}
 var carouselPage = 0;
 var pageCount = 1;
+var questionnaireAId = -1;
 
 $(document).ready(function(){
+    createAnswer();
     var questionnaireId = $("[name='questionnaireId']").first().val();
     $.get("/questionnaire/load/" + questionnaireId, function(data, status){
         var pages = $(".carousel-item");
@@ -190,12 +192,18 @@ function createStar(createStarContainer, count){
     input.id = count + 1;
     const label = document.createElement("label");
     label.setAttribute("for", count + 1);
+    $(label).on("click", markStar)
     const textNode1 = document.createTextNode('☆');
 
     label.appendChild(textNode1);
 
     $(createStarContainer).append(input);
     $(createStarContainer).append(label);
+}
+
+function markStar(){
+    $(this).parent().find("label").removeClass("star-selected");
+    $(this).addClass("star-selected");
 }
 
 function addSorting(parent, suggestions){
@@ -209,13 +217,14 @@ function addSorting(parent, suggestions){
         chosenClass: 'active'
     });
     for(var i = 0; i < suggestions.length; i++){
-        createSortedItem(parent, suggestions[i].text);
+        createSortedItem(parent, suggestions[i].text, i);
     }
 }
 
-function createSortedItem(createSortedItemContainer, text){
+function createSortedItem(createSortedItemContainer, text, baseOrderNum){
     var node = $('.pattern-sorted-item').first().clone().get();
     $( node ).removeClass("d-none").removeClass('pattern-sorted-item');
+    $( node ).attr('base-order', baseOrderNum);
 
     var sortItem = $( node ).find("[name='suggestion']").first();
     $( sortItem ).val(text);
@@ -385,4 +394,206 @@ function suggestionSelected(element){
             $(element).addClass("selected");
         }
     }
+}
+
+/**/
+function createAnswer(){
+    var questionnaireQId = $("[name='questionnaireId']").first().val();
+    var questionnaire = {
+        "creatorID" : 1,
+        "questionnaireType" : "ANSWER",
+        "status" : "CREATED",
+        "qQuestionId" : questionnaireQId
+    };
+    $.ajax({
+        type: "POST",
+        url: "/questionnaire/new/answer",
+        data: JSON.stringify(questionnaire),
+        success: createAnswerCallback,
+        contentType: "application/json"
+    });
+}
+
+function createAnswerCallback(data, status){
+    $("[name='questionnaireAId']").first().val(data.newQuestionnaireId);
+    questionnaireAId = data.newQuestionnaireId;
+}
+
+function finishAnswer(){
+    var questionBlocks = $('.question-block');
+    var questionnairePages = $('.questionsPage');
+    var questionnaireQId = $("[name='questionnaireId']").first().val();
+
+    var currentdate = new Date();
+    var datetime = currentdate.getUTCFullYear() + "-"
+        + ("0" + (currentdate.getUTCMonth()+1)).slice(-2)  + "-"
+        + ("0" + currentdate.getUTCDate()).slice(-2) + "T"
+        + ("0" + currentdate.getUTCHours()).slice(-2) + ":"
+        + ("0" + currentdate.getUTCMinutes()).slice(-2) + ":"
+        + ("0" + currentdate.getUTCSeconds()).slice(-2);
+
+
+    var answer = {};
+    var status = "NOT_PASSED"
+    var questionnaire = {
+        "id" : questionnaireAId,
+        "qQuestionId" : questionnaireQId,
+        "answers" : [],
+        "creatorID" : 1,
+        "date" : datetime,
+        "questionnaireType" : "ANSWER",
+        "status" : status
+    };
+
+    for(var i = 0; i < questionBlocks.length; i++){  //итерация по номеру блока с вопросом
+
+        var qType = $( questionBlocks[i] ).attr("qType");
+        if( qType === "SINGLE" ){
+            //---------------------------------------------------------------------------
+            var title = $( questionBlocks[i] ).find( "[name='title']" ).first().text();
+            var suggestionsList = $( questionBlocks[i] ).find( "[name='suggestion']" );
+
+            answer["answerType"] = qType;
+            answer["orderNum"] = i;
+
+            for(var j = 0; j < suggestionsList.length; j++){   //итерации по каждой строке-предложении в SINGLE, MULTI или SORTED блоке
+                if($(suggestionsList[j]).hasClass("selected")){
+                    answer["text"] = j;
+                    break;
+                }
+            }
+            questionnaire["answers"].push(answer);
+            answer = {}
+            //---------------------------------------------------------------------------
+        }
+        else if( qType === "MULTI" ){
+            //---------------------------------------------------------------------------
+            var title = $( questionBlocks[i] ).find( "[name='title']" ).first().text();
+            var suggestionsList = $( questionBlocks[i] ).find( "[name='suggestion']" );
+
+            answer["answerType"] = qType;
+            answer["orderNum"] = i;
+
+            var selectedItems = $( questionBlocks[i] ).find(".selected");
+            var isFirst = true;
+            var hasSelected = false;
+
+            for(var j = 0; j < suggestionsList.length; j++){   //итерации по каждой строке-предложении в SINGLE, MULTI или SORTED блоке
+                hasSelected = $(suggestionsList[j]).hasClass("selected");
+                if(hasSelected && isFirst){
+                    isFirst = false;
+                    answer["text"] = j;
+                }
+                else if(hasSelected){
+                    answer["text"] += "|" + j;
+                }
+            }
+            questionnaire["answers"].push(answer);
+            answer = {}
+            //---------------------------------------------------------------------------
+        }
+        else if(qType === "RATING"){
+            //for Rating
+            var starsList = $( questionBlocks[i] ).find("[name='rating']");
+            var selectedStar = $( questionBlocks[i] ).find(".star-selected").first();
+
+            var value = $(selectedStar).attr("for");
+
+            var ratingVal = starsList.length - parseInt(value) + 1;
+
+            answer["answerType"] = $( questionBlocks[i] ).attr("qType");
+            answer["orderNum"] = i;
+
+            answer["text"] = ratingVal;
+            questionnaire["answers"].push(answer);
+
+            answer = {}
+            //---------------------------------------------------------------------------
+        }
+        else if( qType === "SORTED"){
+            //---------------------------------------------------------------------------
+            var suggestionsList = $( questionBlocks[i] ).find( "[name='suggestion']" );
+
+            answer["answerType"] = qType;
+            answer["orderNum"] = i;
+
+            var isFirst = true;
+            var baseOrderNum = false;
+
+            for(var j = 0; j < suggestionsList.length; j++){
+                baseOrderNum = $(suggestionsList[j]).closest(".list-group-item").attr("base-order");
+                if(isFirst){
+                    isFirst = false;
+                    answer["text"] = baseOrderNum + ":" + j;
+                }
+                else{
+                    answer["text"] += "|" + baseOrderNum + ":" + j;
+                }
+            }
+            questionnaire["answers"].push(answer);
+            answer = {}
+            //---------------------------------------------------------------------------
+        }
+        else if(qType === "SEMANTIC"){
+            //for semantic
+
+            var rangesList = $( questionBlocks[i] ).find( "[name='range']" );
+
+            answer["answerType"] = $( questionBlocks[i] ).attr("qType");
+            answer["orderNum"] = i;
+
+            var isFirst = true;
+            var rangeVal = false;
+
+            for(var j = 0; j < rangesList.length; j++){   //итерации по каждой строке-предложении SEMANTIC
+                var rangeVal = $(rangesList[j]).val();
+                if(isFirst){
+                    isFirst = false;
+                    answer["text"] = j + ":" + rangeVal;
+                }
+                else{
+                    answer["text"] += "|" + j + ":" + rangeVal;
+                }
+            }
+
+            questionnaire["answers"].push(answer);
+            answer = {}
+            //---------------------------------------------------------------------------
+        }
+        else if(qType === "DISTRIBUTE"){
+            //for distribute
+            var rangesList = $( questionBlocks[i] ).find( "[name='customRange']" );
+
+            answer["answerType"] = $( questionBlocks[i] ).attr("qType");
+            answer["orderNum"] = i;
+
+            var isFirst = true;
+            var rangeVal = false;
+
+            for(var j = 0; j < rangesList.length; j++){   //итерации по каждой строке-предложении SEMANTIC
+                var rangeVal = $(rangesList[j]).val();
+                if(isFirst){
+                    isFirst = false;
+                    answer["text"] = j + ":" + rangeVal;
+                }
+                else{
+                    answer["text"] += "|" + j + ":" + rangeVal;
+                }
+            }
+
+            questionnaire["answers"].push(answer);
+            answer = {}
+            //---------------------------------------------------------------------------
+        }
+    }
+
+    $.ajax({
+        type: "PUT",
+        url: "/questionnaire/update/answer",
+        data: JSON.stringify(questionnaire),
+        success: function() {
+            alert("success");
+        },
+        contentType: "application/json"
+    });
 }
