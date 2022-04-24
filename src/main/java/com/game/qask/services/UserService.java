@@ -31,8 +31,8 @@ public class UserService {
     public Optional<User> getUserById(Long id){
         return userDAO.findById(id);
     }
-    public Optional<User> getUserByName(String name){
-        return userDAO.findUsersByName(name);
+    public Optional<User> getUserByUserName(String name){
+        return userDAO.findUsersByUserName(name);
     }
     public boolean deleteUserById(Long id) {
         userDAO.deleteById(id);
@@ -46,7 +46,6 @@ public class UserService {
         if(oldUser == null){
             return Optional.empty();
         }
-        oldUser.setName(newUser.getName());
         oldUser.setAuthority(newUser.getAuthority());
         oldUser.setAvatar(newUser.getAvatar());
         return Optional.ofNullable(userDAO.save(oldUser));

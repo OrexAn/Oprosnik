@@ -33,6 +33,7 @@ $(document).ready(function(){
         $("#carouselExampleSlidesOnly").carousel(1);
         carouselPage = 1;
     });
+    checkQuestionnaire();
 
 });
 function prev(){
@@ -337,6 +338,9 @@ function addCarouselItem(){
     $( newPageButton ).insertBefore($('#newPageButtonContainerId'));
 
 }
+function updateQuestionnaire(){
+    publish();
+}
 
 function publish(){
     var questionBlocks = $('.question-block');
@@ -359,8 +363,6 @@ function publish(){
         "questionnairePages" : [],
         "title" : questionnaireTitle,
         "date" : datetime,
-        "creatorName" : "Some name",
-        "creatorID" : 1,
         "questionnaireType" : "QUESTION",
         "status" : "PUBLISHED"
     };
@@ -471,6 +473,8 @@ function publish(){
         data: JSON.stringify(questionnaire),
         success: function() {
             alert("success");
+            var questionnaireId = $("[name='questionnaireId']").first().val();
+            window.location.replace("questionnaire/builder/" + questionnaireId);
         },
         contentType: "application/json"
     });
@@ -654,6 +658,16 @@ function toSharePage(){
     window.location.replace("/questionnaire/share/" + questionnaireId);
 }
 
+function toPreferencesPage(){
+    var questionnaireId = $("[name='questionnaireId']").first().val();
+    window.location.replace("/questionnaire/preferences/" + questionnaireId);
+}
+
+function goToEditor(){
+    var questionnaireId = $("[name='questionnaireId']").first().val();
+    window.location.replace("questionnaire/builder/" + questionnaireId);
+}
+
 function beforeCloseModal(){
     $('#addElementButtonId').unbind('click');
     $('.btn-close').unbind('click');
@@ -668,4 +682,21 @@ function beforeCloseModal(){
     $('#sortItemsContainerID').addClass('d-none');
     $('#semanticContainerID').addClass('d-none');
     $('#distributeContainerId').addClass('d-none');
+}
+
+function checkQuestionnaire(){
+    var questionnaireId = $("[name='questionnaireId']").first().val();
+    $.get("/questionnaire/load/" + questionnaireId, function(data, status){
+        if(data.errorMessage){
+            console.log(data.errorMessage);
+        }else{
+            if(data.status === "published"){
+                $('#updateButtonId').parent().removeClass('d-none');
+                $('#publishButtonId').parent().addClass('d-none');
+
+                $('#sharePageBtnId').removeAttr("disabled");
+                $('#resultsPageBtnId').removeAttr("disabled");
+            }
+        }
+    });
 }

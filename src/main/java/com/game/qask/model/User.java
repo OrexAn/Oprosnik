@@ -1,6 +1,8 @@
 package com.game.qask.model;
 
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -16,11 +18,8 @@ public class User {
     @SequenceGenerator(name="GeneratorName1", sequenceName = "seq1", allocationSize = 1)
     @Column(name = "id")
     private final Long id;
-    @Column(name = "name")
-    //@NotBlank(message = "Name can not be blank")
-    private String name;
-    @Column(name = "login")
-    private String login;
+    @Column(name = "user_name")
+    private String userName;
     @Column(name = "password")
     private String password;
     @Column(name="avatar", columnDefinition = "varchar(255) default 'no-avatar'")
@@ -43,20 +42,12 @@ public class User {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {

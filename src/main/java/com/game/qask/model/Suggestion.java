@@ -15,7 +15,7 @@ public class Suggestion implements Comparable<Suggestion>{
     @Column(name = "id")
     private Long id;
     @ManyToOne
-    @JoinColumn(name="question_id", nullable=false)
+    @JoinColumn(name="question_id", nullable=false, columnDefinition = "bigint default -1")
     private Question question;
 
     /*

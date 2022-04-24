@@ -8,17 +8,19 @@ $(document).ready(function(){
 function initHome(){
 	var isAuth = document.getElementById('auth').value;
 	if(isAuth === 'true'){
-		document.getElementById('hello-id').style.display = "block";
+		$('#quickAccessButtonsContainerId').removeClass('d-none');
+		getUserQuestionnaires();
 	}
-	setStatcHomeTable();
-	getUserQuestionnaires();
+	setStaticHomeTable();
 }
-
 function createQuestionnaire(){
 	var newQuestionnaireName = $("[name='newQuestionnaireName']").val();
+	var userName = $("#user_name").val();
+	var userId = $("#user_id").val();
 	var questionnaire = {
+		"creatorName": userName,
 		"title" : newQuestionnaireName,
-		"creatorID" : 1,
+		"creatorID" : userId,
 		"questionnaireType" : "QUESTION",
 		"status" : "CREATED"
 	};
@@ -36,10 +38,12 @@ function createCallback(parameters){
 }
 
 function getUserQuestionnaires(){
-
-	$.get("/questionnaire/links/" + "Some name", function(data, status){
+	var username = $("#user_name").val();
+	$.get("/questionnaire/links/" + username, function(data, status){
 		titlesAndIds = data;
-		setLastEdit();
+		if(data && data.length > 0){
+			setLastEdit();
+		}
 	});
 }
 
@@ -47,16 +51,38 @@ function setLastEdit(){
 	switch(titlesAndIds.length) {
 		case 1:
 			$('#firstQuestionnaireTriggerContainerId').removeClass('d-none');
+			var titlesAndId = titlesAndIds[titlesAndIds.length-1];
+			$('#firstQuestionnaireTriggerContainerId').find('small').text(titlesAndId[0])
+			$('#firstQuestionnaireTriggerId').attr('qLink', "/questionnaire/builder/" + titlesAndId[1]);
 
 			break;
 		case 2:
 			$('#firstQuestionnaireTriggerContainerId').removeClass('d-none');
 			$('#secondQuestionnaireTriggerContainerId').removeClass('d-none');
+			var titlesAndId = titlesAndIds[titlesAndIds.length-1];
+			$('#firstQuestionnaireTriggerContainerId').find('small').text(titlesAndId[0])
+			$('#firstQuestionnaireTriggerId').attr('qLink', "/questionnaire/builder/" + titlesAndId[1]);
+
+			titlesAndId = titlesAndIds[titlesAndIds.length-2];
+			$('#secondQuestionnaireTriggerContainerId').find('small').text(titlesAndId[0])
+			$('#secondQuestionnaireTriggerId').attr('qLink', "/questionnaire/builder/" + titlesAndId[1]);
 			break;
 		case 3:
 			$('#firstQuestionnaireTriggerContainerId').removeClass('d-none');
 			$('#secondQuestionnaireTriggerContainerId').removeClass('d-none');
 			$('#thirdQuestionnaireTriggerContainerId').removeClass('d-none');
+
+			var titlesAndId = titlesAndIds[titlesAndIds.length-1];
+			$('#firstQuestionnaireTriggerContainerId').find('small').text(titlesAndId[0])
+			$('#firstQuestionnaireTriggerId').attr('qLink', "/questionnaire/builder/" + titlesAndId[1]);
+
+			titlesAndId = titlesAndIds[titlesAndIds.length-2];
+			$('#secondQuestionnaireTriggerContainerId').find('small').text(titlesAndId[0])
+			$('#secondQuestionnaireTriggerId').attr('qLink', "/questionnaire/builder/" + titlesAndId[1]);
+
+			titlesAndId = titlesAndIds[titlesAndIds.length-3];
+			$('#thirdQuestionnaireTriggerContainerId').find('small').text(titlesAndId[0])
+			$('#thirdQuestionnaireTriggerId').attr('qLink', "/questionnaire/builder/" + titlesAndId[1]);
 			break;
 		default:
 		// code block
@@ -118,7 +144,7 @@ function fitGridCols() {
 	modalGridOptions.api.sizeColumnsToFit();
 }
 
-function setStatcHomeTable(){
+function setStaticHomeTable(){
 	const columnDefs = [
 		{ field: "Название", width: 588, sortable: true, resizable: true, cellStyle: { 'text-align': 'left' }, suppressSizeToFit: true },
 		{ field: "Ответило", width: 400, sortable: true, resizable: true, cellStyle: { 'text-align': 'left' } },

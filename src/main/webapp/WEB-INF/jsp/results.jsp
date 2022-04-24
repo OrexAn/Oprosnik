@@ -55,7 +55,7 @@
     <meta charset="UTF-8">
 </head>
 <body>
-
+<jsp:include page="header.jsp" />
 <%-----------------------------------------------------------%>
 <!-- Modal -->
 <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -104,7 +104,7 @@
 <main class="px-3 text-center d-flex justify-content-start flex-column main-height">
     <div class="row py-1 border">
         <div class="col d-flex justify-content-end">
-            <button type="button" class="btn btn-warning" onclick="publish()">Редактировать</button>
+            <button type="button" class="btn btn-warning" onclick="updateQuestionnaire()">Редактировать</button>
         </div>
     </div>
     <div class="row h-100">
@@ -117,7 +117,7 @@
             </div>
             <div class="row py-2">
                 <div class="col">
-                    <button type="button" class="btn btn-light w-100">Настройки</button>
+                    <button type="button" class="btn btn-light w-100" onclick="toPreferencesPage()">Настройки</button>
                 </div>
             </div>
             <div class="row py-2">
@@ -127,23 +127,23 @@
             </div>
             <div class="row py-2 border-bottom">
                 <div class="col">
-                    <button type="button" class="btn btn-light w-100">Результаты</button>
+                    <button type="button" class="btn btn-light w-100" onclick="toResultsPage()">Результаты</button>
                 </div>
             </div>
             <%--------------------------------------------------------%>
             <div class="row py-2">
                 <div class="col">
-                    <button type="button" class="btn btn-light w-100">Анализ опросов</button>
+                    <button type="button" class="btn btn-light w-100" onclick="toIndieAnswersSection(0);">Анализ опросов</button>
                 </div>
             </div>
             <div class="row py-2">
                 <div class="col">
-                    <button type="button" class="btn btn-light w-100">Индивидуальные ответы</button>
+                    <button type="button" class="btn btn-light w-100" onclick="toIndieAnswersSection(1);">Индивидуальные ответы</button>
                 </div>
             </div>
             <div class="row py-2">
                 <div class="col">
-                    <button type="button" class="btn btn-light w-100">Состояния опроса</button>
+                    <button type="button" class="btn btn-light w-100" onclick="toIndieAnswersSection(2);">Состояния ответов</button>
                 </div>
             </div>
         </div>
@@ -157,7 +157,7 @@
                     </div>
                     <div class="row py-2">
                         <div class="col d-flex justify-content-start">
-                            <h5>[Название опроса]</h5>
+                            <h5>[${questionnaireTitle}]</h5>
                         </div>
                     </div>
                 </div>
@@ -267,8 +267,11 @@
                 </div>
             </div>
         </div>
-        <div id="answersId" class="col-10 border-end" style="display: none">
+        <div id="answersId" class="col-10 border-end d-none">
             <jsp:include page="IndieAnswers.jsp" />
+        </div>
+        <div id="stateId" class="col-10 border-end d-none">
+            <jsp:include page="QuestionnaireState.jsp" />
         </div>
     </div>
 </main>

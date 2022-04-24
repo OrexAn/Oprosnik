@@ -9,14 +9,15 @@
         <a class="p-2 text-dark" id="contacts" href="http://localhost:8080/contacts">Contacts</a>
         <a class="p-2 text-dark" id="partner" href="http://localhost:8080/partnership">Partnership</a>
         <a class="p-2 text-dark" id="support" href="http://localhost:8080/support">Support</a>
-        <a class="p-2 text-dark" id="profile-link" href="http://localhost:8080/profile/${person.id}">My Profile</a>
+        <a class="p-2 text-dark" id="profile-link" href="http://localhost:8080/profile/${user.id}">My Profile</a>
     </nav>
     <a class="btn btn-outline-success mx-2" href="http://localhost:8080/register">Sign up</a>
     <a class="btn btn-outline-primary mx-2" id="loginTrigger">Sign in</a>
     <a class="btn btn-outline-primary mx-2" id="sign-out">Sign out</a>
     <input type="hidden" id="auth" value="${isAuth}">
-    <input type="hidden" id="user_id" value="${person.id}">
-    <input type="hidden" id="user-authority-id" value="${person.authority}">
+    <input type="hidden" id="user_id" value="${user.id}">
+    <input type="hidden" id="user_name" value="${user.userName}">
+    <input type="hidden" id="user-authority-id" value="${user.authority}">
     <%--<a class="btn btn-outline-primary" href="http://localhost:8080/mp/home/login">Sign in</a>--%>
     <%--href="http://localhost:8080/mp/login"--%>
 </header>

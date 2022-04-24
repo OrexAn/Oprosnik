@@ -22,3 +22,8 @@ function toResultsPage(){
     var questionnaireId = $("[name='questionnaireId']").first().val();
     window.location.replace("/questionnaire/" + "results/" + questionnaireId);
 }
+
+function toPreferencesPage(){
+    var questionnaireId = $("[name='questionnaireId']").first().val();
+    window.location.replace("/questionnaire/preferences/" + questionnaireId);
+}

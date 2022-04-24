@@ -21,8 +21,8 @@ public class MainController {
         this.userService = userService;
     }
 
-    @PostMapping("/**/submit_login")
-    public ModelAndView getLogin(HttpServletRequest request){
+    //@PostMapping("/**/submit_login")
+    /*public ModelAndView getLogin(HttpServletRequest request){
         String pageURL = request.getParameter("page");
         ModelAndView mav = new ModelAndView("redirect:" + pageURL);
 
@@ -30,7 +30,7 @@ public class MainController {
         String password = request.getParameter("password");
         System.out.println(login + " | " + password + " | " + pageURL);
         return mav;
-    }
+    }*/
 
     @PostMapping("/**/submit_logout")
     public ModelAndView getLogout(HttpServletRequest request){
@@ -87,7 +87,7 @@ public class MainController {
         System.out.println(auth.getAuthorities());
         if (auth != null && !auth.getName().equalsIgnoreCase("anonymousUser")) {
             mav.addObject("isAuth", "true");
-            User user = userService.getUserByName(auth.getName()).orElse(new User());
+            User user = userService.getUserByUserName(auth.getName()).orElse(new User());
             mav.addObject("user", user);
         }
     }

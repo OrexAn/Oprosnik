@@ -6,7 +6,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/log-in.js"></script>
     <link type="text/css" href="<c:url value="/resources/css/login-form.css"/>" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
@@ -26,8 +25,6 @@
 
 </main>
 <div class="container">
-    <div class="box-background"></div>
-
     <!-- Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -43,14 +40,14 @@
                             <form action="submit_login" method="post" class="m-0">
                                 <div class="form-group py-2 m-0">
                                     <label for="inputUserName">Username</label>
-                                    <input type="text" class="form-control" id="inputUserName" autocomplete="off" placeholder="Enter username">
+                                    <input type="text" class="form-control" id="inputUserName" name="username" autocomplete="off" placeholder="Enter username">
                                 </div>
                                 <div class="form-group py-2 m-0">
                                     <label for="inputPassword">Password</label>
                                     <input type="password" class="form-control" id="inputPassword" name="password" autocomplete="off" placeholder="Password">
                                 </div>
                                 <div class="form-group py-2 m-0">
-                                    <button type="submit" class="btn btn-primary py-2">Submit</button>
+                                    <button class="btn btn-primary py-2" onclick="loginUser()">Войти</button>
                                 </div>
                                 <input type="hidden" name="page" id="page-url" value=""/>
                             </form>

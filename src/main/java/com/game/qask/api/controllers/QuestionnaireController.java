@@ -1,10 +1,6 @@
 package com.game.qask.api.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.game.qask.api.documents.QuestionnaireType;
-import com.game.qask.model.Questionnaire;
+import com.game.qask.model.Question;
 import com.game.qask.model.QuestionnaireAnswer;
 import com.game.qask.model.QuestionnaireQuestion;
 import com.game.qask.model.User;
@@ -24,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RequestMapping("questionnaire")
 @Controller
@@ -44,7 +41,6 @@ public class QuestionnaireController {
     public ResponseEntity<Map<String, Object>> updateQuestionnaire(@RequestBody QuestionnaireQuestion questionnaire){
         HashMap<String, Object> questionnaireView = new HashMap<>();
         questionnaireView.put("QuestionnaireQuestion", "received");
-        questionnaire.setUser(userService.getUserById(questionnaire.getCreatorID()).orElse(new User()));
         questionnaire.getQuestionnairePages().forEach(qp -> {
             qp.setQuestionnaireQuestion(questionnaire);
             qp.getQuestions().forEach(q -> {
@@ -94,16 +90,23 @@ public class QuestionnaireController {
     @GetMapping("builder/{id}")
     public ModelAndView getBuilderPage(@PathVariable("id") Long id, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("builder");
-        QuestionnaireQuestion qq = qqService.getQuestionnaireQuestionById(id);
-        mav.addObject("questionnaireId", id);
-        mav.addObject("questionnaireTitle", qq.getTitle());
-        mav.addObject("questionnaireStatus", qq.getStatus());
+        Optional<QuestionnaireQuestion> qQuest = qqService.getQuestionnaireQuestionById(id);
+        QuestionnaireQuestion qq;
+        if(qQuest.isPresent()){
+            qq = qQuest.get();
+            mav.addObject("questionnaireId", id);
+            mav.addObject("questionnaireTitle", qq.getTitle());
+            mav.addObject("questionnaireStatus", qq.getStatus());
+        }else{
+            return null;
+        }
+
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(auth.getAuthorities());
         if (auth != null && !auth.getName().equalsIgnoreCase("anonymousUser")) {
             mav.addObject("isAuth", "true");
-            User user = userService.getUserByName(auth.getName()).orElse(new User());
+            User user = userService.getUserByUserName(auth.getName()).orElse(new User());
             mav.addObject("person", user);
         }
         return mav;
@@ -124,14 +127,40 @@ public class QuestionnaireController {
         return mav;
     }
 
-    @GetMapping("/load/{id}")
+    @GetMapping("/thanks")
+    public ModelAndView getThanksPage(HttpServletRequest request){
+        ModelAndView mav = new ModelAndView("thanks");
+
+        return mav;
+    }
+
+    @GetMapping("load/{id}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getQuestionnaireQuestions(@PathVariable("id") Long id, HttpServletRequest request){
-        QuestionnaireQuestion qq = qqService.getQuestionnaireQuestionById(id);
+        Optional<QuestionnaireQuestion> qq = qqService.getQuestionnaireQuestionById(id);
+        Map<String, Object> questionnaireQuestionVO;
+        if(qq.isPresent()){ //TODO && status
+            questionnaireQuestionVO = qqService.getQuestionnaireQuestionVO(qq.get());
+        }else{
+            questionnaireQuestionVO = new HashMap<>();
+            questionnaireQuestionVO.put("errorMessage", "Can't get questionnaire with id = " + id);
+        }
 
-        Map<String, Object> questionnaireQuestionVO = qqService.getQuestionnaireQuestionVO(qq);
 
         return new ResponseEntity<>(questionnaireQuestionVO, HttpStatus.OK);
+    }
+
+    @GetMapping("/answers/stat/load/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getQuestAnswersStats(@PathVariable("id") Long id, HttpServletRequest request){
+        QuestionnaireQuestion qq = qqService.getQuestionnaireQuestionById(id).get();
+        ArrayList<Question> questions = qqService.getQuestionsByQuestQuestId(qq.getId());
+        ArrayList<ArrayList<Integer>> result = qaService.getQuestionnaireQuestionByQuestQuest(qq.getId(), questions);
+
+        Map<String, Object> questAnswerStatsVO = new HashMap<>();
+        questAnswerStatsVO.put("answersStat", result);
+
+        return new ResponseEntity<>(questAnswerStatsVO, HttpStatus.OK);
     }
 
     @GetMapping("/links/{userName}")
@@ -145,7 +174,41 @@ public class QuestionnaireController {
     @GetMapping("/results/{id}")
     public ModelAndView getResultsPage(@PathVariable("id") Long id, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("results");
-        mav.addObject("questionnaireId", id);
+        Optional<QuestionnaireQuestion> qQuest = qqService.getQuestionnaireQuestionOptionalById(id);
+        QuestionnaireQuestion qq;
+        if(qQuest.isPresent()){
+            qq = qQuest.get();
+            mav.addObject("questionnaireId", id);
+            mav.addObject("questionnaireTitle", qq.getTitle());
+            mav.addObject("questionnaireStatus", qq.getStatus());
+        }else{
+            return null;
+        }
+
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getAuthorities());
+        //TODO при каждом запросе нужно проверять, авторизован ли пользователь.
+        // Если да, то передавать isAuth = true;
+        // Если страница подразумевает наличие авторизации, то просто отправяем isAuth = true
+        mav.addObject("isAuth", "true");
+
+        return mav;
+    }
+
+    @GetMapping("/preferences/{id}")
+    public ModelAndView getPreferencesPage(@PathVariable("id") Long id, HttpServletRequest request){
+        ModelAndView mav = new ModelAndView("preferences");
+        Optional<QuestionnaireQuestion> qQuest = qqService.getQuestionnaireQuestionById(id);
+        QuestionnaireQuestion qq;
+        if(qQuest.isPresent()){
+            qq = qQuest.get();
+            mav.addObject("questionnaireId", id);
+            mav.addObject("questionnaireTitle", qq.getTitle());
+            mav.addObject("questionnaireStatus", qq.getStatus());
+        }else{
+            return null;
+        }
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(auth.getAuthorities());
@@ -160,7 +223,17 @@ public class QuestionnaireController {
     @GetMapping("/share/{id}")
     public ModelAndView getSharePage(@PathVariable("id") Long id, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("share");
-        mav.addObject("questionnaireId", id);
+        Optional<QuestionnaireQuestion> qQuest = qqService.getQuestionnaireQuestionById(id);
+        QuestionnaireQuestion qq;
+        if(qQuest.isPresent()){
+            qq = qQuest.get();
+            mav.addObject("questionnaireId", id);
+            mav.addObject("questionnaireTitle", qq.getTitle());
+            mav.addObject("questionnaireStatus", qq.getStatus());
+        }else{
+            return null;
+        }
+
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(auth.getAuthorities());
@@ -171,105 +244,4 @@ public class QuestionnaireController {
 
         return mav;
     }
-    /*private final DocumentService documentService;
-    private final PersonService personService;
-
-    @Autowired
-    public DocumentController(DocumentService documentService, PersonService personService) {
-        this.documentService = documentService;
-        this.personService = personService;
-    }
-
-    @ResponseBody
-    @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getDocumentById(@PathVariable Long id){
-        return new ResponseEntity<>(documentService.getDocumentById(id), HttpStatus.OK);
-    }
-
-    @PostMapping()
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> addNewDocument(@RequestBody Document document){
-        HashMap<String, Object> documentView = new HashMap<>();
-        documentView.put("Document", "received");
-        document.setPerson(personService.getPersonById(document.getUserID()).orElse(new Person()));
-        if(document.getStatus()==DocStatus.OK && document.getDocType()== DocType.RESPONSE){
-            documentService.updateRequestInProgressDocumentStatusByUserName(document.getReceiver(), DocStatus.ACCEPTED);
-        }
-        if(document.getStatus() == DocStatus.DONE && document.getDocType() == DocType.REPORT){
-            documentService.updateResponseOkStatusByDocId(document.getTargetDocId(), DocStatus.IN_PROGRESS);
-        }
-        documentService.addDocument(document);
-        return new ResponseEntity<>(documentView, HttpStatus.OK);
-    }
-
-    @PostMapping("/accept-report")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> acceptReport(@RequestBody Document document){
-        HashMap<String, Object> documentView = new HashMap<>();
-        documentView.put("Document", "received"); //TODO начислить баллы
-        Document doc = documentService.getDocumentOptionalById(document.getTargetDocId()).orElse(null);
-        if(doc != null){
-            String s = doc.getDescription().split("Cost:")[1];
-            String s2 = s.split(";")[0];
-            s2 = s2.trim();
-            Integer points = 0;
-            try{
-                points = Integer.parseInt(s2);
-            }catch (NumberFormatException ex){
-                System.err.println(ex.getMessage());
-            }
-            Map<String, Object> docView = documentService.getDocumentById(document.getTargetDocId());
-            Object obj = docView.get("receiver");
-            String receiver = null;
-            if((obj instanceof String) && obj != null){
-                receiver = (String)obj;
-                personService.addPointsToPersonByUserName(receiver, points);
-            }
-
-
-        }
-        documentService.updateReportDoneStatusByDocId(document.getId(), DocStatus.OK);
-        documentService.updateResponseInProgressStatusByDocId(document.getTargetDocId(), document.getStatus());
-        return new ResponseEntity<>(documentView, HttpStatus.OK);
-    }
-
-    @GetMapping("/request/{username}")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> getInProgressRequestByUserName(@PathVariable String username){
-        Map<String, Object> documentView;
-
-        documentView = documentService.getInProgressRequestByUserName(username);
-
-        return new ResponseEntity<>(documentView, HttpStatus.OK);
-    }
-    @GetMapping("/projectsHistory/{username}")
-    public ResponseEntity<Map<String,Map<String, Map<String, String>>>> getProjectsHistory(@PathVariable String username){
-        ArrayList<Document> documents = documentService.getProjectsHistoryByUsername(username);
-        ArrayList<DocumentVO> documentVOS = new ArrayList<>();
-        documents.forEach(d -> {
-            documentVOS.add(new DocumentVO(d.getId(), d.getDocType(), d.getDate(), d.getStatus(), d.getUsername(), d.getDescription(), d.getReceiver(), d.getUserID(), d.getTargetDocId()));
-        });
-        HashMap<String, Map<String, Map<String, String>>> documentsResult = new LinkedHashMap<>();
-        documentsResult.put("documents", documentService.getDocumentVOArrayView(documentVOS));
-        return new ResponseEntity<>(documentsResult, HttpStatus.OK);
-    }
-
-    @GetMapping("/reports")
-    public ResponseEntity<Map<String,Map<String, Map<String, String>>>> getAllDoneReports(){
-        ArrayList<Document> documents = documentService.getAllDoneReports();
-        ArrayList<DocumentVO> documentVOS = new ArrayList<>();
-        documents.forEach(d -> {
-            documentVOS.add(new DocumentVO(d.getId(), d.getDocType(), d.getDate(), d.getStatus(), d.getUsername(), d.getDescription(), d.getReceiver(), d.getUserID(), d.getTargetDocId()));
-        });
-        HashMap<String, Map<String, Map<String, String>>> documentsResult = new LinkedHashMap<>();
-        documentsResult.put("documents", documentService.getDocumentVOArrayView(documentVOS));
-        return new ResponseEntity<>(documentsResult, HttpStatus.OK);
-    }
-
-    @PutMapping("/remove/{id}")
-    public ResponseEntity<Map<String, String>> removeProject(@PathVariable Long id){  //in fact project just goes to reject status
-        Map<String, String> result = new HashMap<>();
-        documentService.updateDocStatusByDocId(id, DocStatus.REJECTED);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }*/
 }

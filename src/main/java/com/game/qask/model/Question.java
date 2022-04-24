@@ -18,7 +18,7 @@ public class Question implements Comparable<Question> {
     @Column(name = "id")
     private Long id;
     @ManyToOne
-    @JoinColumn(name="questionnaire_page_id", nullable=false)
+    @JoinColumn(name="questionnaire_page_id", nullable=false, columnDefinition = "bigint default -1")
     private QuestionnairePage questionnairePage;
     @Column(name = "title")
     private String title;

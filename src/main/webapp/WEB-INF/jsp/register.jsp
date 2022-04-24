@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register Form</title>
+    <title>Форма регистрации</title>
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/register.js"></script>
@@ -16,36 +16,33 @@
 <body>
 <jsp:include page="header.jsp" />
 <main class="px-3 text-center">
-    <h1>Register new account</h1>
-
-    <div class="container" style="text-align: center">
-        <!--  fake fields are a workaround for chrome/opera autofill getting the wrong fields -->
-        <input id="username" style="display:none" type="text" name="fakeusernameremembered">
-        <input id="password" style="display:none" type="password" name="fakepasswordremembered">
-        <table style="margin: 0 auto; ">
-            <tr>
-                <td>Name</td>
-                <td><input type="text" id="name-id" required/></td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td><input type="text" id="email-id" /></td>
-            </tr>
-            <tr>
-                <td>Number</td>
-                <td><input type="tel" id="number-id" /></td>
-            </tr>
-            <tr>
-                <td>UserName</td>
-                <td><input type="text" id="username-id" required autocomplete="nope"/></td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><input type="password" id="password-id" required autocomplete="new-password"/></td>
-            </tr>
-        </table>
-        <br>
-        <button class="btn btn-primary" onclick="registerPerson()">Register</button>
+    <h1>Зарегистрировать аккаунт</h1>
+    <div class="container d-flex align-items-center" style="width: 350px; height: calc(100% - 80px);">
+        <div class="row w-100">
+            <div class="col">
+                <form>
+                    <!--  fake fields are a workaround for chrome/opera autofill getting the wrong fields -->
+                    <input id="username" style="display:none" type="text" name="fakeusernameremembered">
+                    <input id="password" style="display:none" type="password" name="fakepasswordremembered">
+                    <div class="form-group py-2">
+                        <label for="userNameId">Имя пользователя</label>
+                        <input type="text" class="form-control" id="userNameId" autocomplete="off" required placeholder="Введите имя пользователя...">
+                    </div>
+                    <div class="form-group py-2">
+                        <label for="emailId">Email</label>
+                        <input type="text" class="form-control" id="emailId" name="email" autocomplete="off" placeholder="Введите email...">
+                    </div>
+                    <div class="form-group py-2">
+                        <label for="passwordId">Пароль</label>
+                        <input type="password" class="form-control" id="passwordId" name="password" required autocomplete="new-password" placeholder="Введите пароль...">
+                    </div>
+                    <div class="form-group py-2">
+                        <button type="button" class="btn btn-primary py-2" onclick="registerUser()">Регистрация</button>
+                    </div>
+                    <input type="hidden" name="page" id="page-url" value=""/>
+                </form>
+            </div>
+        </div>
     </div>
 </main>
 

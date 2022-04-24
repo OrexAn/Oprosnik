@@ -15,6 +15,6 @@ public interface UserDAO extends JpaRepository<User, Long>{
     @Query("update Person u set u.role = :role where u.id = :id")
     Person customUpdateRoleById(@Param("id") Long id, @Param("role") String role);*/
 
-    Optional<User> findUsersByName(@Param("name") String name);
+    Optional<User> findUsersByUserName(@Param("name") String name);
 
 }

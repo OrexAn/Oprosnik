@@ -248,29 +248,32 @@
 <main class="px-3 text-center">
     <div class="row py-1 border">
         <div class="col d-flex justify-content-end">
-            <button type="button" class="btn btn-success" onclick="publish()">Опубликовать</button>
+            <button type="button" class="btn btn-success" id="publishButtonId" onclick="publish()">Опубликовать</button>
+        </div>
+        <div class="col d-flex justify-content-end d-none">
+            <button type="button" class="btn btn-warning" id="updateButtonId" onclick="updateQuestionnaire()">Редактировать</button>
         </div>
     </div>
     <div class="row">
         <div class="col-2 border-end border-start">
             <div class="row py-2">
                 <div class="col">
-                    <button type="button" class="btn btn-light w-100">Редактор</button>
+                    <button type="button" class="btn btn-light w-100" onclick="goToEditor()">Редактор</button>
                 </div>
             </div>
             <div class="row py-2">
                 <div class="col">
-                    <button type="button" class="btn btn-light w-100">Настройки</button>
+                    <button type="button" class="btn btn-light w-100" onclick="toPreferencesPage()">Настройки</button>
                 </div>
             </div>
             <div class="row py-2">
                 <div class="col">
-                    <button type="button" class="btn btn-light w-100" onclick="toSharePage()">Распространение</button>
+                    <button type="button" class="btn btn-light w-100" id="sharePageBtnId" onclick="toSharePage()" disabled>Распространение</button>
                 </div>
             </div>
             <div class="row py-2 border-bottom">
                 <div class="col">
-                    <button type="button" class="btn btn-light w-100" onclick="toResultsPage();">Результаты</button>
+                    <button type="button" class="btn btn-light w-100" id="resultsPageBtnId" onclick="toResultsPage();" disabled>Результаты</button>
                 </div>
             </div>
             <div style="overflow-y: auto; overflow-x: hidden; height: 650px">
@@ -306,7 +309,7 @@
                                                 <h4 id="questionnaireTitleId">${questionnaireTitle}</h4>
                                             </div>
                                         </div>
-                                        <div class="row py-2 border-top border-bottom d-flex justify-content-center add-item-cell">
+                                        <div class="row py-2 border-top border-bottom d-flex justify-content-center add-item-cell d-none"> <%--TODO it could be displayed later--%>
                                             <div class="col-2 d-flex justify-content-center flex-column">
                                                 <h5>Описание</h5>
                                             </div>
@@ -315,7 +318,7 @@
                                             <div class="col-3 d-flex justify-content-center flex-column">
                                                 <button type="button" class="btn btn-primary">
                                                     <input type="text" class="form-control" value="Приступить" maxlength="30" style="text-align: center;
-                                                    background: transparent; border: none; color: white; box-shadow: none;">
+                                                    background: transparent; border: none; color: white; box-shadow: none;" readonly>
                                                 </button>
                                             </div>
                                         </div>

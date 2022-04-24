@@ -107,11 +107,11 @@ public class QuestionnaireVO {
     public Map<String, Object> getBaseParameters(){
         Map<String, Object> questionnaireAnswerVOParameters = new TreeMap<>();
         questionnaireAnswerVOParameters.put("title", getTitle());
-        questionnaireAnswerVOParameters.put("date", getDate().toString());
-        questionnaireAnswerVOParameters.put("status", getStatus().toString());
-        questionnaireAnswerVOParameters.put("type", getQuestionnaireType().toString());
+        questionnaireAnswerVOParameters.put("date", getDate() != null ? getDate().toString() : "");
+        questionnaireAnswerVOParameters.put("status", getStatus() != null ? getStatus().toString() : "");
+        questionnaireAnswerVOParameters.put("type", getQuestionnaireType() != null ? getQuestionnaireType().toString() : "");
         questionnaireAnswerVOParameters.put("creator", getCreatorName());
-        questionnaireAnswerVOParameters.put("creatorID", getCreatorID().toString());
+        questionnaireAnswerVOParameters.put("creatorID", getCreatorID() != null ? getCreatorID().toString() : "");
 
         return questionnaireAnswerVOParameters;
     }

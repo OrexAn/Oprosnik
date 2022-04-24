@@ -3,8 +3,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/log-in.js"></script>
 
 <link type="text/css" href="<c:url value="/resources/bootstrap/css/bootstrap.css"/>" rel="stylesheet">
 
@@ -19,17 +19,17 @@
 <div class="container d-flex align-items-center" style="width: 350px; height: calc(100% - 80px);">
     <div class="row w-100">
         <div class="col">
-            <form action="submit_login" method="post">
+            <form action="submit_login" method="post" id="loginForm">
                 <div class="form-group py-2">
                     <label for="inputUserName">Username</label>
-                    <input type="text" class="form-control" id="inputUserName" autocomplete="off" placeholder="Enter username">
+                    <input type="text" class="form-control" id="inputUserName" name="username" autocomplete="off" placeholder="Введите имя пользователя...">
                 </div>
                 <div class="form-group py-2">
                     <label for="inputPassword">Password</label>
-                    <input type="password" class="form-control" id="inputPassword" name="password" autocomplete="off" placeholder="Password">
+                    <input type="password" class="form-control" id="inputPassword" name="password" autocomplete="off" placeholder="Введите пароль...">
                 </div>
                 <div class="form-group py-2">
-                    <button type="submit" class="btn btn-primary py-2">Submit</button>
+                    <button class="btn btn-primary py-2" onclick="loginUser()">Войти</button>
                 </div>
                 <input type="hidden" name="page" id="page-url" value=""/>
             </form>

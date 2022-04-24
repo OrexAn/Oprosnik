@@ -8,3 +8,19 @@ function initLog(){
 	document.getElementById("inputPassword").style.display = "block";*/
 	console.log("bbbbbbbbbbbb");
 }
+
+function loginUser(){
+	$.ajax({
+		type: "POST",
+		url: "/submit_login",
+		data: $('#loginForm').serialize(),
+		cache: false,
+		success: function(data){
+			alert(data);
+		},
+		error: function (data) {
+			console.error("Login failure");
+		},
+		dataType: "json"
+	});
+}

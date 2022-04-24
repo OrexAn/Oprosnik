@@ -49,7 +49,7 @@ function reloadNav(isAuth){
 	$("#profile-link").hide();
 
 	if(isAuth.value === "true"){
-		$("#profile-link").show();
+		/*$("#profile-link").show();*/
 	}
 	$("#support").show();
 	$("#partner").show();

@@ -2,8 +2,13 @@ package com.game.qask.dao;
 
 import com.game.qask.model.QuestionnaireAnswer;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.ArrayList;
 
 public interface QuestionnaireAnswerDAO extends JpaRepository<QuestionnaireAnswer, Long> {
+    @Query("select qa from QuestionnaireAnswer qa where qa.qQuestionId = :id")
+    ArrayList<QuestionnaireAnswer> findQuestionnairesAnswerByQuestQuest(Long id);
     /*
     @Query("select d.id from Document d where d.username = :username and d.status = '0' and d.docType = '0'")
     Integer getInProgressRequestIdByUserName(@Param("username") String username);

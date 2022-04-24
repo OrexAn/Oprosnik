@@ -4,6 +4,10 @@ $(window).on('load',function(){
     });
 });
 $(document).ready(function(){
+
+    loadAnswersStatistic();
+
+
     const ctx = document.getElementById('myChart').getContext('2d');
     const myChart = new Chart(ctx, {
         type: 'horizontalBar',
@@ -230,4 +234,49 @@ function goToEditor(){
 function toSharePage(){
     var questionnaireId = $("[name='questionnaireId']").first().val();
     window.location.replace("/questionnaire/share/" + questionnaireId);
+}
+
+function toPreferencesPage(){
+    var questionnaireId = $("[name='questionnaireId']").first().val();
+    window.location.replace("/questionnaire/preferences/" + questionnaireId);
+}
+
+function toResultsPage(){
+    var questionnaireId = $("[name='questionnaireId']").first().val();
+    window.location.replace("/questionnaire/" + "results/" + questionnaireId);
+}
+
+function toIndieAnswersSection(number){
+    var analyticsElement = $("#analyticsId").first();
+    var answersElement = $("#answersId").first();
+    var stateElement = $("#stateId").first();
+
+    $(analyticsElement).addClass("d-none");
+    $(answersElement).addClass("d-none");
+    $(stateElement).addClass("d-none");
+
+    switch (number){
+        case 0:
+            $(analyticsElement).removeClass("d-none");
+            break;
+        case 1:
+            $(answersElement).removeClass("d-none");
+            break;
+        case 2:
+            $(stateElement).removeClass("d-none");
+            break;
+    }
+}
+
+function loadAnswersStatistic(){
+    var questionnaireId = $("[name='questionnaireId']").first().val();
+    $.get("/questionnaire/answers/stat/load/" + questionnaireId, function(data, status){
+        if(data.errorMessage){
+            console.log(data.errorMessage);
+        }else{
+            for(var i = 0; i < data.answersStat.length; i++){ //итерация по каждому блоку-ответу
+
+            }
+        }
+    });
 }

@@ -16,7 +16,7 @@ public class QuestionnairePage implements Comparable <QuestionnairePage>{
     @Column(name = "id")
     private Long id;
     @ManyToOne
-    @JoinColumn(name="questionnaire_question_id", nullable=false)
+    @JoinColumn(name="questionnaire_question_id", nullable=false, columnDefinition = "bigint default -1")
     private QuestionnaireQuestion questionnaireQuestion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy="questionnairePage")
     @SortNatural

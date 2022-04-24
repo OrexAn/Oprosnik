@@ -21,7 +21,7 @@ public class Answer {
     @Column(name = "order_num")
     private String orderNum;
     @ManyToOne
-    @JoinColumn(name="questionnaire_answer_id", nullable=false)
+    @JoinColumn(name="questionnaire_answer_id", nullable=false, columnDefinition = "bigint default -1")
     private QuestionnaireAnswer questionnaireAnswer;
 
     public Answer(Long id) {

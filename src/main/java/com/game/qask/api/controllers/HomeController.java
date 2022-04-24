@@ -37,8 +37,8 @@ public class HomeController {
         System.out.println(auth.getAuthorities());
         if (auth != null && !auth.getName().equalsIgnoreCase("anonymousUser")) {
             mav.addObject("isAuth", "true");
-            User user = userService.getUserByName(auth.getName()).orElse(new User());
-            mav.addObject("person", user);
+            User user = userService.getUserByUserName(auth.getName()).orElse(new User());
+            mav.addObject("user", user);
         }
         return mav;
     }

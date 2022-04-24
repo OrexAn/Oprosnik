@@ -25,20 +25,14 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        /*auth.inMemoryAuthentication()
-                .withUser("user1").password(passwordEncoder().encode("user1Pass")).roles("USER")
-                .and()
-                .withUser("user2").password(passwordEncoder().encode("user2Pass")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoder().encode("adminPass")).roles("ADMIN");*/
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                .usersByUsernameQuery("select login, password, 'true' "
+                .usersByUsernameQuery("select user_name, password, 'true' "
                         + "from user "
-                        + "where login = ?")
-                .authoritiesByUsernameQuery("select name, authority "
+                        + "where user_name = ?")
+                .authoritiesByUsernameQuery("select user_name, authority "
                         + "from user "
-                        + "where name = ?");
+                        + "where user_name = ?");
     }
 
     @Override
@@ -47,16 +41,17 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/anonymous*").anonymous()
-//                .antMatchers("/*").hasAnyAuthority(UserAuthority.USER.toString())
-                .antMatchers("/*").permitAll()
+                .antMatchers("/questionnaire/*").permitAll()
                 .antMatchers("/home*").permitAll()
                 .antMatchers("/login*").permitAll()
+                .antMatchers("/questionnaire/**").hasAnyAuthority(UserAuthority.USER.toString())
 
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/submit_login")
-                .defaultSuccessUrl("/main", true)
+                .defaultSuccessUrl("/home")
+                .successHandler(authenticationSuccessHandler())
                 .failureUrl("/login?error=true")
                 .failureHandler(authenticationFailureHandler())
                 .and()
@@ -76,13 +71,16 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
     private AuthenticationFailureHandler authenticationFailureHandler() {
         return (httpServletRequest, httpServletResponse, e) -> {
-
+            String username = httpServletRequest.getParameter("username");
+            String error = e.getMessage();
+            //TODO сделать отправку ошибки
         };
     }
 
     private AuthenticationSuccessHandler authenticationSuccessHandler(){
         return (httpServletRequest, httpServletResponse, e) -> {
-
+            String redirectUrl = httpServletRequest.getContextPath() + "/home";
+            httpServletResponse.sendRedirect(redirectUrl);
         };
     }
 

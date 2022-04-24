@@ -26,16 +26,6 @@ $(document).ready(function(){
             else{
                 addCarouselItem(page);
             }
-            /*for(var i = 0; i < data.pages[counter].questions.length; i++){
-                //create questionBlock
-                //set questionBlock title
-                title = $( pages[counter] ).find( "[name='title']" ).first().text(data.pages[counter].questions[i].title);
-                suggestions = $(pages[counter]).find("[name='suggestion']");
-                for (var j = 0; j < suggestions.length; j++){
-                    //create, set suggestion
-                    $(suggestions[j]).val(data.pages[counter].questions[i].suggestions[j].text);
-                }
-            }*/
         }
     });
 
@@ -384,7 +374,7 @@ function suggestionSelected(element){
     }else{
         var qType = $(element).attr("qType");
         if(qType === "SINGLE"){
-            var questionsInBlock = $("#" + $(element).closest('.question-block')).find("[name='suggestion']");
+            var questionsInBlock = $(element).closest('.question-block').find("[name='suggestion']");
             for(var i = 0; i < questionsInBlock.length; i++){
                 $(questionsInBlock[i]).removeClass("selected");
             }
@@ -593,6 +583,7 @@ function finishAnswer(){
         data: JSON.stringify(questionnaire),
         success: function() {
             alert("success");
+            window.location.replace("/questionnaire/thanks")
         },
         contentType: "application/json"
     });

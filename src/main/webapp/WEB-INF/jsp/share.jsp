@@ -54,7 +54,7 @@
     <meta charset="UTF-8">
 </head>
 <body>
-
+<jsp:include page="header.jsp" />
 <%-----------------------------------------------------------%>
 <!-- Modal -->
 <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -103,7 +103,7 @@
 <main class="px-3 text-center d-flex justify-content-start flex-column main-height">
     <div class="row py-1 border">
         <div class="col d-flex justify-content-end">
-            <button type="button" class="btn btn-warning" onclick="publish()">Редактировать</button>
+            <button type="button" class="btn btn-warning" onclick="updateQuestionnaire()">Редактировать</button>
         </div>
     </div>
     <div class="row h-100">
@@ -116,7 +116,7 @@
             </div>
             <div class="row py-2">
                 <div class="col">
-                    <button type="button" class="btn btn-light w-100">Настройки</button>
+                    <button type="button" class="btn btn-light w-100" onclick="toPreferencesPage()">Настройки</button>
                 </div>
             </div>
             <div class="row py-2">
@@ -129,34 +129,18 @@
                     <button type="button" class="btn btn-light w-100" onclick="toResultsPage();">Результаты</button>
                 </div>
             </div>
-            <%--------------------------------------------------------%>
-            <div class="row py-2">
-                <div class="col">
-                    <button type="button" class="btn btn-light w-100">Анализ опросов</button>
-                </div>
-            </div>
-            <div class="row py-2">
-                <div class="col">
-                    <button type="button" class="btn btn-light w-100">Индивидуальные ответы</button>
-                </div>
-            </div>
-            <div class="row py-2">
-                <div class="col">
-                    <button type="button" class="btn btn-light w-100">Состояния опроса</button>
-                </div>
-            </div>
         </div>
         <div id="shareContentId" class="col-10 border-end">
             <div class="row py-2">
                 <div class="col" style="padding-left: 60px;">
                     <div class="row py-2">
                         <div class="col d-flex justify-content-start">
-                            <h3>Результаты</h3>
+                            <h3>Распространение</h3>
                         </div>
                     </div>
                     <div class="row py-2">
                         <div class="col d-flex justify-content-start">
-                            <h5>[Название опроса]</h5>
+                            <h5>[${questionnaireTitle}]</h5>
                         </div>
                     </div>
                 </div>

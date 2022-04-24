@@ -7,25 +7,25 @@ function initRegister(){
 
 }
 
-function registerPerson(){
-	var name = $("#name-id").val();
-	var email = $("#email-id").val();
-	var number = $("#number-id").val();
-	var username = $("#username-id").val();
-	var password = $("#password-id").val();
+function registerUser(){
+	var email = $("#emailId").val();
+	var username = $("#userNameId").val();
+	var password = $("#passwordId").val();
 	var data = {
-		"name": name,
 		"email": email,
-		"number": number,
 		"userName": username,
 		"password": password
 	};
 	$.ajax({
 		type: "POST",
-		url: "person/submit_register",
+		url: "user/submit_register",
 		data: JSON.stringify(data),
-		success: function(){
-			window.location.replace("http://localhost:8080/registered");
+		success: function(data){
+			if(!data.errorMessage){
+				window.location.replace("http://localhost:8080/registered");
+			}else{
+				alert(data.errorMessage);
+			}
 		},
 		contentType : "application/json"
 	});

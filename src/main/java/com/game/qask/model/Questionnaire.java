@@ -24,7 +24,7 @@ public abstract class Questionnaire {
     @Column(name = "creator_id")
     private Long creatorID;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="user", nullable=false)
+    @JoinColumn(name="user", nullable=false, columnDefinition = "bigint default -1")
     private User user;
 
     public String getTitle() {
