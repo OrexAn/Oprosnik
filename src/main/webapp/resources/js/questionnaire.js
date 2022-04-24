@@ -583,7 +583,7 @@ function finishAnswer(){
         data: JSON.stringify(questionnaire),
         success: function() {
             alert("success");
-            window.location.replace("/questionnaire/thanks")
+            window.location.href = "/" + "questionnaire/thanks";
         },
         contentType: "application/json"
     });

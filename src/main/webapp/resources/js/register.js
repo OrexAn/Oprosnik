@@ -22,7 +22,7 @@ function registerUser(){
 		data: JSON.stringify(data),
 		success: function(data){
 			if(!data.errorMessage){
-				window.location.replace("http://localhost:8080/registered");
+				window.location.href = "/" + "registered";
 			}else{
 				alert(data.errorMessage);
 			}

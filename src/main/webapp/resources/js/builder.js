@@ -474,7 +474,7 @@ function publish(){
         success: function() {
             alert("success");
             var questionnaireId = $("[name='questionnaireId']").first().val();
-            window.location.replace("questionnaire/builder/" + questionnaireId);
+            window.location.href = "/" + "questionnaire/builder/" + questionnaireId;
         },
         contentType: "application/json"
     });
@@ -650,22 +650,22 @@ function addDistributePoints(parent, text){
 
 function toResultsPage(){
     var questionnaireId = $("[name='questionnaireId']").first().val();
-    window.location.replace("/questionnaire/" + "results/" + questionnaireId);
+    window.location.href = "/" + "questionnaire/" + "results/" + questionnaireId;
 }
 
 function toSharePage(){
     var questionnaireId = $("[name='questionnaireId']").first().val();
-    window.location.replace("/questionnaire/share/" + questionnaireId);
+    window.location.href = "/" + "questionnaire/share/" + questionnaireId;
 }
 
 function toPreferencesPage(){
     var questionnaireId = $("[name='questionnaireId']").first().val();
-    window.location.replace("/questionnaire/preferences/" + questionnaireId);
+    window.location.href = "/" + "questionnaire/preferences/" + questionnaireId;
 }
 
 function goToEditor(){
     var questionnaireId = $("[name='questionnaireId']").first().val();
-    window.location.replace("questionnaire/builder/" + questionnaireId);
+    window.location.href = "/" + "questionnaire/builder/" + questionnaireId;
 }
 
 function beforeCloseModal(){

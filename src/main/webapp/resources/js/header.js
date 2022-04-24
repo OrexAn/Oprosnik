@@ -28,7 +28,7 @@ function initHead(){
 			logForm.style.display = "block";
 			$("#page-url").val(window.location.pathname);
 		}else{
-			window.location.replace("http://localhost:8080/login");
+			window.location.href = "/" + "login";
 		}
 	});
 
@@ -57,5 +57,5 @@ function reloadNav(isAuth){
 }
 
 function goToHomePage(){
-	window.location.replace("http://localhost:8080/home");
+	window.location.href = "/" + "home";
 }

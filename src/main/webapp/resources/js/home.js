@@ -34,7 +34,7 @@ function createQuestionnaire(){
 }
 
 function createCallback(parameters){
-	window.location.replace("/questionnaire/" + "builder/" + parameters.newQuestionnaireId);
+	window.location.href = "/" + "questionnaire/" + "builder/" + parameters.newQuestionnaireId;
 }
 
 function getUserQuestionnaires(){
@@ -112,7 +112,7 @@ function setLastEdit(){
 
 function toQuestionnaire(element){
 	var qLink = $(element).attr("qLink");
-	window.location.replace(qLink);
+	window.location.href = qLink;
 }
 
 function setModalTableData(){

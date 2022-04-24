@@ -42,6 +42,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .authorizeRequests()
                 .antMatchers("/anonymous*").anonymous()
                 .antMatchers("/questionnaire/*").permitAll()
+                .antMatchers("/questionnaire/load/*").permitAll()
+                .antMatchers("/questionnaire/update/answer").permitAll()
                 .antMatchers("/home*").permitAll()
                 .antMatchers("/login*").permitAll()
                 .antMatchers("/questionnaire/**").hasAnyAuthority(UserAuthority.USER.toString())

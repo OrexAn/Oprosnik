@@ -5,25 +5,25 @@ $(window).on('load',function(){
 });
 $(document).ready(function(){
     var questionnaireId = $("[name='questionnaireId']").first().val();
-    $('#generatedLinkFieldId').val(window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/questionnaire/" + questionnaireId);
+    $('#generatedLinkFieldId').val(window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/pass/quest/" + questionnaireId);
 });
 
 function goToEditor(){
     var questionnaireId = $("[name='questionnaireId']").first().val();
-    window.location.replace("questionnaire/builder/" + questionnaireId);
+    window.location.href = "/" + "questionnaire/builder/" + questionnaireId;
 }
 
 function toSharePage(){
     var questionnaireId = $("[name='questionnaireId']").first().val();
-    window.location.replace("questionnaire/share/" + questionnaireId);
+    window.location.href = "/" + "questionnaire/share/" + questionnaireId;
 }
 
 function toResultsPage(){
     var questionnaireId = $("[name='questionnaireId']").first().val();
-    window.location.replace("/questionnaire/" + "results/" + questionnaireId);
+    window.location.href = "/" + "questionnaire/" + "results/" + questionnaireId;
 }
 
 function toPreferencesPage(){
     var questionnaireId = $("[name='questionnaireId']").first().val();
-    window.location.replace("/questionnaire/preferences/" + questionnaireId);
+    window.location.href = "/" + "questionnaire/preferences/" + questionnaireId;
 }
