@@ -9,7 +9,7 @@
         </div>
         <div class="row py-2">
             <div class="col d-flex justify-content-start">
-                <h5>[Название опроса]</h5>
+                <h5>[${questionnaireTitle}]</h5>
             </div>
         </div>
     </div>

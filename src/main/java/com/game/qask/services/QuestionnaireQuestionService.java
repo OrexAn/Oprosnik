@@ -117,4 +117,20 @@ public class QuestionnaireQuestionService {
     public ArrayList<Question> getQuestionsByQuestQuestId(Long id) {
         return questionnaireQuestionDAO.getQuestionsByQQId(id);
     }
+
+    public ArrayList<String> getStatTypes(ArrayList<Question> questions) {
+        ArrayList<String> arr = new ArrayList<>();
+        for (int i = 0; i < questions.size(); i++){
+            arr.add(questions.get(i).getQuestionType().toString());
+        }
+        return arr;
+    }
+
+    public ArrayList<String> getStatTitles(ArrayList<Question> questions) {
+        ArrayList<String> arr = new ArrayList<>();
+        for (int i = 0; i < questions.size(); i++){
+            arr.add(questions.get(i).getTitle());
+        }
+        return arr;
+    }
 }

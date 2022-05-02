@@ -27,12 +27,12 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                .usersByUsernameQuery("select user_name, password, 'true' "
+                .usersByUsernameQuery("select email, password, 'true' "
                         + "from user "
-                        + "where user_name = ?")
-                .authoritiesByUsernameQuery("select user_name, authority "
+                        + "where email = ?")
+                .authoritiesByUsernameQuery("select email, authority "
                         + "from user "
-                        + "where user_name = ?");
+                        + "where email = ?");
     }
 
     @Override
@@ -43,6 +43,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .antMatchers("/anonymous*").anonymous()
                 .antMatchers("/questionnaire/*").permitAll()
                 .antMatchers("/questionnaire/load/*").permitAll()
+                .antMatchers("/questionnaire/new/answer").permitAll()
                 .antMatchers("/questionnaire/update/answer").permitAll()
                 .antMatchers("/home*").permitAll()
                 .antMatchers("/login*").permitAll()
@@ -51,7 +52,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .loginProcessingUrl("/submit_login")
+                .loginProcessingUrl("/**/submit_login")
                 .defaultSuccessUrl("/home")
                 .successHandler(authenticationSuccessHandler())
                 .failureUrl("/login?error=true")

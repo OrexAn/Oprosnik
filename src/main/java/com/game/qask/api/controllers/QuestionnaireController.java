@@ -106,7 +106,7 @@ public class QuestionnaireController {
         System.out.println(auth.getAuthorities());
         if (auth != null && !auth.getName().equalsIgnoreCase("anonymousUser")) {
             mav.addObject("isAuth", "true");
-            User user = userService.getUserByUserName(auth.getName()).orElse(new User());
+            User user = userService.getUserByEmail(auth.getName()).orElse(new User());
             mav.addObject("person", user);
         }
         return mav;
@@ -155,10 +155,15 @@ public class QuestionnaireController {
     public ResponseEntity<Map<String, Object>> getQuestAnswersStats(@PathVariable("id") Long id, HttpServletRequest request){
         QuestionnaireQuestion qq = qqService.getQuestionnaireQuestionById(id).get();
         ArrayList<Question> questions = qqService.getQuestionsByQuestQuestId(qq.getId());
-        ArrayList<ArrayList<Integer>> result = qaService.getQuestionnaireQuestionByQuestQuest(qq.getId(), questions);
+        ArrayList<ArrayList<Object>> result = qaService.getQAStatsByQuestQuest(qq.getId(), questions);
+
+        ArrayList<String> typesArray = qqService.getStatTypes(questions);
+        ArrayList<String> answersTitles = qqService.getStatTitles(questions);
 
         Map<String, Object> questAnswerStatsVO = new HashMap<>();
         questAnswerStatsVO.put("answersStat", result);
+        questAnswerStatsVO.put("answersTypes", typesArray);
+        questAnswerStatsVO.put("answersTitles", answersTitles);
 
         return new ResponseEntity<>(questAnswerStatsVO, HttpStatus.OK);
     }

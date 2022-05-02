@@ -161,6 +161,7 @@ function addRating(parent, text){
     node3.className += "container border-top border-bottom";
     const node4 = document.createElement("div");
     node4.className += "rating";
+    node4.id = (Date.now() + 1) + '';
 
     var starsCount = parseInt(text);
 
@@ -179,9 +180,9 @@ function createStar(createStarContainer, count){
     input.name = "rating";
     input.type = "radio";
     input.setAttribute("value", count + 1);
-    input.id = count + 1;
+    input.id = createStarContainer.id + "_" + (count + 1);
     const label = document.createElement("label");
-    label.setAttribute("for", count + 1);
+    label.setAttribute("for", createStarContainer.id + "_" + (count + 1));
     $(label).on("click", markStar)
     const textNode1 = document.createTextNode('☆');
 
@@ -487,8 +488,8 @@ function finishAnswer(){
             var starsList = $( questionBlocks[i] ).find("[name='rating']");
             var selectedStar = $( questionBlocks[i] ).find(".star-selected").first();
 
-            var value = $(selectedStar).attr("for");
-
+            var inputId = $(selectedStar).attr("for");
+            var value = $('#' + inputId).val();
             var ratingVal = starsList.length - parseInt(value) + 1;
 
             answer["answerType"] = $( questionBlocks[i] ).attr("qType");
@@ -508,7 +509,7 @@ function finishAnswer(){
             answer["orderNum"] = i;
 
             var isFirst = true;
-            var baseOrderNum = false;
+            var baseOrderNum;
 
             for(var j = 0; j < suggestionsList.length; j++){
                 baseOrderNum = $(suggestionsList[j]).closest(".list-group-item").attr("base-order");

@@ -10,6 +10,7 @@ function initLog(){
 }
 
 function loginUser(){
+	const myTimeout = setTimeout(myGreeting, 1000);
 	$.ajax({
 		type: "POST",
 		url: "/submit_login",

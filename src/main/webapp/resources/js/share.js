@@ -5,7 +5,7 @@ $(window).on('load',function(){
 });
 $(document).ready(function(){
     var questionnaireId = $("[name='questionnaireId']").first().val();
-    $('#generatedLinkFieldId').val(window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/pass/quest/" + questionnaireId);
+    $('#generatedLinkFieldId').val(window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/questionnaire/" + questionnaireId);
 });
 
 function goToEditor(){

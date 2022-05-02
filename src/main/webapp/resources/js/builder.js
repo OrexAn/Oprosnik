@@ -135,7 +135,7 @@ function buildQuestion(element){
     }
     else if(qType === "RATING"){
         var questionTitle = $('#newTitleInputId').val();
-        var starsList = $( "[name='rating']" );
+        var starsList = $('#createNewQ').find( "[name='rating']" );
 
         node1.className += "row py-2 border-top border-bottom d-flex justify-content-center question-block";
         node1.setAttribute("qType", qType);
@@ -570,6 +570,29 @@ function addNewPoints(){
     }
 }
 
+function removeNewPoints(){
+    if(pointsQuantity > 3){
+        pointsQuantity -= 2;
+        var parent = $("[name='newAvailablePointsContainer']");
+        $(parent).empty();
+
+        var maxPointValue = parseInt(pointsQuantity/2);
+
+        var node3;
+        var textNode1;
+
+        for(var i = 0; i < pointsQuantity; i++){
+            node3 = document.createElement("span");
+            textNode1 = document.createTextNode(((maxPointValue - i) * (-1)) + "");
+            if((maxPointValue - i) > 0){
+                $(node3).css('margin-left', -6 + 'px');
+            }
+            node3.appendChild(textNode1);
+            $(parent).append(node3);
+        }
+    }
+}
+
 function addNewSemantic(){
     var parent = $("[name='newSemanticRowsContainer']");
     var node = $('.semantic-element-pattern').first().clone().get();
@@ -697,6 +720,358 @@ function checkQuestionnaire(){
                 $('#sharePageBtnId').removeAttr("disabled");
                 $('#resultsPageBtnId').removeAttr("disabled");
             }
+            var pages = $(".carousel-item");
+            var questionsBlocks;
+            var suggestions;
+            var title;
+            var page
+
+            for(var counter = 0; counter < data.pages.length; counter++){
+                page = data.pages[counter];
+                if(counter === 0){
+                    //var questionBlockContainer = $('#qBlockContainer_0');
+                    var selectQuestionTypeContainer = $('#selectQuestionType_' + (counter+1));
+
+                    var questionBlock;
+                    for(var i = 0; i < page.questions.length; i++){
+                        questionBlock = buildQuestionBlock(page.questions[i]);
+                        $(questionBlock).insertBefore(selectQuestionTypeContainer);
+                    }
+                }
+                else{
+                    addNewCarouselItem(page);
+                }
+            }
         }
     });
+}
+
+function buildQuestionBlock(question){
+    var questionTitle = question.title;
+    var suggestions = question.suggestions;
+    var qType = question.type;
+
+    const node1 = document.createElement("div");
+    node1.className += "row py-2 border-top border-bottom d-flex justify-content-center question-block";
+    node1.id = "q_" + questionId;
+    $(node1).attr('qType', qType);
+    questionId++;
+    const node2 = document.createElement("div");
+    node2.className += "col-5 d-flex justify-content-center flex-column";
+
+    addQuestionTitle(node2, 1, questionTitle);
+    /*addQuestionBlockTitle(node2, questionTitle);*/
+
+    if(qType === "SINGLE" || qType === "MULTI"){
+        for(var i = 0; i < suggestions.length; i++){
+            addSimpleSuggestion(node2, suggestions[i].text, qType);
+        }
+    }
+    else if(qType === "RATING"){
+        addRating(node2, suggestions[0].text);
+    }
+    else if(qType === "SORTED"){
+        addSorting(node2, suggestions);
+    }
+    else if(qType === "SEMANTIC"){
+        addPointsFromLoad(node2, suggestions[0].text);
+        for(var i = 0; i < suggestions.length; i++){
+            addSemanticFromLoad(node2, suggestions[i].text);
+        }
+    }
+    else if(qType === "DISTRIBUTE"){
+        addDistributePointsFromLoad(node2, suggestions[0].text);
+        for(var i = 0; i < suggestions.length; i++){
+            addDistributeFromLoad(node2, suggestions[i].text);
+        }
+    }
+
+    node1.appendChild(node2);
+
+    return node1;
+}
+
+function addNewCarouselItem(page){
+    pageCount++;
+    carouselPage = (pageCount - 1);
+    var newItem = $( '.pattern-item' ).first().clone();
+    $( newItem ).removeClass("d-none").removeClass('pattern-item').addClass("questionsPage");
+    $( newItem ).find( '.select-question-type' ).first().attr('id', 'selectQuestionType_' + carouselPage);
+    $( newItem ).find( '.new-question-trigger' ).first().attr('id', 'newQuestionTriggerId_' + carouselPage);
+    $('#carouselItemsContainerId').append(newItem);
+    $('#carouselExampleSlidesOnly').carousel(carouselPage);
+
+    var newPageButton = $( '.pattern-button' ).first().clone();
+    $( newPageButton ).removeClass("d-none").removeClass('pattern-button').addClass('item' + (carouselPage + 1));
+    $( newPageButton ).find( 'button' ).first().text('Страница ' + carouselPage);
+    $( newPageButton ).attr('page', carouselPage);
+    $( newPageButton ).click(function(){
+        $("#carouselExampleSlidesOnly").carousel(parseInt($(this).attr('page')));
+        carouselPage = $(this).attr('page');
+    });
+    $( newPageButton ).insertBefore($('#newPageButtonContainerId'));
+
+    var selectQuestionTypeContainer = $('#selectQuestionType_' + carouselPage);
+    var questionBlock;
+    for(var i = 0; i < page.questions.length; i++){
+        questionBlock = buildQuestionBlock(page.questions[i]);
+        $(questionBlock).insertBefore(selectQuestionTypeContainer);
+    }
+
+}
+
+function addSimpleSuggestion(parent, text, questionType){
+    const node1 = document.createElement("div");
+    node1.className += "row py-2";
+    const node2 = document.createElement("div");
+    node2.className += "col";
+    const node3 = document.createElement("input");
+    node3.type = "text";
+    $(node3).click(function(){
+        suggestionSelected(this);
+    });
+    node3.value = text;
+    node3.style.cursor = "pointer";
+    $(node3).addClass("form-control suggestion");
+    node3.setAttribute("readonly", "true");
+    node3.setAttribute("name", "suggestion");
+    $(node3).attr("qType", questionType);
+
+    node2.appendChild(node3);
+    node1.appendChild(node2);
+    parent.appendChild(node1);
+}
+
+function addRating(parent, text){
+    const node1= document.createElement("div");
+    node1.className += "row py-2";
+    const node2 = document.createElement("div");
+    node2.className += "col";
+    const node3 = document.createElement("div");
+    node3.className += "container border-top border-bottom";
+    const node4 = document.createElement("div");
+    node4.className += "rating";
+
+    var starsCount = parseInt(text);
+
+    for(var i = 0; i < starsCount; i++){
+        createStarFromLoad(node4, i);
+    }
+
+    node3.appendChild(node4);
+    node2.appendChild(node3);
+    node1.appendChild(node2);
+    parent.appendChild(node1);
+}
+
+function createStarFromLoad(createStarContainer, count){
+    const input = document.createElement("input");
+    input.name = "rating";
+    input.type = "radio";
+    input.setAttribute("value", count + 1);
+    input.id = count + 1;
+    const label = document.createElement("label");
+    label.setAttribute("for", count + 1);
+    $(label).on("click", markStar)
+    const textNode1 = document.createTextNode('☆');
+
+    label.appendChild(textNode1);
+
+    $(createStarContainer).append(input);
+    $(createStarContainer).append(label);
+}
+
+function markStar(){
+    $(this).parent().find("label").removeClass("star-selected");
+    $(this).addClass("star-selected");
+}
+
+function addSorting(parent, suggestions){
+    Sortable.create(parent, {
+        animation: 100,
+        group: 'list-1',
+        draggable: '.list-group-item',
+        handle: '.list-group-item',
+        sort: true,
+        filter: '.sortable-disabled',
+        chosenClass: 'active'
+    });
+    for(var i = 0; i < suggestions.length; i++){
+        createSortedItemFromLoad(parent, suggestions[i].text, i);
+    }
+}
+
+function createSortedItemFromLoad(createSortedItemContainer, text, baseOrderNum){
+    var node = $('.pattern-sorted-item').first().clone().get();
+    $( node ).removeClass("d-none").removeClass('pattern-sorted-item');
+    $( node ).attr('base-order', baseOrderNum);
+
+    var sortItem = $( node ).find("[name='suggestion']").first();
+    $( sortItem ).val(text);
+    $( sortItem ).attr("disabled", "true");
+
+    $(createSortedItemContainer).append(node);
+}
+
+function addPointsFromLoad(parent, text){
+    const myArray = text.split("|");
+    var length = myArray[1];
+    var node = $('.semantic-pattern').first().clone().get();
+    $( node ).removeClass("d-none").removeClass('semantic-pattern');
+
+    var semanticPointsContainer = $( node ).find("span").first().parent();
+    $( semanticPointsContainer ).empty();
+
+    var maxPointValue = parseInt(length/2);
+
+    var node3;
+    var textNode1;
+
+    for(var i = 0; i < length; i++){
+        node3 = document.createElement("span");
+        textNode1 = document.createTextNode(((maxPointValue - i) * (-1)) + "");
+        if((maxPointValue - i) > 0){
+            $(node3).css('margin-left', -6 + 'px');
+        }
+        node3.appendChild(textNode1);
+        $(semanticPointsContainer).append(node3);
+    }
+
+    $(parent).append(node);
+}
+
+function addSemanticFromLoad(parent, text){
+    const myArray = text.split("|");
+    var leftText = myArray[0];
+    var length = myArray[1];
+    var rightText = myArray[2];
+    var maxPointValue = parseInt(length/2);
+
+    var node = $('.semantic-element-pattern').first().clone().get();
+    $( node ).removeClass("d-none").removeClass('semantic-element-pattern');
+    $( node ).attr("name", "semanticChoice");
+
+    var range = $( node ).find("[name='range']");
+    $(range).attr("min", (maxPointValue * (-1)));
+    $(range).attr("max", maxPointValue);
+    $(range).attr("value", 0);
+
+    var leftTextNode = $( node ).find("[name='newLeftText']").first();
+    $( leftTextNode ).attr("name", "leftText");
+    $(leftTextNode).attr("disabled", "true");
+    $(leftTextNode).val(leftText);
+    var rightTextNode = $( node ).find("[name='newRightText']").first();
+    $( rightTextNode ).attr("name", "rightText");
+    $(rightTextNode).attr("disabled", "true");
+    $(rightTextNode).val(rightText);
+    $(parent).append(node);
+}
+
+function addDistributePointsFromLoad(parent, text){
+    const myArray = text.split("|");
+    var pointsValueText = myArray[1];
+
+    const node1 = document.createElement("div");
+    node1.className += "row py-2";
+
+    const node2 = document.createElement("div");
+    node2.className += "col-5 d-flex justify-content-start";
+
+    const node21 = document.createElement("span");
+    node21.setAttribute("name", "distributePointsTitle");
+
+    const textNode21 = document.createTextNode("Осталось распределить:");
+
+    const node3 = document.createElement("div");
+    node3.className += "col d-flex justify-content-start";
+
+    const node31 = document.createElement("span");
+    node31.setAttribute("name", "distributePointsValue");
+
+    const textNode31 = document.createTextNode(pointsValueText);
+
+    node21.appendChild(textNode21);
+    node2.appendChild(node21);
+
+    node31.appendChild(textNode31);
+    node3.appendChild(node31);
+
+    node1.appendChild(node2);
+    node1.appendChild(node3);
+
+    parent.appendChild(node1);
+}
+
+function addDistributeFromLoad(parent, text){
+    const myArray = text.split("|");
+    var distributeText = myArray[0];
+    var maxValue = myArray[1];
+    var node = $('.distribute-row-pattern').first().clone().get();
+    $( node ).removeClass("d-none").removeClass('distribute-row-pattern');
+    $( node ).attr("name", "distributeRow");
+
+    $( node ).find("[name='constMaxValue']").val(maxValue);
+
+
+    var customRange = $( node ).find("[name='customRange']");
+    $(customRange).attr("min", 0);
+    $(customRange).attr("max", maxValue);
+    $(customRange).attr("value", 0);
+    $(customRange).on("input", function (event){
+        updateDistribute(this, event);
+    });
+
+    var distributeRowText = $( node ).find("[name='distributeRowText']").first();
+    $(distributeRowText).attr("disabled", "true");
+    $(distributeRowText).val(distributeText);
+
+    $(parent).append(node);
+}
+
+function updateDistribute(element, event){
+    $(element).addClass("current");
+    var rangesList = $(element).closest(".question-block").find("[name='customRange']");
+
+    var sum = parseInt(0);
+    for(var i = 0; i < rangesList.length; i++){
+        sum += parseInt($(rangesList[i]).val());
+    }
+
+    var constMaxValueText = $( element ).parent().find("[name='constMaxValue']").val();
+    var constMaxValue = parseInt(constMaxValueText);
+
+    if((constMaxValue - sum) <= 0){
+        var leftRangesList = $(element).closest(".question-block").find("[name='customRange']:not(.current)");
+        var sum2 = parseInt(0);
+        for(var i = 0; i < leftRangesList.length; i++){
+            sum2 += parseInt($(leftRangesList[i]).val());
+        }
+        $(element).val((constMaxValue - sum2));
+        $(element).closest("[name='customRangeContainer']").find("span").text($(element).val());
+        var distributePointsValueElement = $(element).closest(".question-block").find("[name='distributePointsValue']").first().text("0");
+    }else{
+        var distributePointsValueElement = $(element).closest(".question-block").find("[name='distributePointsValue']").first();
+        $(distributePointsValueElement).text((constMaxValue - sum));
+        $(element).closest("[name='customRangeContainer']").find("span").text($(element).val());
+    }
+    $(element).removeClass("current");
+}
+
+function suggestionSelected(element){
+    $(element).blur();
+    if($(element).hasClass("selected")){
+        $(element).removeClass("selected");
+    }else{
+        var qType = $(element).attr("qType");
+        if(qType === "SINGLE"){
+            var questionsInBlock = $(element).closest('.question-block').find("[name='suggestion']");
+            for(var i = 0; i < questionsInBlock.length; i++){
+                $(questionsInBlock[i]).removeClass("selected");
+            }
+            $(element).addClass("selected");
+        }
+        else if(qType === "MULTI"){
+            $(element).addClass("selected");
+        }
+    }
 }

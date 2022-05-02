@@ -166,7 +166,7 @@
                         <div id="semanticContainerID" class="row py-2 d-none">
                             <div class="col cont" name="newSemanticRowsContainer">
                                 <div class="row" name="semanticNumbersContainer">
-                                    <div class="col-3 d-flex justify-content-center align-self-center" onclick="">
+                                    <div class="col-3 d-flex justify-content-center align-self-center" onclick="removeNewPoints()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
                                         </svg>
@@ -301,7 +301,7 @@
                     <div class="container px-0" style="min-height: 800px; max-height: 800px;">
                         <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-interval="false" data-wrap="false" style="width: 100%;height: 800px;">
                             <div id="carouselItemsContainerId" class="carousel-inner" style="min-height: 800px;">
-                                <div class="carousel-item active" style="height: 100%;">
+                                <div class="carousel-item active" style="height: 100%;" page="0">
                                     <div style="height: 100%;overflow-y: auto;overflow-x: hidden;" class="d-flex justify-content-center flex-column">
 
                                         <div class="row py-2 border-top border-bottom d-flex justify-content-center add-item-cell">
@@ -325,7 +325,7 @@
                                     </div>
                                 </div>
                                 <div class="carousel-item questionsPage">
-                                    <div style="height: 100%;overflow-y: auto;overflow-x: hidden;" class="d-flex justify-content-center flex-column">
+                                    <div style="height: 100%;overflow-y: auto;overflow-x: hidden;" class="justify-content-center flex-column">
                                         <div id="selectQuestionType_1" class="row py-2 d-flex justify-content-center d-none">
                                             <div class="col-8">
                                                 <div class="row border-top border-bottom">
@@ -455,7 +455,7 @@
     </div>
     <%--Pattern carousel item--%>
     <div class="carousel-item pattern-item d-none" style="height: 100%;">
-        <div style="height: 100%;overflow-y: auto;overflow-x: hidden;" class="d-flex justify-content-center flex-column">
+        <div style="height: 100%;overflow-y: auto;overflow-x: hidden;" class="justify-content-center flex-column">
             <div class="row py-2 border-top border-bottom d-flex justify-content-center d-none select-question-type">
                 <div class="col-8">
                     <div class="row border-top border-bottom">

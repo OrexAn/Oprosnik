@@ -13,7 +13,7 @@
 <body>
 <jsp:include page="header.jsp" />
 <main class="px-3 text-center">
-    <h1>Congratulations! Your account is registered!</h1>
+    <h1>Поздравляем! Ваш аккаунт зарегистрирован!</h1>
 </main>
 
 <jsp:include page="footer.jsp" />

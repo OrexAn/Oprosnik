@@ -21,11 +21,11 @@
         <div class="col">
             <form action="submit_login" method="post" id="loginForm">
                 <div class="form-group py-2">
-                    <label for="inputUserName">Username</label>
-                    <input type="text" class="form-control" id="inputUserName" name="username" autocomplete="off" placeholder="Введите имя пользователя...">
+                    <label for="inputUserName">Почта</label>
+                    <input type="text" class="form-control" id="inputUserName" name="username" autocomplete="off" placeholder="Введите почту...">
                 </div>
                 <div class="form-group py-2">
-                    <label for="inputPassword">Password</label>
+                    <label for="inputPassword">Пароль</label>
                     <input type="password" class="form-control" id="inputPassword" name="password" autocomplete="off" placeholder="Введите пароль...">
                 </div>
                 <div class="form-group py-2">

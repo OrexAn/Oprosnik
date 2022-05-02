@@ -91,6 +91,18 @@
         opacity: 0.4
     }
 
+    .star-selected::before{
+        opacity: 1 !important;
+    }
+
+    .star-selected~label:before{
+        opacity: 1 !important;
+    }
+
+    .rating>input:checked~label:before {
+        opacity: 1
+    }
+
     h1,
     p {
         text-align: center
@@ -156,15 +168,15 @@
                                                 <h4>Название</h4>
                                             </div>
                                         </div>
-                                        <div class="row py-2 border-top border-bottom d-flex justify-content-center add-item-cell">
+                                        <%--<div class="row py-2 border-top border-bottom d-flex justify-content-center add-item-cell">
                                             <div class="col-2 d-flex justify-content-center flex-column">
                                                 <h5>Описание</h5>
                                             </div>
-                                        </div>
+                                        </div>--%>
                                         <div class="row py-2 border-top border-bottom d-flex justify-content-center add-item-cell">
                                             <div class="col-3 d-flex justify-content-center flex-column">
                                                 <button type="button" class="btn btn-primary" onclick="startQuestionnaire()">
-                                                    Start
+                                                    Приступить
                                                 </button>
                                             </div>
                                         </div>
@@ -181,8 +193,7 @@
                         <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-interval="false" data-wrap="false" style="width: 100%;height: 800px;">
                             <div id="carouselItemsContainerId" class="carousel-inner" style="min-height: 800px;">
                                 <div class="carousel-item active" page="0">
-                                    <div style="height: 100%;overflow-y: auto;overflow-x: hidden;" id="qBlockContainer_0" class="d-flex justify-content-center flex-column">
-                                        </div>
+                                    <div style="height: 100%;overflow-y: auto;overflow-x: hidden;" id="qBlockContainer_0" class="justify-content-center flex-column">
                                     </div>
                                 </div>
                             </div>
@@ -190,23 +201,23 @@
                     </div>
                 </div>
             </div>
-            <div class="row py-2 d-flex justify-content-end">
-                <div class="col-1">
-                    <button type="button" class="btn btn-primary w-100 left" onclick="finishAnswer();">Finish</button>
-                </div>
-                <div class="col-1">
-                    <button type="button" class="btn btn-primary w-100 left" onclick="prev();">&lt;</button>
-                </div>
-                <div class="col-1">
-                    <button type="button" class="btn btn-primary w-100 right" onclick="next();">&gt;</button>
-                </div>
+        </div>
+        <div class="row py-2 d-flex justify-content-end">
+            <div class="col-1">
+                <button type="button" class="btn btn-primary w-100 left" onclick="finishAnswer();">Finish</button>
+            </div>
+            <div class="col-1">
+                <button type="button" class="btn btn-primary w-100 left" onclick="prev();">&lt;</button>
+            </div>
+            <div class="col-1">
+                <button type="button" class="btn btn-primary w-100 right" onclick="next();">&gt;</button>
             </div>
         </div>
     </div>
 
 <%--TODO нужно переделать паттерн--%>
     <div class="pattern-item d-none">
-        <div style="height: 100%;overflow-y: auto;overflow-x: hidden;" id="qBlockContainer_n" class="d-flex justify-content-center flex-column question-block-container">
+        <div style="height: 100%;overflow-y: auto;overflow-x: hidden;" id="qBlockContainer_n" class="justify-content-center flex-column question-block-container">
             <%--<div class="row py-2 border-top border-bottom d-flex justify-content-center question-block">
                 <div class="col-5 d-flex justify-content-center flex-column">
                     <div class="row py-2">

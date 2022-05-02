@@ -29,7 +29,7 @@
                         <input type="text" class="form-control" id="userNameId" autocomplete="off" required placeholder="Введите имя пользователя...">
                     </div>
                     <div class="form-group py-2">
-                        <label for="emailId">Email</label>
+                        <label for="emailId">Почта</label>
                         <input type="text" class="form-control" id="emailId" name="email" autocomplete="off" placeholder="Введите email...">
                     </div>
                     <div class="form-group py-2">

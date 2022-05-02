@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Make popular!</title>
+    <title>Q-Ask!</title>
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
@@ -19,11 +19,11 @@
 <jsp:include page="header.jsp" />
 
 <div class="container" style="text-align: center">
-    <h1>Support</h1>
-    <p>If you can not sign up, sign in or you have another issues, please contact us as it will be convenient for you. <br>We will definitely try to help you!</p>
-    <h3>Call us</h3>
+    <h1>Поддержка</h1>
+    <p>Если вы не можете зарегистрироваться, авторизоваться или у вас есть другие проблемы, пожалуйста, свяжитесь с нами, как вам будет удобно.<br>Мы обязательно постараемся вам помочь!</p>
+    <h3>Для связи с нами</h3>
     <p>+375(29) 833-22-22 MTC</p>
-    <h3>Write us</h3>
+    <h3>Нам можно написать</h3>
     <p>someemail@gmail.com</p>
 </div>
 <div class="container" id="login-container" style="display: none">

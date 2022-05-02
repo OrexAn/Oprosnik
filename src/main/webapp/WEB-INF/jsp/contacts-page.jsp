@@ -19,15 +19,15 @@
 <jsp:include page="header.jsp" />
 
 <div class="container" style="text-align: center">
-    <h1>Contact us</h1>
-    <h3>Call us</h3>
+    <h1>Наши контакты</h1>
+    <h3>Для связи с нами</h3>
     <p>+375(29) 833-22-22 MTC</p>
-    <h3>Write us</h3>
+    <h3>Нам можно написать</h3>
     <p>someemail@gmail.com</p>
-    <h3>Location</h3>
+    <h3>Наше расположение</h3>
     <p>Antarctica Peninsula Penguin Colony, Antarctica</p>
-    <h3>Business hours</h3>
-    <p>Mon-Fri ...... 10 a.m. - 8 p.m.; Sat, Sun ...... Closed</p>
+    <h3>Рабочее время</h3>
+    <p>Пн-Пт ...... 10:00 - 20:00; Сб, Вс ...... Выходной</p>
 </div>
 <div class="container" id="login-container" style="display: none">
     <jsp:include page="login-form.jsp" />

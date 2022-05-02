@@ -30,10 +30,10 @@ public class UserController {
     @PostMapping("/submit_register")
     public ResponseEntity<Map<String, Object>> addNewPerson(@RequestBody @Valid User user){
         Map<String, Object> map = new HashMap<>();
-        Optional<User> oldUser = userService.getUserByUserName(user.getUserName());
+        Optional<User> oldUser = userService.getUserByEmail(user.getEmail());
 
         if(oldUser.isPresent()){
-            map.put("errorMessage", "Пользователь с таким именем уже существует");
+            map.put("errorMessage", "Пользователь с такой почтой уже существует");
         }else{
             BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
             user.setPassword(pe.encode(user.getPassword()));

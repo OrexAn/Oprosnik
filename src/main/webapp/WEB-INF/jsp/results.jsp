@@ -162,8 +162,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row py-2 d-flex justify-content-around">
-                <div class="col border" style="border-radius: 10px; width: 450px; max-width: 450px;">
+            <div class="row py-2 d-flex justify-content-around" id="chartContainerId">
+                <%--<div class="col border" style="border-radius: 10px; width: 450px; max-width: 450px;">
                     <div class="row py-2">
                         <div class="col d-flex justify-content-center">
                             <h5>1. Первый вопрос ?</h5>
@@ -264,7 +264,7 @@
                             <a id="myTrigger6" href="#" class="link-primary">Детали</a>
                         </div>
                     </div>
-                </div>
+                </div>--%>
             </div>
         </div>
         <div id="answersId" class="col-10 border-end d-none">
@@ -278,7 +278,28 @@
 
 
 
+<%-------------------------------------------------------------------%>
 
+<div class="col border d-none pattern-chart-block" style="border-radius: 10px; width: 450px; max-width: 450px;">
+    <div class="row py-2">
+        <div class="col d-flex justify-content-center">
+            <h5 class="pattern-title-class"></h5>
+        </div>
+    </div>
+    <div class="row py-2 d-flex justify-content-center">
+        <div class="col-6 d-flex justify-content-center" style="height: 350px; width: 350px; max-width: 450px;">
+            <canvas id="pattern-my-Chart-Id"></canvas>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col d-flex justify-content-center">
+            <a id="pattern-my-trigger-id" href="#" class="link-primary">Детали</a>
+        </div>
+    </div>
+</div>
+
+
+<%-------------------------------------------------------------------%>
 
 </body>
 </html>

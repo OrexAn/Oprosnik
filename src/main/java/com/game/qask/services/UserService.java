@@ -34,6 +34,10 @@ public class UserService {
     public Optional<User> getUserByUserName(String name){
         return userDAO.findUsersByUserName(name);
     }
+
+    public Optional<User> getUserByEmail(String email){
+        return userDAO.findUserByEmail(email);
+    }
     public boolean deleteUserById(Long id) {
         userDAO.deleteById(id);
         if(!userDAO.existsById(id)){

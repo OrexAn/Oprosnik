@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Make popular!</title>
+    <title>Q-Ask</title>
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
@@ -19,8 +19,8 @@
 <jsp:include page="header.jsp" />
 
 <div class="container" style="text-align: center">
-    <h1>Our partners</h1>
-    <p>Here, at Make Popular Service, we place great value on the relationships we have with our corporate partners.<br> Whether actively participating in product promotion or orders for its promotion, there are numerous ways which corporate partners can forge win-win relationships with MPS.</p>
+    <h1>Наши партнёры</h1>
+    <p>Здесь, в сервисе Q-Ask, мы уделяем большое значение отношениям с нашими корпоративными партнерами.<br>Будь то активное участие в жизни проекта или организация анкет для наших партнёров, существует множество способов, с помощью которых корпоративные партнеры могут наладить взаимовыгодные отношения с Q-Ask.</p>
     <img src="<c:url value="/resources/img/nasdaq_company_logos.jpg"></c:url>" id="partners-id">
 </div>
 <div class="container" id="login-container" style="display: none">

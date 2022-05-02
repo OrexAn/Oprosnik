@@ -19,11 +19,11 @@
 <jsp:include page="header.jsp" />
 
 <div class="container" style="text-align: center">
-    <h1>Thank you!</h1>
-    <p>Thank you for you answers!</p>
-    <h3>Call us</h3>
+    <h1>Благодарим вас!</h1>
+    <p>Спасибо вам за ответы!</p>
+    <h3>Для связи с нами</h3>
     <p>+375(29) 833-22-22 MTC</p>
-    <h3>Write us</h3>
+    <h3>Нам можно написать</h3>
     <p>someemail@gmail.com</p>
 </div>
 <div class="container" id="login-container" style="display: none">

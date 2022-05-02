@@ -8,30 +8,17 @@ $(document).ready(function(){
     loadAnswersStatistic();
 
 
-    const ctx = document.getElementById('myChart').getContext('2d');
+
+    /*-----------------------------------------------*/
+    /*const ctx = document.getElementById(newChartId).getContext('2d');
     const myChart = new Chart(ctx, {
-        type: 'horizontalBar',
+        type: 'bar',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: labels,
             datasets: [{
                 label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
+                data: data4Chart,
+                backgroundColor: backgroundColors,
                 borderWidth: 1
             }]
         },
@@ -39,50 +26,19 @@ $(document).ready(function(){
             responsive: true,
             maintainAspectRatio: false,
             scales: {
+                xAxes: [{
+                    stacked: true,
+                    ticks: {
+                        min: 0
+                    }
+                }],
                 y: {
                     beginAtZero: true
                 }
             }
         }
-    });
-    /*-----------------------------------------------*/
-    const ctx2 = document.getElementById('myChart2').getContext('2d');
-    const myChart2 = new Chart(ctx2, {
-        type: 'horizontalBar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: 'Число голосов',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
+    });*/
+    /*
 
     //polar-----------------------------------
     var ctxPA = document.getElementById("polarChart").getContext('2d');
@@ -106,67 +62,10 @@ $(document).ready(function(){
     });
     //---------------------------------------------------------------------------
     //doughnut
-    var ctxD = document.getElementById("doughnutChart").getContext('2d');
-    var myLineChart = new Chart(ctxD, {
-        type: 'doughnut',
-        data: {
-            labels: ["Red", "Green", "Yellow", "Grey", "Dark Grey"],
-            datasets: [{
-                data: [300, 50, 100, 40, 120],
-                backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
-                hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
-            }]
-        },
-        options: {
-            responsive: true
-        }
-    });
+
     //-----------------------------------------
     //
-    var ctx5 = document.getElementById('wrapper').getContext('2d');
-    ctx5.canvas.width = 350;
-    ctx5.canvas.height = 350;
-    var chart = new Chart(ctx5, {
-        type: 'horizontalBar',
-        data: {
-            labels: ["January", "February", "March", "April"],
-            datasets: [{
-                label: "My First dataset",
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 1, 2, -2],
-                stack: 'a'
-            }, {
-                label: "My Second dataset",
-                backgroundColor: 'rgb(2, 99, 132)',
-                borderColor: 'rgb(2, 99, 132)',
-                data: [-2, -1, -1, 1],
-                stack: 'b'
-            }]
-        },
-        options: {
-            scales: {
-                xAxes: [{
-                    stacked: true,
-                    ticks: {
-                        min: -3,
-                        max: 3
-                    }
-                }],
-                yAxes: [{
-                    stacked: true,
-                    ticks: {
-                        // Include a dollar sign in the ticks
-                        callback: function(value, index, values) {
-                            return value < 0 ? -value : value;
-                        }
-                    }
-                }],
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        }
-    });
+
     //-----------------------------------------
     //---------------------
     const ctx7 = document.getElementById('myChart7').getContext('2d');
@@ -209,21 +108,7 @@ $(document).ready(function(){
     //-----------------------------------------------
     //-----------------------------------------------
     //pie
-    var ctxP = document.getElementById("pieChart").getContext('2d');
-    var myPieChart = new Chart(ctxP, {
-        type: 'pie',
-        data: {
-            labels: ["Red", "Green", "Yellow", "Grey", "Dark Grey"],
-            datasets: [{
-                data: [300, 50, 100, 40, 120],
-                backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
-                hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
-            }]
-        },
-        options: {
-            responsive: true
-        }
-    });
+    */
 });
 
 function goToEditor(){
@@ -275,8 +160,332 @@ function loadAnswersStatistic(){
             console.log(data.errorMessage);
         }else{
             for(var i = 0; i < data.answersStat.length; i++){ //итерация по каждому блоку-ответу
-
+                if(data.answersTypes[i] === 'single'){
+                    newSingleChartBlock(data.answersStat[i], data.answersTitles[i]);
+                }else if(data.answersTypes[i] === 'multi'){
+                    newMultiChartBlock(data.answersStat[i], data.answersTitles[i]);
+                }else if(data.answersTypes[i] === 'rating'){
+                    newRatingChartBlock(data.answersStat[i], data.answersTitles[i]);
+                }else if(data.answersTypes[i] === 'sorted'){
+                    newSortedChartBlock(data.answersStat[i], data.answersTitles[i]);
+                }else if(data.answersTypes[i] === 'semantic'){
+                    newSemanticChartBlock(data.answersStat[i], data.answersTitles[i]);
+                }else if(data.answersTypes[i] === 'distribute'){
+                    newDistributeChartBlock(data.answersStat[i], data.answersTitles[i]);
+                }
             }
         }
     });
+}
+
+function newSingleChartBlock(data, title){
+    var newChartId = "chart_" + Date.now();
+    var newTriggerId = Date.now() + 1;
+
+    var chartContainer = $('#chartContainerId');
+
+    var newItem = $( '.pattern-chart-block' ).first().clone();
+    $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
+    $( newItem ).find('.pattern-title-class').text(title);
+    $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
+    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId);
+
+    $(chartContainer).append(newItem);
+
+    var data4Chart = [];
+    var labels = [];
+    var backgroundColors = [];
+    for(var i = 0; i < data.length; i++){
+        labels.push("" + i);
+        data4Chart.push(data[i]);
+        backgroundColors.push(getRandomColor());
+    }
+    const ctx = document.getElementById(newChartId).getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '# of Votes',
+                data: data4Chart,
+                backgroundColor: backgroundColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                    ticks: {
+                        min: 0
+                    }
+                }],
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function newMultiChartBlock(data, title){
+    var newChartId = "chart_" + Date.now();
+    var newTriggerId = Date.now() + 1;
+
+    var chartContainer = $('#chartContainerId');
+
+    var newItem = $( '.pattern-chart-block' ).first().clone();
+    $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
+    $( newItem ).find('.pattern-title-class').text(title);
+    $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
+    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId);
+
+    $(chartContainer).append(newItem);
+
+    var data4Chart = [];
+    var labels = [];
+    var backgroundColors = [];
+    for(var i = 0; i < data.length; i++){
+        labels.push("" + i);
+        data4Chart.push(data[i]);
+        backgroundColors.push(getRandomColor());
+    }
+    var ctxPA = document.getElementById(newChartId).getContext('2d');
+    var myPolarChart = new Chart(ctxPA, {
+        type: 'polarArea',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data4Chart,
+                backgroundColor: backgroundColors,
+                hoverBackgroundColor: ["rgba(219, 0, 0, 0.2)", "rgba(0, 165, 2, 0.2)",
+                    "rgba(255, 195, 15, 0.3)", "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.4)"
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+}
+
+function newRatingChartBlock(data, title){
+    var newChartId = "chart_" + Date.now();
+    var newTriggerId = Date.now() + 1;
+
+    var chartContainer = $('#chartContainerId');
+
+    var newItem = $( '.pattern-chart-block' ).first().clone();
+    $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
+    $( newItem ).find('.pattern-title-class').text(title);
+    $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
+    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId);
+
+    $(chartContainer).append(newItem);
+
+    var data4Chart = [];
+    var labels = [];
+    var backgroundColors = [];
+    for(var i = 0; i < data.length; i++){
+        labels.push("" + (i + 1));
+        data4Chart.push(data[i]);
+        backgroundColors.push(getRandomColor());
+    }
+    var ctxD = document.getElementById(newChartId).getContext('2d');
+    var myLineChart = new Chart(ctxD, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data4Chart,
+                backgroundColor: backgroundColors,
+                hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+}
+
+function newSortedChartBlock(data, title){
+    var newChartId = "chart_" + Date.now();
+    var newTriggerId = Date.now() + 1;
+
+    var chartContainer = $('#chartContainerId');
+
+    var newItem = $( '.pattern-chart-block' ).first().clone();
+    $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
+    $( newItem ).find('.pattern-title-class').text(title);
+    $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
+    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId);
+
+    $(chartContainer).append(newItem);
+
+    var labels = [];
+    var datasets = [];
+
+
+    var dataset;
+    var data4Chart;
+
+    for(var j = 0; j < data.length; j++){
+        dataset = {label: '' + (j+1), backgroundColor: getRandomColor(), data: '', stack: 'Stack ' + j};
+        labels.push("" + j);
+        data4Chart = [];
+
+        for(var i = 0; i < data.length; i++){
+            data4Chart.push(data[i][j]);
+        }
+
+        dataset.data = data4Chart;
+        datasets.push(dataset);
+    }
+
+    var ctx = document.getElementById(newChartId).getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: datasets,
+        },
+        options: {
+            tooltips: {
+                displayColors: true,
+                callbacks:{
+                    mode: 'x',
+                },
+            },
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                    gridLines: {
+                        display: false,
+                    }
+                }],
+                yAxes: [{
+                    stacked: true,
+                    ticks: {
+                        beginAtZero: true,
+                    },
+                    type: 'linear',
+                }]
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: { position: 'bottom' },
+        }
+    });
+}
+
+function newSemanticChartBlock(data, title){
+    var newChartId = "chart_" + Date.now();
+    var newTriggerId = Date.now() + 1;
+
+    var chartContainer = $('#chartContainerId');
+
+    var newItem = $( '.pattern-chart-block' ).first().clone();
+    $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
+    $( newItem ).find('.pattern-title-class').text(title);
+    $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
+    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId);
+
+    $(chartContainer).append(newItem);
+
+    var data4Chart = [];
+    var labels = [];
+    var backgroundColors = [];
+    for(var i = 0; i < data.length; i++){
+        labels.push("" + i);
+        data4Chart.push(data[i]);
+        backgroundColors.push(getRandomColor());
+    }
+
+    var ctx5 = document.getElementById(newChartId).getContext('2d');
+    ctx5.canvas.width = 350;
+    ctx5.canvas.height = 350;
+    var chart = new Chart(ctx5, {
+        type: 'horizontalBar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "My First dataset",
+                backgroundColor: backgroundColors,
+                borderColor: 'rgb(255, 99, 132)',
+                data: data4Chart,
+                stack: 'a'
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                    ticks: {
+                    }
+                }],
+                yAxes: [{
+                    stacked: true,
+                    ticks: {
+                        // Include a dollar sign in the ticks
+                        callback: function(value, index, values) {
+                            return value < 0 ? -value : value;
+                        }
+                    }
+                }],
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        }
+    });
+}
+
+function newDistributeChartBlock(data, title){
+    var newChartId = "chart_" + Date.now();
+    var newTriggerId = Date.now() + 1;
+
+    var chartContainer = $('#chartContainerId');
+
+    var newItem = $( '.pattern-chart-block' ).first().clone();
+    $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
+    $( newItem ).find('.pattern-title-class').text(title);
+    $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
+    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId);
+
+    $(chartContainer).append(newItem);
+
+    var data4Chart = [];
+    var labels = [];
+    var backgroundColors = [];
+    for(var i = 0; i < data.length; i++){
+        labels.push("" + i);
+        data4Chart.push(data[i]);
+        backgroundColors.push(getRandomColor());
+    }
+
+    var ctxP = document.getElementById(newChartId).getContext('2d');
+    var myPieChart = new Chart(ctxP, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data4Chart,
+                backgroundColor: backgroundColors,
+                hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
