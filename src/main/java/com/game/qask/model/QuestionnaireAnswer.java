@@ -14,6 +14,8 @@ public class QuestionnaireAnswer extends Questionnaire{
     @SequenceGenerator(name="GeneratorQA1", sequenceName = "seqQA1", allocationSize = 1)
     @Column(name = "id")
     private final Long id;
+    @Column(name = "time_spend")
+    private Long timeSpend;
     @OneToMany(cascade = CascadeType.ALL, mappedBy="questionnaireAnswer")
     private List<Answer> answers;
     @Column(name = "q_question_id")
@@ -29,6 +31,14 @@ public class QuestionnaireAnswer extends Questionnaire{
 
     public Long getId() {
         return id;
+    }
+
+    public Long getTimeSpend() {
+        return timeSpend;
+    }
+
+    public void setTimeSpend(Long timeSpend) {
+        this.timeSpend = timeSpend;
     }
 
     public List<Answer> getAnswers() {

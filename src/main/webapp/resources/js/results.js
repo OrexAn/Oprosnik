@@ -1,7 +1,8 @@
+var modalChart;
 $(window).on('load',function(){
-    $('#myTrigger').click(function (){
+    /*$('.trigger-details').click(function (){
         $('#myModal').modal('show');
-    });
+    });*/
 });
 $(document).ready(function(){
 
@@ -146,9 +147,12 @@ function toIndieAnswersSection(number){
             break;
         case 1:
             $(answersElement).removeClass("d-none");
+            //setStaticHomeTable();
+            fitStaticHomeGridCols();
             break;
         case 2:
             $(stateElement).removeClass("d-none");
+            loadQuestionnaireStateStatistic();
             break;
     }
 }
@@ -174,6 +178,7 @@ function loadAnswersStatistic(){
                     newDistributeChartBlock(data.answersStat[i], data.answersTitles[i]);
                 }
             }
+            $('#acceptFilterButtonId').on('click', function (){ return false; });
         }
     });
 }
@@ -188,7 +193,123 @@ function newSingleChartBlock(data, title){
     $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
     $( newItem ).find('.pattern-title-class').text(title);
     $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
-    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId);
+
+
+
+    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId).addClass("trigger-details");
+    $( newItem ).find("#trigger_" + newTriggerId).on("click", function (){
+        var containers = $('.filter-container');
+        for(var s = 0; s < containers.length; s++){
+            $(containers[s]).addClass('d-none');
+        }
+        $('#singleFilterOptionsContainerId').removeClass("d-none");
+        /////////////////////////////////////////////////////////////////////////
+        $('#acceptFilterButtonId').unbind('click');
+        $('#acceptFilterButtonId').on('click', function (){
+            var text = $('#singleFilterOptionsContainerId').find('input').val();
+            alert("Фильтрация по: \"Ответило больше " + text + "% людей\"");
+            /////////////////////////////////////////////////////////////////
+            $('#modalChart').empty();
+            if(modalChart){
+                modalChart.destroy();
+            }
+            var data4Chart3 = [];
+            var labels3 = [];
+            var backgroundColors3 = [];
+            var wholeNumber = 0;
+            for(var i = 0; i < data.length; i++){
+                wholeNumber += data[i];
+            }
+            var flo = parseFloat(text) / 100;
+            var a = wholeNumber * flo;
+
+            for(var i = 0; i < data.length; i++){
+                if(data[i] > a){
+                    labels3.push("" + i);
+                    data4Chart3.push(data[i] / wholeNumber * 100);
+                    backgroundColors3.push(getRandomColor());
+                }
+            }
+
+            const ctx3 = document.getElementById('modalChart').getContext('2d');
+            modalChart = new Chart(ctx3, {
+                type: 'horizontalBar',
+                data: {
+                    labels: labels3,
+                    datasets: [{
+                        label: '% of Votes',
+                        data: data4Chart3,
+                        backgroundColor: backgroundColors3,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                            ticks: {
+                                min: 0,
+                                callback: function(value, index, ticks) {
+                                    return value + "%";
+                                }
+                            }
+                        }],
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            $('#myModal').modal('show');
+            /////////////////////////////////////////////////////////////////
+        });
+        /////////////////////////////////////////////////////////////////////////
+
+        $('#topicId').find('h4').text(title);
+        $('#modalChart').empty();
+        if(modalChart){
+            modalChart.destroy();
+        }
+        var data4Chart2 = [];
+        var labels2 = [];
+        var backgroundColors2 = [];
+        for(var i = 0; i < data.length; i++){
+            labels2.push("" + i);
+            data4Chart2.push(data[i]);
+            backgroundColors2.push(getRandomColor());
+        }
+        const ctx2 = document.getElementById('modalChart').getContext('2d');
+        modalChart = new Chart(ctx2, {
+            type: 'horizontalBar',
+            data: {
+                labels: labels2,
+                datasets: [{
+                    label: '# of Votes',
+                    data: data4Chart2,
+                    backgroundColor: backgroundColors2,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                        ticks: {
+                            min: 0
+                        }
+                    }],
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        $('#myModal').modal('show');
+    });
 
     $(chartContainer).append(newItem);
 
@@ -240,7 +361,106 @@ function newMultiChartBlock(data, title){
     $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
     $( newItem ).find('.pattern-title-class').text(title);
     $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
-    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId);
+
+
+
+    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId).addClass("trigger-details");
+    $( newItem ).find("#trigger_" + newTriggerId).on("click", function (){
+        ///////////////////////////////////////////////////
+        var containers = $('.filter-container');
+        for(var s = 0; s < containers.length; s++){
+            $(containers[s]).addClass('d-none');
+        }
+        $('#multiFilterOptionsContainerId').removeClass("d-none");
+        /////////////////////////////////////////////////////////////////////////////////////////
+        $('#acceptFilterButtonId').unbind('click');
+        $('#acceptFilterButtonId').on('click', function (){
+            var text = $('#multiFilterOptionsContainerId').find('input').val();
+            alert("Фильтрация по: \"Больше " + text + "% голосов\"");
+            /////////////////////////////////////////////////////////////////
+            $('#modalChart').empty();
+            if(modalChart){
+                modalChart.destroy();
+            }
+            var data4Chart3 = [];
+            var labels3 = [];
+            var backgroundColors3 = [];
+            var wholeNumber = 0;
+            for(var i = 0; i < data.length; i++){
+                wholeNumber += data[i];
+            }
+            var flo = parseFloat(text) / 100;
+            var a = wholeNumber * flo;
+
+            for(var i = 0; i < data.length; i++){
+                if(data[i] > a){
+                    labels3.push("" + i);
+                    data4Chart3.push(data[i] / wholeNumber * 100);
+                    backgroundColors3.push(getRandomColor());
+                }
+            }
+            var ctxPA3 = document.getElementById('modalChart').getContext('2d');
+            modalChart = new Chart(ctxPA3, {
+                type: 'polarArea',
+                data: {
+                    labels: labels3,
+                    datasets: [{
+                        data: data4Chart3,
+                        backgroundColor: backgroundColors3,
+                        hoverBackgroundColor: ["rgba(219, 0, 0, 0.2)", "rgba(0, 165, 2, 0.2)",
+                            "rgba(255, 195, 15, 0.3)", "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.4)"
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scale: {
+                        ticks: {
+                            callback: function(value, index, ticks) {
+                                return value + "%";
+                            }
+                        }
+                    }
+                }
+            });
+            $('#myModal').modal('show');
+            /////////////////////////////////////////////////////////////////
+        });
+        ///////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////
+        $('#topicId').find('h4').text(title);
+        $('#modalChart').empty();
+        if(modalChart){
+            modalChart.destroy();
+        }
+        var data4Chart2 = [];
+        var labels2 = [];
+        var backgroundColors2 = [];
+        for(var i = 0; i < data.length; i++){
+            labels2.push("" + i);
+            data4Chart2.push(data[i]);
+            backgroundColors2.push(getRandomColor());
+        }
+        var ctxPA2 = document.getElementById('modalChart').getContext('2d');
+        modalChart = new Chart(ctxPA2, {
+            type: 'polarArea',
+            data: {
+                labels: labels2,
+                datasets: [{
+                    data: data4Chart2,
+                    backgroundColor: backgroundColors2,
+                    hoverBackgroundColor: ["rgba(219, 0, 0, 0.2)", "rgba(0, 165, 2, 0.2)",
+                        "rgba(255, 195, 15, 0.3)", "rgba(55, 59, 66, 0.1)", "rgba(0, 0, 0, 0.4)"
+                    ]
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        $('#myModal').modal('show');
+    });
 
     $(chartContainer).append(newItem);
 
@@ -281,7 +501,96 @@ function newRatingChartBlock(data, title){
     $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
     $( newItem ).find('.pattern-title-class').text(title);
     $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
-    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId);
+
+
+
+
+    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId).addClass("trigger-details");
+    $( newItem ).find("#trigger_" + newTriggerId).on("click", function (){
+        ///////////////////////////////////////////////////
+        var containers = $('.filter-container');
+        for(var s = 0; s < containers.length; s++){
+            $(containers[s]).addClass('d-none');
+        }
+        $('#ratingFilterOptionsContainerId').removeClass("d-none");
+
+        $('#ratingFilterOptionsSelectId').empty();
+        for(var tt = 0; tt < data.length - 2; tt++){
+            var node = document.createElement("option");
+            $(node).text(tt + 1);
+            $(node).val(tt + 1);
+            $('#ratingFilterOptionsSelectId').append(node);
+        }
+        /////////////////////////////////////////////////////////////////////////////////////////
+        $('#acceptFilterButtonId').unbind('click');
+        $('#acceptFilterButtonId').on('click', function (){
+            var text = $('#ratingFilterOptionsSelectId').val();
+            alert("Фильтрация по: \"Больше " + text + " звёзд\"");
+            /////////////////////////////////////////////////////////////////
+            $('#modalChart').empty();
+            if(modalChart){
+                modalChart.destroy();
+            }
+            var data4Chart3 = [];
+            var labels3 = [];
+            var backgroundColors3 = [];
+            for(var i = parseInt(text); i < data.length; i++){
+                labels3.push("" + (i + 1));
+                data4Chart3.push(data[i]);
+                backgroundColors3.push(getRandomColor());
+            }
+            var ctxD3 = document.getElementById('modalChart').getContext('2d');
+            modalChart = new Chart(ctxD3, {
+                type: 'doughnut',
+                data: {
+                    labels: labels3,
+                    datasets: [{
+                        data: data4Chart3,
+                        backgroundColor: backgroundColors3,
+                        hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+            $('#myModal').modal('show');
+            /////////////////////////////////////////////////////////////////
+        });
+        ///////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////
+
+        $('#topicId').find('h4').text(title);
+        $('#modalChart').empty();
+        if(modalChart){
+            modalChart.destroy();
+        }
+        var data4Chart2 = [];
+        var labels2 = [];
+        var backgroundColors2 = [];
+        for(var i = 0; i < data.length; i++){
+            labels2.push("" + (i + 1));
+            data4Chart2.push(data[i]);
+            backgroundColors2.push(getRandomColor());
+        }
+        var ctxD2 = document.getElementById('modalChart').getContext('2d');
+        modalChart = new Chart(ctxD2, {
+            type: 'doughnut',
+            data: {
+                labels: labels2,
+                datasets: [{
+                    data: data4Chart2,
+                    backgroundColor: backgroundColors2,
+                    hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        $('#myModal').modal('show');
+    });
 
     $(chartContainer).append(newItem);
 
@@ -320,7 +629,165 @@ function newSortedChartBlock(data, title){
     $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
     $( newItem ).find('.pattern-title-class').text(title);
     $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
-    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId);
+
+
+
+    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId).addClass("trigger-details");
+    $( newItem ).find("#trigger_" + newTriggerId).on("click", function (){
+///////////////////////////////////////////////////
+        var containers = $('.filter-container');
+        for(var s = 0; s < containers.length; s++){
+            $(containers[s]).addClass('d-none');
+        }
+        $('#sortedFilterOptionsContainerId').removeClass("d-none");
+        /////////////////////////////////////////////////////////////////////////////////////////
+        $('#acceptFilterButtonId').unbind('click');
+        $('#acceptFilterButtonId').on('click', function (){
+            var text = $('#sortedFilterOptionsContainerId').find('input').val();
+            alert("Фильтрация по: \"Больше " + text + "% вариантов\"");
+            /////////////////////////////////////////////////////////////////
+            $('#modalChart').empty();
+            if(modalChart){
+                modalChart.destroy();
+            }
+
+            var labels3 = [];
+            var datasets3 = [];
+
+
+            var dataset3;
+            var data4Chart3;
+
+            for(var j = 0; j < data.length; j++){
+                dataset3 = {label: '' + (j+1), backgroundColor: getRandomColor(), data: '', stack: 'Stack ' + j};
+                data4Chart3 = [];
+                labels3.push("" + j);
+/////////////////////////////////////////////////////////////////////////////
+                var wholeNumber = 0;
+                for(var i = 0; i < data.length; i++){
+                    wholeNumber += data[j][i];
+                }
+                var flo = parseFloat(text) / 100;
+                var a = wholeNumber * flo;
+
+                for(var i = 0; i < data.length; i++){
+                    if(data[i][j] > a){
+                        data4Chart3.push(data[i][j] / wholeNumber * 100);
+                    }else{
+                        data4Chart3.push(0);
+                    }
+                }
+///////////////////////////////////////////////////////////////////////////////////////////
+
+                dataset3.data = data4Chart3;
+                datasets3.push(dataset3);
+            }
+
+            var ctx3 = document.getElementById('modalChart').getContext('2d');
+            modalChart = new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: labels3,
+                    datasets: datasets3,
+                },
+                options: {
+                    tooltips: {
+                        displayColors: true,
+                        callbacks:{
+                            mode: 'x',
+                        },
+                    },
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                            gridLines: {
+                                display: false,
+                            }
+                        }],
+                        yAxes: [{
+                            stacked: true,
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function(value, index, ticks) {
+                                    return value + "%";
+                                }
+                            },
+                            type: 'linear',
+                        }]
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: { position: 'bottom' },
+                }
+            });
+            $('#myModal').modal('show');
+            /////////////////////////////////////////////////////////////////
+        });
+        ///////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////
+
+        $('#topicId').find('h4').text(title);
+        $('#modalChart').empty();
+        if(modalChart){
+            modalChart.destroy();
+        }
+        var labels2 = [];
+        var datasets2 = [];
+
+
+        var dataset2;
+        var data4Chart2;
+
+        for(var j = 0; j < data.length; j++){
+            dataset2 = {label: '' + (j+1), backgroundColor: getRandomColor(), data: '', stack: 'Stack ' + j};
+            labels2.push("" + j);
+            data4Chart2 = [];
+
+            for(var i = 0; i < data.length; i++){
+                data4Chart2.push(data[i][j]);
+            }
+
+            dataset2.data = data4Chart2;
+            datasets2.push(dataset2);
+        }
+
+        var ctx2 = document.getElementById('modalChart').getContext('2d');
+        modalChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: labels2,
+                datasets: datasets2,
+            },
+            options: {
+                tooltips: {
+                    displayColors: true,
+                    callbacks:{
+                        mode: 'x',
+                    },
+                },
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                        gridLines: {
+                            display: false,
+                        }
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            beginAtZero: true,
+                        },
+                        type: 'linear',
+                    }]
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: { position: 'bottom' },
+            }
+        });
+
+        $('#myModal').modal('show');
+    });
 
     $(chartContainer).append(newItem);
 
@@ -390,7 +857,136 @@ function newSemanticChartBlock(data, title){
     $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
     $( newItem ).find('.pattern-title-class').text(title);
     $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
-    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId);
+
+
+
+    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId).addClass("trigger-details");
+    $( newItem ).find("#trigger_" + newTriggerId).on("click", function (){
+///////////////////////////////////////////////////
+        var containers = $('.filter-container');
+        for(var s = 0; s < containers.length; s++){
+            $(containers[s]).addClass('d-none');
+        }
+        $('#semanticFilterOptionsContainerId').removeClass("d-none");
+        /////////////////////////////////////////////////////////////////////////////////////////
+        $('#acceptFilterButtonId').unbind('click');
+        $('#acceptFilterButtonId').on('click', function (){
+            var text = $('#semanticFilterOptionsSelectId').text();
+            var val = $('#semanticFilterOptionsSelectId').val();
+            alert("Фильтрация по: \"Область " + text);
+            /////////////////////////////////////////////////////////////////
+            $('#modalChart').empty();
+            if(modalChart){
+                modalChart.destroy();
+            }
+            var data4Chart3 = [];
+            var labels3 = [];
+            var backgroundColors3 = [];
+            for(var i = 0; i < data.length; i++){
+                if(parseInt(val) > 0 && data[i] > parseInt(val)){
+                    labels3.push("" + i);
+                    data4Chart3.push(data[i]);
+                    backgroundColors3.push(getRandomColor());
+                }else if(parseInt(val) < 0 && data[i] < 0){
+                    labels3.push("" + i);
+                    data4Chart3.push(data[i]);
+                    backgroundColors3.push(getRandomColor());
+                }
+            }
+
+            var ctx53 = document.getElementById('modalChart').getContext('2d');
+            modalChart = new Chart(ctx53, {
+                type: 'horizontalBar',
+                data: {
+                    labels: labels3,
+                    datasets: [{
+                        label: "My First dataset",
+                        backgroundColor: backgroundColors3,
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: data4Chart3,
+                        stack: 'a'
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            stacked: true,
+                            ticks: {
+                            }
+                        }],
+                        yAxes: [{
+                            stacked: true,
+                            ticks: {
+                                // Include a dollar sign in the ticks
+                                callback: function(value, index, values) {
+                                    return value < 0 ? -value : value;
+                                }
+                            }
+                        }],
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                }
+            });
+            $('#myModal').modal('show');
+            /////////////////////////////////////////////////////////////////
+        });
+        ///////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////
+
+        $('#topicId').find('h4').text(title);
+        $('#modalChart').empty();
+        if(modalChart){
+            modalChart.destroy();
+        }
+        var data4Chart2 = [];
+        var labels2 = [];
+        var backgroundColors2 = [];
+        for(var i = 0; i < data.length; i++){
+            labels2.push("" + i);
+            data4Chart2.push(data[i]);
+            backgroundColors2.push(getRandomColor());
+        }
+
+        var ctx52 = document.getElementById('modalChart').getContext('2d');
+        ctx52.canvas.width = 350;
+        ctx52.canvas.height = 350;
+        modalChart = new Chart(ctx52, {
+            type: 'horizontalBar',
+            data: {
+                labels: labels2,
+                datasets: [{
+                    label: "My First dataset",
+                    backgroundColor: backgroundColors2,
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: data4Chart2,
+                    stack: 'a'
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                        ticks: {
+                        }
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            // Include a dollar sign in the ticks
+                            callback: function(value, index, values) {
+                                return value < 0 ? -value : value;
+                            }
+                        }
+                    }],
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            }
+        });
+
+        $('#myModal').modal('show');
+    });
 
     $(chartContainer).append(newItem);
 
@@ -451,7 +1047,117 @@ function newDistributeChartBlock(data, title){
     $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
     $( newItem ).find('.pattern-title-class').text(title);
     $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
-    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId);
+
+
+
+    $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId).addClass("trigger-details");
+    $( newItem ).find("#trigger_" + newTriggerId).on("click", function (){
+        ///////////////////////////////////////////////////
+        var containers = $('.filter-container');
+        for(var s = 0; s < containers.length; s++){
+            $(containers[s]).addClass('d-none');
+        }
+        $('#distributeFilterOptionsContainerId').removeClass("d-none");
+
+        /////////////////////////////////////////////////////////////////////////
+        $('#acceptFilterButtonId').unbind('click');
+        $('#acceptFilterButtonId').on('click', function (){
+            var text = $('#distributeFilterOptionsContainerId').find('input').val();
+            alert("Фильтрация по: \"Больше " + text + " % баллов распределено\"");
+            /////////////////////////////////////////////////////////////////
+            $('#modalChart').empty();
+            if(modalChart){
+                modalChart.destroy();
+            }
+            var data4Chart3 = [];
+            var labels3 = [];
+            var backgroundColors3 = [];
+
+            var wholeNumber = 0;
+            for(var i = 0; i < data.length; i++){
+                wholeNumber += data[i];
+            }
+            var flo = parseFloat(text) / 100;
+            var a = wholeNumber * flo;
+
+            for(var i = 0; i < data.length; i++){
+                if(data[i] > a){
+                    labels3.push("" + i);
+                    data4Chart3.push(data[i] / wholeNumber * 100);
+                    backgroundColors3.push(getRandomColor());
+                }
+            }
+
+            var ctxP3 = document.getElementById('modalChart').getContext('2d');
+            modalChart = new Chart(ctxP3, {
+                type: 'pie',
+                data: {
+                    labels: labels3,
+                    datasets: [{
+                        data: data4Chart3,
+                        backgroundColor: backgroundColors3,
+                        hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    tooltips: {
+                        callbacks: {
+                            title: function(tooltipItem, data) {
+                                return data['labels'][tooltipItem[0]['index']];
+                            },
+                            label: function(tooltipItem, data) {
+                                var dataset = data['datasets'][0];
+                                var percent = dataset['data'][tooltipItem['index']]
+                                return percent + '% от полного количества';
+                            }
+                        },
+                        backgroundColor: '#FFF',
+                        titleFontSize: 16,
+                        titleFontColor: '#0066ff',
+                        bodyFontColor: '#000',
+                        bodyFontSize: 14,
+                        displayColors: false
+                    }
+                }
+            });
+            $('#myModal').modal('show');
+            /////////////////////////////////////////////////////////////////
+        });
+        /////////////////////////////////////////////////////////////////////////
+
+        $('#topicId').find('h4').text(title);
+        $('#modalChart').empty();
+        if(modalChart){
+            modalChart.destroy();
+        }
+        var data4Chart2 = [];
+        var labels2 = [];
+        var backgroundColors2 = [];
+        for(var i = 0; i < data.length; i++){
+            labels2.push("" + i);
+            data4Chart2.push(data[i]);
+            backgroundColors2.push(getRandomColor());
+        }
+
+        var ctxP2 = document.getElementById('modalChart').getContext('2d');
+        modalChart = new Chart(ctxP2, {
+            type: 'pie',
+            data: {
+                labels: labels2,
+                datasets: [{
+                    data: data4Chart2,
+                    backgroundColor: backgroundColors2,
+                    hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        $('#myModal').modal('show');
+    });
 
     $(chartContainer).append(newItem);
 

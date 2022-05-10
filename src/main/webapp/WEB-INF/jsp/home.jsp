@@ -49,8 +49,8 @@
 
 
 <main class="px-5 text-center">
-    <h1>Welcome to Q-Ask service!</h1>
-    <%-----------------------------------------------------------%>
+    <h1>Добро пожаловать в Q-Ask сервис!</h1>
+        <%-----------------------------------------------%>
     <!-- new Questionnaire Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -84,7 +84,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-primary" onclick="createQuestionnaire()">Создать</button>
                 </div>
             </div>
         </div>

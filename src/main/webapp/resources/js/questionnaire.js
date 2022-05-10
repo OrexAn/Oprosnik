@@ -3,6 +3,8 @@ var carouselPage = 0;
 var pageCount = 1;
 var questionnaireAId = -1;
 
+var timeSpend = 0;
+
 $(document).ready(function(){
     createAnswer();
     var questionnaireId = $("[name='questionnaireId']").first().val();
@@ -389,12 +391,21 @@ function suggestionSelected(element){
 
 /**/
 function createAnswer(){
+    timeSpend = Date.now() / 1000;
     var questionnaireQId = $("[name='questionnaireId']").first().val();
+    var currentdate = new Date();
+    var datetime = currentdate.getUTCFullYear() + "-"
+        + ("0" + (currentdate.getUTCMonth()+1)).slice(-2)  + "-"
+        + ("0" + currentdate.getUTCDate()).slice(-2) + "T"
+        + ("0" + currentdate.getUTCHours()).slice(-2) + ":"
+        + ("0" + currentdate.getUTCMinutes()).slice(-2) + ":"
+        + ("0" + currentdate.getUTCSeconds()).slice(-2);
     var questionnaire = {
         "creatorID" : 1,
         "questionnaireType" : "ANSWER",
         "status" : "CREATED",
-        "qQuestionId" : questionnaireQId
+        "qQuestionId" : questionnaireQId,
+        "date" : datetime
     };
     $.ajax({
         type: "POST",
@@ -411,6 +422,7 @@ function createAnswerCallback(data, status){
 }
 
 function finishAnswer(){
+    timeSpend = (Date.now() / 1000) - timeSpend;
     var questionBlocks = $('.question-block');
     var questionnairePages = $('.questionsPage');
     var questionnaireQId = $("[name='questionnaireId']").first().val();
@@ -425,7 +437,7 @@ function finishAnswer(){
 
 
     var answer = {};
-    var status = "NOT_PASSED"
+    var status = "PASSED"
     var questionnaire = {
         "id" : questionnaireAId,
         "qQuestionId" : questionnaireQId,
@@ -433,6 +445,7 @@ function finishAnswer(){
         "creatorID" : 1,
         "date" : datetime,
         "questionnaireType" : "ANSWER",
+        "timeSpend": timeSpend,
         "status" : status
     };
 

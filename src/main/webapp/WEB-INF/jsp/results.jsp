@@ -6,6 +6,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
 <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/results.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.js"></script>
@@ -59,8 +62,9 @@
 <%-----------------------------------------------------------%>
 <!-- Modal -->
 <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
+            <input type="hidden" id="chartIdValueId" value="">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -72,17 +76,56 @@
                     </div>
                 </div>
                 <div id="createNewQ" class="row py-2 border-top border-bottom d-flex justify-content-center">
-                    <div id="answersContainerId" class="col d-flex justify-content-center flex-column border-end" style="height: 350px; width: 350px; max-width: 450px;">
-                        <canvas id="myChart"></canvas>
+                    <div id="answersContainerId" class="col-9 d-flex justify-content-center flex-column border-end" style="height: 650px; width: 650px; max-width: 650px;">
+                        <canvas id="modalChart"></canvas>
                     </div>
-                    <div class="col d-flex justify-content-center border-end" >
-                        <h5>Сортировка</h5>
+                    <div class="col justify-content-center border-end" >
+                        <div class="row py-2">
+                            <div class="col">
+                                <h5>Фильтрация</h5>
+                            </div>
+                        </div>
+                        <div class="row py-2">
+                            <div class="col d-none filter-container" id="singleFilterOptionsContainerId">
+                                <label>Ответило больше __(%) людей:</label>
+                                <input class="form-control" type="number" placeholder="прим. 30">
+                            </div>
+                            <div class="col d-none filter-container" id="multiFilterOptionsContainerId">
+                                <label>Больше __(%) голосов:</label>
+                                <input class="form-control" type="number" placeholder="прим. 50">
+                            </div>
+                            <div class="col d-none filter-container" id="ratingFilterOptionsContainerId">
+                                <label>Звезд больше чем:</label>
+                                <select class="form-select" aria-label="Default select example" id="ratingFilterOptionsSelectId">
+                                    <option selected>Больше чем:</option>
+                                </select>
+                            </div>
+                            <div class="col d-none filter-container" id="sortedFilterOptionsContainerId">
+                                <label>Больше __(%) вариантов:</label>
+                                <input class="form-control" type="number" placeholder="прим. 50">
+                            </div>
+                            <div class="col d-none filter-container" id="semanticFilterOptionsContainerId">
+                                <label>Выбор области отображения</label>
+                                <select class="form-select" aria-label="Default select example" id="semanticFilterOptionsSelectId">
+                                    <option selected>Область</option>
+                                    <option value="1">Больше нуля</option>
+                                    <option value="-1">Меньше нуля</option>
+                                </select>
+                            </div>
+                            <div class="col d-none filter-container" id="distributeFilterOptionsContainerId">
+                                <label>Больше __(%) баллов распределено:</label>
+                                <input class="form-control" type="number" placeholder="прим. 30">
+                            </div>
+                            <div class="col d-flex align-items-end justify-content-end">
+                                <button type="button" class="btn btn-secondary" id="acceptFilterButtonId">Применить</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="beforeCloseModal()" >Закрыть</button>
-                <button id="addModalQuestionId" type="button" class="btn btn-primary" onclick="createSelectedType(this)">Создать</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <%--<button id="addModalQuestionId" type="button" class="btn btn-primary" onclick="createSelectedType(this)">Создать</button>--%>
             </div>
         </div>
     </div>

@@ -114,6 +114,9 @@ function toQuestionnaire(element){
 	var qLink = $(element).attr("qLink");
 	window.location.href = qLink;
 }
+function toQuestionnaireFromGrid(qLink){
+	window.location.href = qLink;
+}
 
 function setModalTableData(){
 	const columnDefs = [
@@ -133,7 +136,8 @@ function setModalTableData(){
 	// let the grid know which columns and what data to use
 	modalGridOptions = {
 		columnDefs: columnDefs,
-		rowData: rowData
+		rowData: rowData,
+		onRowClicked: rowClicked
 	};
 
 	const gridDiv = document.querySelector('#questionnaireListTableId');
@@ -171,4 +175,12 @@ function setStaticHomeTable(){
 
 function fitStaticHomeGridCols() {
 	staticGridOptions.api.sizeColumnsToFit();
+}
+
+
+function rowClicked(parameters){
+
+	var data = parameters.data;
+	var qLink = "/questionnaire/builder/" + data.id;
+	toQuestionnaireFromGrid(qLink);
 }

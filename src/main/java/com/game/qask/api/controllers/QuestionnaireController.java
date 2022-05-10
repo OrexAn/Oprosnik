@@ -1,9 +1,7 @@
 package com.game.qask.api.controllers;
 
-import com.game.qask.model.Question;
-import com.game.qask.model.QuestionnaireAnswer;
-import com.game.qask.model.QuestionnaireQuestion;
-import com.game.qask.model.User;
+import com.game.qask.api.documents.QuestionnaireStatus;
+import com.game.qask.model.*;
 import com.game.qask.services.QuestionnaireAnswerService;
 import com.game.qask.services.QuestionnaireQuestionService;
 import com.game.qask.services.UserService;
@@ -166,6 +164,82 @@ public class QuestionnaireController {
         questAnswerStatsVO.put("answersTitles", answersTitles);
 
         return new ResponseEntity<>(questAnswerStatsVO, HttpStatus.OK);
+    }
+
+    @GetMapping("/answers/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getQuestAnswers(@PathVariable("id") Long id, HttpServletRequest request){
+        ArrayList<QuestionnaireAnswer> qAnswers = qaService.getAnswersByQQId(id);
+
+        Map<String, Object> answersVO = new HashMap<>();
+
+        ArrayList<String> dates = new ArrayList<>();
+
+        for (QuestionnaireAnswer qa : qAnswers) {
+            if(qa.getDate() != null){
+                dates.add(qa.getDate().toString());
+            }else{
+                dates.add("--");
+            }
+        }
+
+        ArrayList<String> answers = new ArrayList<>();
+
+        for (QuestionnaireAnswer qa : qAnswers) {
+            String anString = "";
+            for (int j = 0; j < qa.getAnswers().size(); j++){
+                anString = anString.concat("[" + qa.getAnswers().get(j).getText() + "]; ");
+            }
+            answers.add(anString);
+        }
+
+        answersVO.put("dates", dates);
+        answersVO.put("answers", answers);
+
+        return new ResponseEntity<>(answersVO, HttpStatus.OK);
+    }
+
+    @GetMapping("/state/stat/load/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getQuestStatusStats(@PathVariable("id") Long id, HttpServletRequest request){
+        ArrayList<QuestionnaireAnswer> qAnswers = qaService.getQuestionnairesAnswerByQuestQuest(id);
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        Integer notFinished = 0;
+        Integer finished = 0;
+
+        for(int i = 0; i < qAnswers.size(); i++){
+            if(qAnswers.get(i).getStatus() == QuestionnaireStatus.CREATED){
+                notFinished++;
+            }else if(qAnswers.get(i).getStatus() == QuestionnaireStatus.PASSED){
+                finished++;
+            }
+        }
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("< 1 мин");
+        arrayList.add(">= 1 мин");
+
+        int lessMin = 0;
+        int moreMin = 0;
+        ArrayList<Integer> arr = new ArrayList<>();
+        for(int t = 0; t < qAnswers.size(); t++){
+            if(qAnswers.get(t).getTimeSpend() != null && qAnswers.get(t).getTimeSpend() < 60){
+                lessMin++;
+            }else if(qAnswers.get(t).getTimeSpend() != null && qAnswers.get(t).getTimeSpend() >= 60){
+                moreMin++;
+            }
+        }
+        arr.add(lessMin);
+        arr.add(moreMin);
+
+        map.put("notFinished", notFinished);
+        map.put("finished", finished);
+        map.put("timeRanges", arrayList);
+        map.put("timeSpendCount", arr);
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @GetMapping("/links/{userName}")

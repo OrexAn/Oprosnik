@@ -68,6 +68,7 @@ public class QuestionnaireAnswerService {
         oldQuestionnaireAnswer.setCreatorName(newQuestionnaireAnswer.getCreatorName());
         oldQuestionnaireAnswer.setTitle(newQuestionnaireAnswer.getTitle());
         oldQuestionnaireAnswer.setUser(newQuestionnaireAnswer.getUser());
+        oldQuestionnaireAnswer.setTimeSpend(newQuestionnaireAnswer.getTimeSpend());
         return Optional.ofNullable(questionnaireAnswerDAO.save(oldQuestionnaireAnswer));
     }
 
@@ -222,5 +223,9 @@ public class QuestionnaireAnswerService {
 
 
         return qas;
+    }
+
+    public ArrayList<QuestionnaireAnswer> getAnswersByQQId(Long qqId){
+        return questionnaireAnswerDAO.findQuestionnairesAnswerByQuestQuest(qqId);
     }
 }
