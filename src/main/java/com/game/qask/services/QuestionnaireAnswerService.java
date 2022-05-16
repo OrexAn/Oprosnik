@@ -124,6 +124,14 @@ public class QuestionnaireAnswerService {
 
 
                     if(questions.get(j).getQuestionType() == QuestionType.SINGLE) {
+                        if(jj >= qAnswers.get(i).getAnswers().size()){
+                            if(i == 0){
+                                qas.get(j).add(choice);
+                            }else{
+                                qas.get(j).set(k, choice);
+                            }
+                            continue;
+                        }
                         String text = qAnswers.get(i).getAnswers().get(jj).getText();
                         List<String> txt = Arrays.asList(text.split("~"));
                         boolean isExists = false;
@@ -145,6 +153,14 @@ public class QuestionnaireAnswerService {
                             qas.get(j).set(k, choice);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.MULTI) {
+                        if(jj >= qAnswers.get(i).getAnswers().size()){
+                            if(i == 0){
+                                qas.get(j).add(choice);
+                            }else{
+                                qas.get(j).set(k, choice);
+                            }
+                            continue;
+                        }
                         String text = qAnswers.get(i).getAnswers().get(jj).getText();
                         List<String> txt = Arrays.asList(text.split("~"));
                         boolean isExists = false;
@@ -167,8 +183,15 @@ public class QuestionnaireAnswerService {
                             qas.get(j).set(k, choice);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.RATING) {
+                        if(jj >= qAnswers.get(i).getAnswers().size()){
+                            if(i == 0){
+                                qas.get(j).add(choice);
+                            }else{
+                                qas.get(j).set(k, choice);
+                            }
+                            continue;
+                        }
                         String text = qAnswers.get(i).getAnswers().get(jj).getText();
-
                         List<String> txt = Arrays.asList(text.split("~"));
                         boolean isExists = false;
                         if(questions.get(j).getTitle().equalsIgnoreCase(txt.get(0))){
@@ -193,8 +216,21 @@ public class QuestionnaireAnswerService {
                             qas.get(j).set(k, choice);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.SORTED) {
-                        String text = qAnswers.get(i).getAnswers().get(jj).getText();
+                        if(jj >= qAnswers.get(i).getAnswers().size()){
+                            ArrayList<Integer> choicesOrders = new ArrayList<>();
+                            if(i == 0){
+                                for(int g = 0; g < questions.get(j).getSuggestions().size(); g++){
+                                    choicesOrders.add(0);
+                                }
+                                qas.get(j).add(choicesOrders);
+                            }else{
+                                choicesOrders = (ArrayList<Integer>) qas.get(j).get(k);
+                                qas.get(j).set(k, choicesOrders);
+                            }
+                            continue;
+                        }
 
+                        String text = qAnswers.get(i).getAnswers().get(jj).getText();
                         List<String> txt = Arrays.asList(text.split("~"));
                         boolean isExists = false;
                         if(questions.get(j).getTitle().equalsIgnoreCase(txt.get(0))){
@@ -230,6 +266,15 @@ public class QuestionnaireAnswerService {
                             qas.get(j).set(k, choicesOrders);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.SEMANTIC) {
+                        if(jj >= qAnswers.get(i).getAnswers().size()){
+                            if(i == 0){
+                                qas.get(j).add(choice);
+                            }else{
+                                qas.get(j).set(k, choice);
+                            }
+                            continue;
+                        }
+
                         String text = qAnswers.get(i).getAnswers().get(jj).getText();
 
                         List<String> txt = Arrays.asList(text.split("~"));
@@ -258,6 +303,15 @@ public class QuestionnaireAnswerService {
                             qas.get(j).set(k, choice);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.DISTRIBUTE) {
+                        if(jj >= qAnswers.get(i).getAnswers().size()){
+                            if(i == 0){
+                                qas.get(j).add(choice);
+                            }else{
+                                qas.get(j).set(k, choice);
+                            }
+                            continue;
+                        }
+
                         String text = qAnswers.get(i).getAnswers().get(jj).getText();
 
                         List<String> txt = Arrays.asList(text.split("~"));
