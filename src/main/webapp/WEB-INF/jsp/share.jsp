@@ -151,9 +151,6 @@
                 </div>
             </div>
         </div>
-        <div id="answersId" class="col-10 border-end" style="display: none">
-            <jsp:include page="IndieAnswers.jsp" />
-        </div>
     </div>
 </main>
 

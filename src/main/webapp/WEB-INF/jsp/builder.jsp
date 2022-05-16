@@ -244,11 +244,15 @@
     </div>
 </div>
 <%-----------------------------------------------------------%>
+<%--Alert modal--%>
+<jsp:include page="SuccessAlertModal.jsp" />
+<jsp:include page="ErrorAlertModal.jsp" />
+<%------------------------------------------------------------%>
 
 <main class="px-3 text-center">
     <div class="row py-1 border">
         <div class="col d-flex justify-content-end">
-            <button type="button" class="btn btn-success" id="publishButtonId" onclick="publish()">Опубликовать</button>
+            <button type="button" class="btn btn-success" id="publishButtonId" onclick="publish('опубликовано')">Опубликовать</button>
         </div>
         <div class="col d-flex justify-content-end d-none">
             <button type="button" class="btn btn-warning" id="updateButtonId" onclick="updateQuestionnaire()">Редактировать</button>

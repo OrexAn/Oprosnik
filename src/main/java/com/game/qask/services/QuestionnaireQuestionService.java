@@ -38,6 +38,7 @@ public class QuestionnaireQuestionService {
     }
 
     public Optional<QuestionnaireQuestion> updateQuestionnaireQuestionById(Long id, QuestionnaireQuestion newQuestQuest){
+        deletePagesByQQId(id);
         QuestionnaireQuestion oldQuestionnaireQuestion = questionnaireQuestionDAO.findById(id).orElse(null);
         if(oldQuestionnaireQuestion == null){
             return Optional.empty();
@@ -67,6 +68,10 @@ public class QuestionnaireQuestionService {
             oldQuestionnaireQuestion.setUser(newQuestQuest.getUser());
         }
         return Optional.ofNullable(questionnaireQuestionDAO.save(oldQuestionnaireQuestion));
+    }
+
+    public void deletePagesByQQId(Long id){
+        questionnaireQuestionDAO.deletePagesByQQId(id);
     }
 
     /*public Map<String, Map<String, String>> getQuestionnaireQuestionVOArrayView(ArrayList<QuestionnaireVO> questionnaireQuestionVOs){

@@ -26,7 +26,7 @@ function newTimeChartBlock(timeRanges, timeSpendCount){
 
     var newItem = $( '.pattern-chart-block' ).first().clone();
     $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
-    $( newItem ).find('.pattern-title-class').text('Статус опросов');
+    $( newItem ).find('.pattern-title-class').text("Время прохождения опроса");
     $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
 
     ///////////////////////////////////////////////////
@@ -44,19 +44,27 @@ function newTimeChartBlock(timeRanges, timeSpendCount){
         backgroundColors.push(getRandomColor());
     }
 
-    var ctxP = document.getElementById(newChartId).getContext('2d');
-    myTimeChart = new Chart(ctxP, {
-        type: 'pie',
+    var ctxB = document.getElementById(newChartId).getContext('2d');
+    myTimeChart = new Chart(ctxB, {
+        type: 'bar',
         data: {
             labels: labels,
             datasets: [{
+                label: 'Кол-во анкет',
                 data: data4Chart,
-                backgroundColor: backgroundColors,
-                hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
+                backgroundColor: backgroundColors
             }]
         },
         options: {
-            responsive: true
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
         }
     });
 }
@@ -73,7 +81,7 @@ function newStatusChartBlock(finished, notFinished){
 
     var newItem = $( '.pattern-chart-block' ).first().clone();
     $( newItem ).removeClass("d-none").removeClass('pattern-chart-block');
-    $( newItem ).find('.pattern-title-class').text("Время прохождения опроса");
+    $( newItem ).find('.pattern-title-class').text('Статус анкет');
     $( newItem ).find('#pattern-my-Chart-Id').attr("id", newChartId);
 
     $( newItem ).find('#pattern-my-trigger-id').attr("id", "trigger_" + newTriggerId).addClass("trigger-details d-none");
@@ -92,13 +100,13 @@ function newStatusChartBlock(finished, notFinished){
     backgroundColors.push(getRandomColor());
 
 
-    const ctx = document.getElementById(newChartId).getContext('2d');
-    myStatusChart = new Chart(ctx, {
-        type: 'bar',
+    const ctxP = document.getElementById(newChartId).getContext('2d');
+    myStatusChart = new Chart(ctxP, {
+        type: 'pie',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Статус анкет',
+                label: 'Кол-во анкет',
                 data: data4Chart,
                 backgroundColor: backgroundColors,
                 borderWidth: 1
@@ -106,14 +114,7 @@ function newStatusChartBlock(finished, notFinished){
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
+            maintainAspectRatio: false
         }
     });
 }

@@ -27,7 +27,7 @@ public class Question implements Comparable<Question> {
     @Column(name = "order_num")
     private String orderNum;
     @OneToMany(cascade = CascadeType.ALL, mappedBy="question")
-    @SortNatural
+    @OrderBy("id asc")
     private List<Suggestion> suggestions;
 
     public Question(Long id) {

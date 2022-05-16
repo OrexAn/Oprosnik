@@ -459,10 +459,11 @@ function finishAnswer(){
 
             answer["answerType"] = qType;
             answer["orderNum"] = i;
+            answer["text"] = title + "~";
 
             for(var j = 0; j < suggestionsList.length; j++){   //итерации по каждой строке-предложении в SINGLE, MULTI или SORTED блоке
                 if($(suggestionsList[j]).hasClass("selected")){
-                    answer["text"] = j;
+                    answer["text"] += j;
                     break;
                 }
             }
@@ -486,7 +487,7 @@ function finishAnswer(){
                 hasSelected = $(suggestionsList[j]).hasClass("selected");
                 if(hasSelected && isFirst){
                     isFirst = false;
-                    answer["text"] = j;
+                    answer["text"] = title + "~" + j;
                 }
                 else if(hasSelected){
                     answer["text"] += "|" + j;
@@ -498,6 +499,7 @@ function finishAnswer(){
         }
         else if(qType === "RATING"){
             //for Rating
+            var title = $( questionBlocks[i] ).find( "[name='title']" ).first().text();
             var starsList = $( questionBlocks[i] ).find("[name='rating']");
             var selectedStar = $( questionBlocks[i] ).find(".star-selected").first();
 
@@ -508,7 +510,7 @@ function finishAnswer(){
             answer["answerType"] = $( questionBlocks[i] ).attr("qType");
             answer["orderNum"] = i;
 
-            answer["text"] = ratingVal;
+            answer["text"] = title + "~" + ratingVal;
             questionnaire["answers"].push(answer);
 
             answer = {}
@@ -516,6 +518,7 @@ function finishAnswer(){
         }
         else if( qType === "SORTED"){
             //---------------------------------------------------------------------------
+            var title = $( questionBlocks[i] ).find( "[name='title']" ).first().text();
             var suggestionsList = $( questionBlocks[i] ).find( "[name='suggestion']" );
 
             answer["answerType"] = qType;
@@ -528,7 +531,7 @@ function finishAnswer(){
                 baseOrderNum = $(suggestionsList[j]).closest(".list-group-item").attr("base-order");
                 if(isFirst){
                     isFirst = false;
-                    answer["text"] = baseOrderNum + ":" + j;
+                    answer["text"] = title + "~" + baseOrderNum + ":" + j;
                 }
                 else{
                     answer["text"] += "|" + baseOrderNum + ":" + j;
@@ -540,6 +543,7 @@ function finishAnswer(){
         }
         else if(qType === "SEMANTIC"){
             //for semantic
+            var title = $( questionBlocks[i] ).find( "[name='title']" ).first().text();
 
             var rangesList = $( questionBlocks[i] ).find( "[name='range']" );
 
@@ -553,7 +557,7 @@ function finishAnswer(){
                 var rangeVal = $(rangesList[j]).val();
                 if(isFirst){
                     isFirst = false;
-                    answer["text"] = j + ":" + rangeVal;
+                    answer["text"] = title + "~" + j + ":" + rangeVal;
                 }
                 else{
                     answer["text"] += "|" + j + ":" + rangeVal;
@@ -565,6 +569,7 @@ function finishAnswer(){
             //---------------------------------------------------------------------------
         }
         else if(qType === "DISTRIBUTE"){
+            var title = $( questionBlocks[i] ).find( "[name='title']" ).first().text();
             //for distribute
             var rangesList = $( questionBlocks[i] ).find( "[name='customRange']" );
 
@@ -578,7 +583,7 @@ function finishAnswer(){
                 var rangeVal = $(rangesList[j]).val();
                 if(isFirst){
                     isFirst = false;
-                    answer["text"] = j + ":" + rangeVal;
+                    answer["text"] = title + "~" + j + ":" + rangeVal;
                 }
                 else{
                     answer["text"] += "|" + j + ":" + rangeVal;
@@ -596,7 +601,6 @@ function finishAnswer(){
         url: "/questionnaire/update/answer",
         data: JSON.stringify(questionnaire),
         success: function() {
-            alert("success");
             window.location.href = "/" + "questionnaire/thanks";
         },
         contentType: "application/json"

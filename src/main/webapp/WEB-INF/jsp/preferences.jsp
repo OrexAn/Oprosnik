@@ -92,7 +92,7 @@
 <main class="px-3 text-center">
     <div class="row py-1 border">
         <div class="col d-flex justify-content-end">
-            <button type="button" class="btn btn-success" onclick="publish()">Опубликовать</button>
+            <button type="button" class="btn btn-success" onclick="publish('опубликовано')">Опубликовать</button>
         </div>
     </div>
     <div class="row">

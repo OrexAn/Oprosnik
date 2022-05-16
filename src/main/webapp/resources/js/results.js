@@ -207,7 +207,6 @@ function newSingleChartBlock(data, title){
         $('#acceptFilterButtonId').unbind('click');
         $('#acceptFilterButtonId').on('click', function (){
             var text = $('#singleFilterOptionsContainerId').find('input').val();
-            alert("Фильтрация по: \"Ответило больше " + text + "% людей\"");
             /////////////////////////////////////////////////////////////////
             $('#modalChart').empty();
             if(modalChart){
@@ -376,7 +375,6 @@ function newMultiChartBlock(data, title){
         $('#acceptFilterButtonId').unbind('click');
         $('#acceptFilterButtonId').on('click', function (){
             var text = $('#multiFilterOptionsContainerId').find('input').val();
-            alert("Фильтрация по: \"Больше " + text + "% голосов\"");
             /////////////////////////////////////////////////////////////////
             $('#modalChart').empty();
             if(modalChart){
@@ -525,7 +523,6 @@ function newRatingChartBlock(data, title){
         $('#acceptFilterButtonId').unbind('click');
         $('#acceptFilterButtonId').on('click', function (){
             var text = $('#ratingFilterOptionsSelectId').val();
-            alert("Фильтрация по: \"Больше " + text + " звёзд\"");
             /////////////////////////////////////////////////////////////////
             $('#modalChart').empty();
             if(modalChart){
@@ -644,7 +641,6 @@ function newSortedChartBlock(data, title){
         $('#acceptFilterButtonId').unbind('click');
         $('#acceptFilterButtonId').on('click', function (){
             var text = $('#sortedFilterOptionsContainerId').find('input').val();
-            alert("Фильтрация по: \"Больше " + text + "% вариантов\"");
             /////////////////////////////////////////////////////////////////
             $('#modalChart').empty();
             if(modalChart){
@@ -873,7 +869,6 @@ function newSemanticChartBlock(data, title){
         $('#acceptFilterButtonId').on('click', function (){
             var text = $('#semanticFilterOptionsSelectId').text();
             var val = $('#semanticFilterOptionsSelectId').val();
-            alert("Фильтрация по: \"Область " + text);
             /////////////////////////////////////////////////////////////////
             $('#modalChart').empty();
             if(modalChart){
@@ -1063,7 +1058,6 @@ function newDistributeChartBlock(data, title){
         $('#acceptFilterButtonId').unbind('click');
         $('#acceptFilterButtonId').on('click', function (){
             var text = $('#distributeFilterOptionsContainerId').find('input').val();
-            alert("Фильтрация по: \"Больше " + text + " % баллов распределено\"");
             /////////////////////////////////////////////////////////////////
             $('#modalChart').empty();
             if(modalChart){

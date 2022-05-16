@@ -24,9 +24,19 @@ function registerUser(){
 			if(!data.errorMessage){
 				window.location.href = "/" + "registered";
 			}else{
-				alert(data.errorMessage);
+				failRegister(data.errorMessage);
 			}
 		},
 		contentType : "application/json"
 	});
+}
+
+function failRegister(text){
+	if(text){
+		$('#errorAlertSpanId').text(text);
+		$('#errorAlertModal').modal('show');
+	}else{
+		$('#errorAlertSpanId').text("Не удалось.");
+		$('#errorAlertModal').modal('show');
+	}
 }

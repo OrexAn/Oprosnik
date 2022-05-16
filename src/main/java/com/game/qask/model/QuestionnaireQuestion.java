@@ -16,7 +16,7 @@ public class QuestionnaireQuestion extends Questionnaire{
     @Column(name = "id")
     private Long id;
     @OneToMany(cascade = CascadeType.ALL, mappedBy="questionnaireQuestion")
-    @SortNatural
+    @OrderBy("id asc")
     private List<QuestionnairePage> questionnairePages;
 
     public QuestionnaireQuestion(Long id) {

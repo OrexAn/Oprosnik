@@ -339,10 +339,10 @@ function addCarouselItem(){
 
 }
 function updateQuestionnaire(){
-    publish();
+    publish("обновлено");
 }
 
-function publish(){
+function publish(text){
     var questionBlocks = $('.question-block');
     var questionnairePages = $('.questionsPage');
     var questionnaireId = $("[name='questionnaireId']").first().val();
@@ -472,11 +472,27 @@ function publish(){
         url: "/questionnaire/public",
         data: JSON.stringify(questionnaire),
         success: function() {
-            alert("success");
-            var questionnaireId = $("[name='questionnaireId']").first().val();
-            window.location.href = "/" + "questionnaire/builder/" + questionnaireId;
+            successPublic(text);
         },
         contentType: "application/json"
+    });
+}
+
+function successPublic(text){
+    var questionnaireId = $("[name='questionnaireId']").first().val();
+    var qaLink = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/questionnaire/" + questionnaireId;
+    if(text){
+        $('#alertSpanId').html("Успешно " + text + "<br>" + "Ссылка для прохождения опроса: <br>" + qaLink);
+        $('#alertModal').modal('show');
+    }else{
+        $('#alertSpanId').html("Успешно" + "<br>" + "Ссылка для прохождения опроса:<br>" + qaLink);
+        $('#alertModal').modal('show');
+    }
+
+    $('#alertButtonId').unbind();
+    $('#alertButtonId').on('click', function (){
+        var questionnaireId = $("[name='questionnaireId']").first().val();
+        window.location.href = "/" + "questionnaire/builder/" + questionnaireId;
     });
 }
 

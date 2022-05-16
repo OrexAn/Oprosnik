@@ -19,7 +19,7 @@ public class QuestionnairePage implements Comparable <QuestionnairePage>{
     @JoinColumn(name="questionnaire_question_id", nullable=false, columnDefinition = "bigint default -1")
     private QuestionnaireQuestion questionnaireQuestion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy="questionnairePage")
-    @SortNatural
+    @OrderBy("id asc")
     private List<Question> questions;
     @Column(name = "order_num")
     private String orderNum;

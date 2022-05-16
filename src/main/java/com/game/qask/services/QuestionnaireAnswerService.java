@@ -87,12 +87,19 @@ public class QuestionnaireAnswerService {
         ArrayList<ArrayList<Object>> qas = new ArrayList<>(); //массив анкет
 
         for (int i = 0; i < qAnswers.size(); i++){
-            for(int j = 0; j < qAnswers.get(i).getAnswers().size(); j++){ //проходим по массиву блок-ответов в анкете и зипихиваем их в массив
+            if(qAnswers.get(i).getStatus() == QuestionnaireStatus.CREATED){
+                continue;
+            }
+            int jj = 0;
+            for(int j = 0; j < questions.size(); j++){ //проходим по массиву блок-ответов в анкете и зипихиваем их в массив
                 if(i == 0){
                     ArrayList<Object> answerBlock = new ArrayList<>();
                     //get(j) - анкета
                     qas.add(answerBlock);
                 }
+                ////////////////////
+
+                ///////////////////
                 int suggestionsSize = 0;
                 if(questions.get(j).getQuestionType() != QuestionType.RATING){
                     suggestionsSize = questions.get(j).getSuggestions().size(); //список предложений (т.к. нету списка выборов)
@@ -100,7 +107,9 @@ public class QuestionnaireAnswerService {
                     suggestionsSize = Integer.parseInt(questions.get(j).getSuggestions().get(0).getText()); //список предложений (т.к. нету списка выборов)
                 }
 
+                boolean repeat = false;
                 for(int k = 0; k < suggestionsSize; k++){ //проходим по массиву предложений в блок-ответе и запихиваем их в массив
+
                     Double choice = 0d;
                     ArrayList<Integer> arr;
                     if(i == 0){
@@ -115,10 +124,17 @@ public class QuestionnaireAnswerService {
 
 
                     if(questions.get(j).getQuestionType() == QuestionType.SINGLE) {
-                        String text = qAnswers.get(i).getAnswers().get(j).getText();
-                        int selectedChoice = Integer.parseInt(text);
+                        String text = qAnswers.get(i).getAnswers().get(jj).getText();
+                        List<String> txt = Arrays.asList(text.split("~"));
+                        boolean isExists = false;
+                        if(questions.get(j).getTitle().equalsIgnoreCase(txt.get(0))){
+                            isExists = true;
+                        }else{
+                            repeat = true;
+                        }
+                        int selectedChoice = Integer.parseInt(txt.get(1));
                         int isSelectedChoice = 0;
-                        if(selectedChoice == k){
+                        if(selectedChoice == k && isExists){
                             isSelectedChoice = 1;
                         }
                         choice += isSelectedChoice;
@@ -129,10 +145,18 @@ public class QuestionnaireAnswerService {
                             qas.get(j).set(k, choice);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.MULTI) {
-                        String text = qAnswers.get(i).getAnswers().get(j).getText();
-                        List<String> choices = Arrays.asList(text.split("\\|"));
+                        String text = qAnswers.get(i).getAnswers().get(jj).getText();
+                        List<String> txt = Arrays.asList(text.split("~"));
+                        boolean isExists = false;
+                        if(questions.get(j).getTitle().equalsIgnoreCase(txt.get(0))){
+                            isExists = true;
+                        }else{
+                            repeat = true;
+                        }
+
+                        List<String> choices = Arrays.asList(txt.get(1).split("\\|"));
                         int isSelectedChoice = 0;
-                        if(choices.contains(String.valueOf(k))){
+                        if(choices.contains(String.valueOf(k)) && isExists){
                             isSelectedChoice = 1;
                         }
                         choice += isSelectedChoice;
@@ -143,10 +167,22 @@ public class QuestionnaireAnswerService {
                             qas.get(j).set(k, choice);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.RATING) {
-                        String text = qAnswers.get(i).getAnswers().get(j).getText();
-                        int selectedChoice = Integer.parseInt(text);
+                        String text = qAnswers.get(i).getAnswers().get(jj).getText();
+
+                        List<String> txt = Arrays.asList(text.split("~"));
+                        boolean isExists = false;
+                        if(questions.get(j).getTitle().equalsIgnoreCase(txt.get(0))){
+                            isExists = true;
+                        }else{
+                            repeat = true;
+                        }
+
+                        int selectedChoice = 0;
+                        if(isExists){
+                            selectedChoice = Integer.parseInt(txt.get(1));
+                        }
                         int isSelectedChoice = 0;
-                        if(selectedChoice == (k+1)){
+                        if(selectedChoice == (k+1) && isExists){
                             isSelectedChoice = 1;
                         }
                         choice += isSelectedChoice;
@@ -157,15 +193,24 @@ public class QuestionnaireAnswerService {
                             qas.get(j).set(k, choice);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.SORTED) {
-                        String text = qAnswers.get(i).getAnswers().get(j).getText();
-                        List<String> choices = Arrays.asList(text.split("\\|"));
+                        String text = qAnswers.get(i).getAnswers().get(jj).getText();
+
+                        List<String> txt = Arrays.asList(text.split("~"));
+                        boolean isExists = false;
+                        if(questions.get(j).getTitle().equalsIgnoreCase(txt.get(0))){
+                            isExists = true;
+                        }else{
+                            repeat = true;
+                        }
+
+                        List<String> choices = Arrays.asList(txt.get(1).split("\\|"));
 
                         ArrayList<Integer> choicesOrders = new ArrayList<>();
 
                         if(i == 0){
                             for(int g = 0; g < choices.size(); g++){
                                 String[] sss = choices.get(g).split(":");
-                                if(k == Integer.parseInt(sss[0])){
+                                if(k == Integer.parseInt(sss[0]) && isExists){
                                     choicesOrders.add(1);
                                 }else{
                                     choicesOrders.add(0);
@@ -176,7 +221,7 @@ public class QuestionnaireAnswerService {
                             choicesOrders = (ArrayList<Integer>) qas.get(j).get(k);
                             for(int g = 0; g < choicesOrders.size(); g++){
                                 String[] sss = choices.get(g).split(":");
-                                if(k == Integer.parseInt(sss[0])){
+                                if(k == Integer.parseInt(sss[0]) && isExists){
                                     Integer tmp = choicesOrders.get(g);
                                     tmp++;
                                     choicesOrders.set(g, tmp);
@@ -185,11 +230,24 @@ public class QuestionnaireAnswerService {
                             qas.get(j).set(k, choicesOrders);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.SEMANTIC) {
-                        String text = qAnswers.get(i).getAnswers().get(j).getText();
-                        List<String> choices = Arrays.asList(text.split("\\|"));
+                        String text = qAnswers.get(i).getAnswers().get(jj).getText();
+
+                        List<String> txt = Arrays.asList(text.split("~"));
+                        boolean isExists = false;
+                        if(questions.get(j).getTitle().equalsIgnoreCase(txt.get(0))){
+                            isExists = true;
+                        }else{
+                            repeat = true;
+                        }
+
+                        List<String> choices = Arrays.asList(txt.get(1).split("\\|"));
 
                         List<String> s = Arrays.asList(choices.get(k).split(":"));
-                        int selectedChoice = Integer.parseInt(s.get(1));
+
+                        int selectedChoice = 0;
+                        if(isExists){
+                            selectedChoice = Integer.parseInt(s.get(1));
+                        }
 
                         int isSelectedChoice = selectedChoice;
                         choice += isSelectedChoice;
@@ -200,11 +258,23 @@ public class QuestionnaireAnswerService {
                             qas.get(j).set(k, choice);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.DISTRIBUTE) {
-                        String text = qAnswers.get(i).getAnswers().get(j).getText();
-                        List<String> choices = Arrays.asList(text.split("\\|"));
+                        String text = qAnswers.get(i).getAnswers().get(jj).getText();
+
+                        List<String> txt = Arrays.asList(text.split("~"));
+                        boolean isExists = false;
+                        if(questions.get(j).getTitle().equalsIgnoreCase(txt.get(0))){
+                            isExists = true;
+                        }else{
+                            repeat = true;
+                        }
+
+                        List<String> choices = Arrays.asList(txt.get(1).split("\\|"));
 
                         List<String> s = Arrays.asList(choices.get(k).split(":"));
-                        int selectedChoice = Integer.parseInt(s.get(1));
+                        int selectedChoice = 0;
+                        if(isExists){
+                            selectedChoice = Integer.parseInt(s.get(1));
+                        }
 
                         int isSelectedChoice = selectedChoice;
                         choice += isSelectedChoice;
@@ -217,6 +287,9 @@ public class QuestionnaireAnswerService {
                     }
 
 
+                }
+                if(!repeat){
+                    jj++;
                 }
             }
         }
