@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <title>Hello ${name}!</title>
 </head>
-<body>
+<body style="background-image: url(http://localhost:8080/img/registration.jpg); background-size: cover;">
 <jsp:include page="header.jsp" />
 <div class="container d-flex align-items-center" style="width: 350px; height: calc(100% - 80px);">
     <div class="row w-100">
@@ -27,6 +27,9 @@
                 <div class="form-group py-2">
                     <label for="inputPassword">Пароль</label>
                     <input type="password" class="form-control" id="inputPassword" name="password" autocomplete="off" placeholder="Введите пароль...">
+                    <div id="validationLoginFeedback" class="invalid-feedback">
+                        Неверная почта или пароль.
+                    </div>
                 </div>
                 <div class="form-group py-2">
                     <button class="btn btn-primary py-2" onclick="loginUser()">Войти</button>

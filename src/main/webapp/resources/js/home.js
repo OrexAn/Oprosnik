@@ -118,6 +118,10 @@ function toQuestionnaireFromGrid(qLink){
 	window.location.href = qLink;
 }
 
+function toQuestionnaire4AnswerFromGrid(qLink){
+	window.location.href = qLink;
+}
+
 function setModalTableData(){
 	const columnDefs = [
 		{ field: "id", width: 60, sortable: true, resizable: true, suppressSizeToFit: true },
@@ -148,25 +152,38 @@ function fitGridCols() {
 	modalGridOptions.api.sizeColumnsToFit();
 }
 
-function setStaticHomeTable(){
+function setStaticHomeTable() {
+	$.get("/questionnaire/load/all", function(data, status){
+		if(data.quiestionnaires && data.quiestionnaires.length > 0 && data.quiestionnaires[0].length === 4){
+			setStaticHomeTableData(data);
+		}else {
+			var dta  = {"quiestionnaires" : ["", "", "", ""] }
+			setStaticHomeTableData(dta);
+		}
+	});
+}
+
+function setStaticHomeTableData(data){
 	const columnDefs = [
+		{ field: "ID", width: 60, sortable: true, resizable: true, cellStyle: { 'text-align': 'left' }, suppressSizeToFit: true },
 		{ field: "Название", width: 588, sortable: true, resizable: true, cellStyle: { 'text-align': 'left' }, suppressSizeToFit: true },
 		{ field: "Ответило", width: 400, sortable: true, resizable: true, cellStyle: { 'text-align': 'left' } },
 		{ field: "Вопросов", width: 400, sortable: true, resizable: true, cellStyle: { 'text-align': 'left' } }
 	];
 
 	// specify the data
-	const rowData = [
-		{"Название" : "О социалках", "Ответило" : "755", "Вопросов" : "10"},
-		{"Название" : "О макулатуре", "Ответило" : "755", "Вопросов" : "10"},
-		{"Название" : "Как же обходиться без этих нужных вещей", "Ответило" : "1020", "Вопросов" : "10"}
-	];
+	const rowData = [];
+
+	for(var i = 0; i < data.quiestionnaires.length; i++){
+		rowData.push({"ID" : data.quiestionnaires[i][0], "Название" : data.quiestionnaires[i][1], "Ответило" : data.quiestionnaires[i][2], "Вопросов" : data.quiestionnaires[i][3]})
+	}
 
 	// let the grid know which columns and what data to use
 	staticGridOptions = {
 		columnDefs: columnDefs,
 		rowData: rowData,
-		onGridReady: fitStaticHomeGridCols
+		onGridReady: fitStaticHomeGridCols,
+		onRowClicked: staticRowClicked
 	};
 
 	const gridDiv = document.querySelector('#staticHomeTableId');
@@ -179,8 +196,15 @@ function fitStaticHomeGridCols() {
 
 
 function rowClicked(parameters){
-
 	var data = parameters.data;
 	var qLink = "/questionnaire/builder/" + data.id;
 	toQuestionnaireFromGrid(qLink);
+}
+
+function staticRowClicked(parameters){
+	var data = parameters.data;
+	if(data.ID){
+		var qLink = "/questionnaire/" + data.ID;
+		toQuestionnaire4AnswerFromGrid(qLink);
+	}
 }

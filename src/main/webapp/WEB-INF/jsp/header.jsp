@@ -3,7 +3,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/header.js"></script>
 
 <%--<header class="d-flex justify-content-end align-items-center bg-body border-bottom shadow-sm">--%>
-<header class="d-flex flex-column flex-md-row align-items-center p-2 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+<header class="d-flex flex-column flex-md-row align-items-center p-2 px-md-4 mb-3 bg-white border-bottom shadow-sm"
+        style="background-image: url(http://localhost:8080/img/wavy-lines.jpg); background-size: cover;">
     <p class="h5 my-0 mr-auto p-2 me-md-auto fw-normal" style="cursor:pointer;" onclick="goToHomePage()">Q-Ask</p>
     <nav class="my-2 my-md-0 me-md-3">
         <a class="p-2 text-dark" id="contacts" href="http://localhost:8080/contacts">Контакты</a>

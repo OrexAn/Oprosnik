@@ -136,7 +136,7 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<body>
+<body style="background-image: url(http://localhost:8080/img/support.jpg); background-size: cover;">
 
 <header class="d-flex justify-content-center h-15">
     <div class="row">
@@ -165,7 +165,7 @@
 
                                         <div class="row py-2 border-top border-bottom d-flex justify-content-center add-item-cell">
                                             <div class="col-2 d-flex justify-content-center flex-column">
-                                                <h4>Название</h4>
+                                                <h4 id="titleId"></h4>
                                             </div>
                                         </div>
                                         <%--<div class="row py-2 border-top border-bottom d-flex justify-content-center add-item-cell">
@@ -202,9 +202,9 @@
                 </div>
             </div>
         </div>
-        <div class="row py-2 d-flex justify-content-end">
+        <div class="row py-2 d-flex justify-content-end invisible" id="buttonsBlockId">
             <div class="col-1">
-                <button type="button" class="btn btn-primary w-100 left" onclick="finishAnswer();">Finish</button>
+                <button type="button" class="btn btn-primary w-100 left invisible" id="finishButtonId" onclick="finishAnswer();">Finish</button>
             </div>
             <div class="col-1">
                 <button type="button" class="btn btn-primary w-100 left" onclick="prev();">&lt;</button>

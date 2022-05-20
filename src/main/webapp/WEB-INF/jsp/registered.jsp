@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
 </head>
-<body>
+<body style="background-image: url(http://localhost:8080/img/share.jpg); background-size: cover;">
 <jsp:include page="header.jsp" />
 <main class="px-3 text-center">
     <h1>Поздравляем! Ваш аккаунт зарегистрирован!</h1>

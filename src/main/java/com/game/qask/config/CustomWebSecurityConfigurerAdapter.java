@@ -2,9 +2,11 @@ package com.game.qask.config;
 
 import javax.sql.DataSource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,9 +15,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import com.game.qask.api.UserAuthority;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -55,7 +62,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .loginProcessingUrl("/**/submit_login")
                 .defaultSuccessUrl("/home")
                 .successHandler(authenticationSuccessHandler())
-                .failureUrl("/login?error=true")
+                //.failureUrl("/login?error=true")
                 .failureHandler(authenticationFailureHandler())
                 .and()
                 .logout()
@@ -74,9 +81,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
     private AuthenticationFailureHandler authenticationFailureHandler() {
         return (httpServletRequest, httpServletResponse, e) -> {
-            String username = httpServletRequest.getParameter("username");
-            String error = e.getMessage();
-            //TODO сделать отправку ошибки
+            String redirectUrl = httpServletRequest.getContextPath() + "/login?error=true";
+            httpServletResponse.sendRedirect(redirectUrl);
         };
     }
 

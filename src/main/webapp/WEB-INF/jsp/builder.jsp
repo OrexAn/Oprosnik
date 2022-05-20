@@ -85,7 +85,7 @@
 <head>
     <meta charset="UTF-8">
 </head>
-<body>
+<body style="background-image: url(http://localhost:8080/img/builder.jpg); background-size: cover;">
 <jsp:include page="header.jsp" />
 <input type="hidden" name="questionnaireId" value="${questionnaireId}">
 <%-----------------------------------------------------------%>
@@ -265,7 +265,7 @@
                     <button type="button" class="btn btn-light w-100" onclick="goToEditor()">Редактор</button>
                 </div>
             </div>
-            <div class="row py-2">
+            <div class="row py-2 d-none">
                 <div class="col">
                     <button type="button" class="btn btn-light w-100" onclick="toPreferencesPage()">Настройки</button>
                 </div>

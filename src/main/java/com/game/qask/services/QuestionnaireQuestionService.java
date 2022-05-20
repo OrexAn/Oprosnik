@@ -123,6 +123,10 @@ public class QuestionnaireQuestionService {
         return questionnaireQuestionDAO.getQuestionsByQQId(id);
     }
 
+    public ArrayList<QuestionnaireQuestion> getQuestionnaireQuestions() {
+        return questionnaireQuestionDAO.findAll();
+    }
+
     public ArrayList<String> getStatTypes(ArrayList<Question> questions) {
         ArrayList<String> arr = new ArrayList<>();
         for (int i = 0; i < questions.size(); i++){

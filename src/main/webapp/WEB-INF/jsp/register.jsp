@@ -12,7 +12,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/register.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
 </head>
-<body>
+<body style="background-image: url(http://localhost:8080/img/registration.jpg); background-size: cover;">
 <jsp:include page="header.jsp" />
 
 <%-----------------------------------------------------------%>

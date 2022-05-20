@@ -29,7 +29,7 @@
     <meta charset="UTF-8">
     <title>Hello ${name}!</title>
 </head>
-<body>
+<body style="background-image: url(img/background.png); background-size: cover;">
 <jsp:include page="header.jsp" />
 
 <style>
@@ -152,7 +152,7 @@
         </div>
     </div>
 
-    <div class="row pb-4" style="padding-top: 130px;">
+    <div class="row pb-4 d-none" style="padding-top: 130px;">
         <div class="col-3 d-flex justify-content-start">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Введите текст..." aria-label="Recipient's username" aria-describedby="basic-addon2">
@@ -162,7 +162,9 @@
             </div>
         </div>
     </div>
-    <div id="staticHomeTableId" style="height: 250px; width:100%;" class="ag-theme-alpine px-3"></div>
+    <div style="position: absolute; width: 100%; left: 0px; right: 0px; bottom: 50px; padding: 0 50px;">
+        <div id="staticHomeTableId" style="height: 250px; width: 100%; padding: 0 !important;" class="ag-theme-alpine px-3"></div>
+    </div>
 </main>
 <div class="container" id="login-container" style="display: none">
     <jsp:include page="login-form.jsp" />

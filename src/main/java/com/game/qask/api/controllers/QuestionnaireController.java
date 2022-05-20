@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequestMapping("questionnaire")
 @Controller
@@ -146,6 +147,38 @@ public class QuestionnaireController {
 
 
         return new ResponseEntity<>(questionnaireQuestionVO, HttpStatus.OK);
+    }
+
+    @GetMapping("load/all")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getAllQuestionnaires(HttpServletRequest request){
+        ArrayList<QuestionnaireQuestion> qqs = qqService.getQuestionnaireQuestions();
+
+        ArrayList<Object> qqq = new ArrayList<>();
+
+        qqs.forEach(qq -> {
+            ArrayList<QuestionnaireAnswer> qa = qaService.getAnswersByQQId(qq.getId());
+            qa = qa.stream().filter(a -> a.getStatus() == QuestionnaireStatus.PASSED).collect(Collectors.toCollection(ArrayList::new));
+            ArrayList<Object> ao = new ArrayList<>();
+            ao.add(qq.getId());
+            ao.add(qq.getTitle());
+            ao.add(qa.size());
+            int quiestionBlocks = 0;
+
+            for(int i = 0; i < qq.getQuestionnairePages().size(); i++){
+                quiestionBlocks += qq.getQuestionnairePages().get(i).getQuestions().size();
+            }
+            ao.add(quiestionBlocks);
+
+            qqq.add(ao);
+        });
+
+        Map<String, Object> asd;
+        asd = new HashMap<>();
+        asd.put("quiestionnaires", qqq);
+
+
+        return new ResponseEntity<>(asd, HttpStatus.OK);
     }
 
     @GetMapping("/answers/stat/load/{id}")

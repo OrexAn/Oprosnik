@@ -25,6 +25,8 @@ public interface QuestionnaireQuestionDAO extends JpaRepository<QuestionnaireQue
     @Query("delete from QuestionnairePage where questionnaireQuestion.id = :id")
     @Modifying
     void deletePagesByQQId(@Param("id") Long id);
+
+    ArrayList<QuestionnaireQuestion> findAll();
     /*
     @Query("select d.id from Document d where d.username = :username and d.status = '0' and d.docType = '0'")
     Integer getInProgressRequestIdByUserName(@Param("username") String username);

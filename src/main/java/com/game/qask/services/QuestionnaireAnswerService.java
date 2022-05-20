@@ -86,13 +86,14 @@ public class QuestionnaireAnswerService {
 
         ArrayList<ArrayList<Object>> qas = new ArrayList<>(); //массив анкет
 
+        int ii = 0;
         for (int i = 0; i < qAnswers.size(); i++){
             if(qAnswers.get(i).getStatus() == QuestionnaireStatus.CREATED){
                 continue;
             }
             int jj = 0;
             for(int j = 0; j < questions.size(); j++){ //проходим по массиву блок-ответов в анкете и зипихиваем их в массив
-                if(i == 0){
+                if(ii == 0){
                     ArrayList<Object> answerBlock = new ArrayList<>();
                     //get(j) - анкета
                     qas.add(answerBlock);
@@ -112,7 +113,7 @@ public class QuestionnaireAnswerService {
 
                     Double choice = 0d;
                     ArrayList<Integer> arr;
-                    if(i == 0){
+                    if(ii == 0){
                         choice = 0d;
                     }else{
                         if(questions.get(j).getQuestionType() != QuestionType.SORTED){
@@ -125,7 +126,7 @@ public class QuestionnaireAnswerService {
 
                     if(questions.get(j).getQuestionType() == QuestionType.SINGLE) {
                         if(jj >= qAnswers.get(i).getAnswers().size()){
-                            if(i == 0){
+                            if(ii == 0){
                                 qas.get(j).add(choice);
                             }else{
                                 qas.get(j).set(k, choice);
@@ -147,14 +148,14 @@ public class QuestionnaireAnswerService {
                         }
                         choice += isSelectedChoice;
                         //get(j).get(k) - ответ-блок
-                        if(i == 0){
+                        if(ii == 0){
                             qas.get(j).add(choice);
                         }else{
                             qas.get(j).set(k, choice);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.MULTI) {
                         if(jj >= qAnswers.get(i).getAnswers().size()){
-                            if(i == 0){
+                            if(ii == 0){
                                 qas.get(j).add(choice);
                             }else{
                                 qas.get(j).set(k, choice);
@@ -177,14 +178,14 @@ public class QuestionnaireAnswerService {
                         }
                         choice += isSelectedChoice;
                         //get(j).get(k) - ответ-блок
-                        if(i == 0){
+                        if(ii == 0){
                             qas.get(j).add(choice);
                         }else{
                             qas.get(j).set(k, choice);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.RATING) {
                         if(jj >= qAnswers.get(i).getAnswers().size()){
-                            if(i == 0){
+                            if(ii == 0){
                                 qas.get(j).add(choice);
                             }else{
                                 qas.get(j).set(k, choice);
@@ -210,7 +211,7 @@ public class QuestionnaireAnswerService {
                         }
                         choice += isSelectedChoice;
                         //get(j).get(k) - ответ-блок
-                        if(i == 0){
+                        if(ii == 0){
                             qas.get(j).add(choice);
                         }else{
                             qas.get(j).set(k, choice);
@@ -218,7 +219,7 @@ public class QuestionnaireAnswerService {
                     } else if (questions.get(j).getQuestionType() == QuestionType.SORTED) {
                         if(jj >= qAnswers.get(i).getAnswers().size()){
                             ArrayList<Integer> choicesOrders = new ArrayList<>();
-                            if(i == 0){
+                            if(ii == 0){
                                 for(int g = 0; g < questions.get(j).getSuggestions().size(); g++){
                                     choicesOrders.add(0);
                                 }
@@ -243,7 +244,7 @@ public class QuestionnaireAnswerService {
 
                         ArrayList<Integer> choicesOrders = new ArrayList<>();
 
-                        if(i == 0){
+                        if(ii == 0){
                             for(int g = 0; g < choices.size(); g++){
                                 String[] sss = choices.get(g).split(":");
                                 if(k == Integer.parseInt(sss[0]) && isExists){
@@ -267,7 +268,7 @@ public class QuestionnaireAnswerService {
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.SEMANTIC) {
                         if(jj >= qAnswers.get(i).getAnswers().size()){
-                            if(i == 0){
+                            if(ii == 0){
                                 qas.get(j).add(choice);
                             }else{
                                 qas.get(j).set(k, choice);
@@ -297,14 +298,14 @@ public class QuestionnaireAnswerService {
                         int isSelectedChoice = selectedChoice;
                         choice += isSelectedChoice;
                         //get(j).get(k) - ответ-блок
-                        if(i == 0){
+                        if(ii == 0){
                             qas.get(j).add(choice);
                         }else{
                             qas.get(j).set(k, choice);
                         }
                     } else if (questions.get(j).getQuestionType() == QuestionType.DISTRIBUTE) {
                         if(jj >= qAnswers.get(i).getAnswers().size()){
-                            if(i == 0){
+                            if(ii == 0){
                                 qas.get(j).add(choice);
                             }else{
                                 qas.get(j).set(k, choice);
@@ -333,7 +334,7 @@ public class QuestionnaireAnswerService {
                         int isSelectedChoice = selectedChoice;
                         choice += isSelectedChoice;
                         //get(j).get(k) - ответ-блок
-                        if(i == 0){
+                        if(ii == 0){
                             qas.get(j).add(choice);
                         }else{
                             qas.get(j).set(k, choice);
@@ -346,6 +347,7 @@ public class QuestionnaireAnswerService {
                     jj++;
                 }
             }
+            ii++;
         }
 
 

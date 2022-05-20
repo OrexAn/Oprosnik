@@ -15,7 +15,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 </head>
-<body>
+<body style="background-image: url(http://localhost:8080/img/contacts.jpg); background-size: cover;">
 <jsp:include page="header.jsp" />
 
 <div class="container" style="text-align: center">
@@ -23,9 +23,9 @@
     <h3>Для связи с нами</h3>
     <p>+375(29) 833-22-22 MTC</p>
     <h3>Нам можно написать</h3>
-    <p>someemail@gmail.com</p>
+    <p>qask_llc@gmail.com</p>
     <h3>Наше расположение</h3>
-    <p>Antarctica Peninsula Penguin Colony, Antarctica</p>
+    <p>ул. Сердича 13/2, Минск, Беларусь</p>
     <h3>Рабочее время</h3>
     <p>Пн-Пт ...... 10:00 - 20:00; Сб, Вс ...... Выходной</p>
 </div>

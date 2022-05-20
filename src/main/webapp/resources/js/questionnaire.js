@@ -12,8 +12,10 @@ $(document).ready(function(){
         var pages = $(".carousel-item");
         var questionsBlocks;
         var suggestions;
-        var title;
+        var title = data.title;
         var page
+
+        $('#titleId').text(title);
 
         for(var counter = 0; counter < data.pages.length; counter++){
             page = data.pages[counter];
@@ -37,16 +39,23 @@ $(document).ready(function(){
 function prev(){
     if(carouselPage > 0){
         carouselPage--;
+        $("#finishButtonId").addClass("invisible");
     }else{
         carouselPage = pageCount - 1;
+        $("#finishButtonId").removeClass("invisible");
     }
     $("#carouselExampleSlidesOnly").carousel(carouselPage);
 }
 function next(){
     if(carouselPage < (pageCount - 1)){
         carouselPage++;
+        $("#finishButtonId").addClass("invisible");
     }else{
         carouselPage = 0;
+        $("#finishButtonId").addClass("invisible");
+    }
+    if(carouselPage === (pageCount - 1)){
+        $("#finishButtonId").removeClass("invisible");
     }
     $("#carouselExampleSlidesOnly").carousel(carouselPage);
 }
@@ -54,11 +63,11 @@ function next(){
 function startQuestionnaire(){
     $("#startBlockId").addClass("d-none");
     $("#progressBlockId").removeClass("d-none");
+    $("#buttonsBlockId").removeClass("invisible");
 }
 
 function addCarouselItem(page){
     pageCount++;
-    carouselPage = (pageCount - 1);
     var newItem = $( '.pattern-item' ).first().clone();
     $( newItem ).removeClass("d-none").removeClass('pattern-item').addClass("questionsPage").addClass("carousel-item");
     $( newItem ).attr('page', carouselPage);
