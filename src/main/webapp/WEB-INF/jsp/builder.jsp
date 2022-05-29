@@ -91,7 +91,7 @@
 <%-----------------------------------------------------------%>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"></h5>
@@ -166,7 +166,7 @@
                         <div id="semanticContainerID" class="row py-2 d-none">
                             <div class="col cont" name="newSemanticRowsContainer">
                                 <div class="row" name="semanticNumbersContainer">
-                                    <div class="col-3 d-flex justify-content-center align-self-center" onclick="removeNewPoints()">
+                                    <div class="col-4 d-flex justify-content-center align-self-center" onclick="removeNewPoints()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
                                         </svg>
@@ -176,20 +176,20 @@
                                         <span>0</span>
                                         <span>1</span>
                                     </div>
-                                    <div class="col-3 d-flex justify-content-center align-self-center" onclick="addNewPoints()">
+                                    <div class="col-4 d-flex justify-content-center align-self-center" onclick="addNewPoints()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                                         </svg>
                                     </div>
                                 </div>
                                 <div class="row py-2" name="newSemanticSuggestion">
-                                    <div class="col-3">
+                                    <div class="col-4">
                                         <input class="form-control" name="newLeftText" type="text" placeholder="прим. Вариант">
                                     </div>
-                                    <div class="col-6 d-flex align-items-center">
+                                    <div class="col-4 d-flex align-items-center">
                                         <input type="range" class="form-range" min="1" max="3" id="customRange1" disabled>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-4">
                                         <input class="form-control" name='newRightText' type="text" placeholder="прим. Вариант">
                                     </div>
                                 </div>
@@ -593,7 +593,7 @@
     <%-----------------------------------------------------%>
     <%--Pattern semantic numbers--%>
     <div class="row py-2 d-none semantic-pattern">
-        <div class="col-3">
+        <div class="col-4">
 
         </div>
         <div class="col d-flex justify-content-between" name="availablePointsContainer">
@@ -601,20 +601,20 @@
             <span>0</span>
             <span>1</span>
         </div>
-        <div class="col-3">
+        <div class="col-4">
 
         </div>
     </div>
     <%-----------------------------------------------------%>
     <%--Pattern semantic element--%>
     <div class="row py-2 d-none semantic-element-pattern">
-        <div class="col-3">
+        <div class="col-4">
             <input class="form-control" name="newLeftText" type="text" placeholder="прим. Вариант">
         </div>
-        <div class="col-6 d-flex align-items-center">
+        <div class="col-4 d-flex align-items-center">
             <input type="range" class="form-range" min="1" max="3" disabled>
         </div>
-        <div class="col-3">
+        <div class="col-4">
             <input class="form-control" name="newRightText" type="text" placeholder="прим. Вариант">
         </div>
     </div>

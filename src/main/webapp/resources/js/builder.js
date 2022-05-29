@@ -123,7 +123,7 @@ function buildQuestion(element){
         node1.id = "q_" + questionId;
         questionId++;
         const node2 = document.createElement("div");
-        node2.className += "col-5 d-flex justify-content-center flex-column add-item-cell";
+        node2.className += "col-7 d-flex justify-content-center flex-column add-item-cell";
 
         addQuestionTitle(node2, 1, questionTitle);
 
@@ -142,7 +142,7 @@ function buildQuestion(element){
         node1.id = "q_" + questionId;
         questionId++;
         const node2 = document.createElement("div");
-        node2.className += "col-5 d-flex justify-content-center flex-column add-item-cell";
+        node2.className += "col-7 d-flex justify-content-center flex-column add-item-cell";
 
         addQuestionTitle(node2, 1, questionTitle);
 
@@ -174,7 +174,7 @@ function buildQuestion(element){
         node1.id = "q_" + questionId;
         questionId++;
         const node2 = document.createElement("div");
-        node2.className += "col-5 d-flex justify-content-center flex-column add-item-cell";
+        node2.className += "col-7 d-flex justify-content-center flex-column add-item-cell";
 
         addQuestionTitle(node2, 1, questionTitle);
 
@@ -200,7 +200,7 @@ function buildQuestion(element){
         node1.id = "q_" + questionId;
         questionId++;
         const node2 = document.createElement("div");
-        node2.className += "col-5 d-flex justify-content-center flex-column add-item-cell";
+        node2.className += "col-7 d-flex justify-content-center flex-column add-item-cell";
 
         addQuestionTitle(node2, 1, questionTitle);
 
@@ -230,7 +230,7 @@ function buildQuestion(element){
         node1.id = "q_" + questionId;
         questionId++;
         const node2 = document.createElement("div");
-        node2.className += "col-5 d-flex justify-content-center flex-column add-item-cell";
+        node2.className += "col-7 d-flex justify-content-center flex-column add-item-cell";
 
         addQuestionTitle(node2, 1, questionTitle);
 
@@ -773,7 +773,7 @@ function buildQuestionBlock(question){
     $(node1).attr('qType', qType);
     questionId++;
     const node2 = document.createElement("div");
-    node2.className += "col-5 d-flex justify-content-center flex-column";
+    node2.className += "col-7 d-flex justify-content-center flex-column";
 
     addQuestionTitle(node2, 1, questionTitle);
     /*addQuestionBlockTitle(node2, questionTitle);*/

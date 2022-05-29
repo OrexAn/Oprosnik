@@ -253,7 +253,7 @@
     <%-----------------------------------------------------%>
     <%--Pattern semantic numbers--%>
     <div class="row py-2 d-none semantic-pattern">
-        <div class="col-3">
+        <div class="col-4">
 
         </div>
         <div class="col d-flex justify-content-between" name="availablePointsContainer">
@@ -261,20 +261,20 @@
             <span>0</span>
             <span>1</span>
         </div>
-        <div class="col-3">
+        <div class="col-4">
 
         </div>
     </div>
     <%-----------------------------------------------------%>
     <%--Pattern semantic element--%>
     <div class="row py-2 d-none semantic-element-pattern">
-        <div class="col-3">
+        <div class="col-4">
             <input class="form-control" name="newLeftText" type="text" placeholder="прим. Вариант">
         </div>
-        <div class="col-6 d-flex align-items-center">
+        <div class="col-4 d-flex align-items-center">
             <input type="range" name="range" class="form-range" min="1" max="3">
         </div>
-        <div class="col-3">
+        <div class="col-4">
             <input class="form-control" name="newRightText" type="text" placeholder="прим. Вариант">
         </div>
     </div>

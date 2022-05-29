@@ -93,7 +93,7 @@ function buildQuestionBlock(question){
     $(node1).attr('qType', qType);
     questionId++;
     const node2 = document.createElement("div");
-    node2.className += "col-5 d-flex justify-content-center flex-column";
+    node2.className += "col-7 d-flex justify-content-center flex-column";
 
     addQuestionBlockTitle(node2, questionTitle);
 
