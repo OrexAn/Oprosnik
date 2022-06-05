@@ -34,6 +34,9 @@ $(document).ready(function(){
     });
 
     $("#carouselExampleSlidesOnly").carousel();
+    if(carouselPage === (pageCount - 1)){
+        $("#finishButtonId").removeClass("invisible");
+    }
 });
 
 function prev(){

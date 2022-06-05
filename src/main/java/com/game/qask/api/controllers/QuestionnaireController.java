@@ -191,10 +191,27 @@ public class QuestionnaireController {
         ArrayList<String> typesArray = qqService.getStatTypes(questions);
         ArrayList<String> answersTitles = qqService.getStatTitles(questions);
 
+        ArrayList<ArrayList<String>> answersVariants = new ArrayList<>();
+        ArrayList<Question> allQuestions = new ArrayList<>();
+        for (int i = 0; i < qq.getQuestionnairePages().size(); i++){
+            for(int j = 0; j < qq.getQuestionnairePages().get(i).getQuestions().size(); j++){
+                allQuestions.add(qq.getQuestionnairePages().get(i).getQuestions().get(j));
+            }
+        }
+        ArrayList<String> suggestions;
+        for(int k = 0; k < allQuestions.size(); k++){
+            suggestions = new ArrayList<>();
+            for(int m = 0; m < allQuestions.get(k).getSuggestions().size(); m++){
+                suggestions.add(allQuestions.get(k).getSuggestions().get(m).getText());
+            }
+            answersVariants.add(suggestions);
+        }
+
         Map<String, Object> questAnswerStatsVO = new HashMap<>();
         questAnswerStatsVO.put("answersStat", result);
         questAnswerStatsVO.put("answersTypes", typesArray);
         questAnswerStatsVO.put("answersTitles", answersTitles);
+        questAnswerStatsVO.put("answersVariants", answersVariants);
 
         return new ResponseEntity<>(questAnswerStatsVO, HttpStatus.OK);
     }

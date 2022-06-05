@@ -165,17 +165,17 @@ function loadAnswersStatistic(){
         }else{
             for(var i = 0; i < data.answersStat.length; i++){ //итерация по каждому блоку-ответу
                 if(data.answersTypes[i] === 'single'){
-                    newSingleChartBlock(data.answersStat[i], data.answersTitles[i]);
+                    newSingleChartBlock(data.answersStat[i], data.answersTitles[i], data.answersVariants[i]);
                 }else if(data.answersTypes[i] === 'multi'){
-                    newMultiChartBlock(data.answersStat[i], data.answersTitles[i]);
+                    newMultiChartBlock(data.answersStat[i], data.answersTitles[i], data.answersVariants[i]);
                 }else if(data.answersTypes[i] === 'rating'){
-                    newRatingChartBlock(data.answersStat[i], data.answersTitles[i]);
+                    newRatingChartBlock(data.answersStat[i], data.answersTitles[i], data.answersVariants[i]);
                 }else if(data.answersTypes[i] === 'sorted'){
-                    newSortedChartBlock(data.answersStat[i], data.answersTitles[i]);
+                    newSortedChartBlock(data.answersStat[i], data.answersTitles[i], data.answersVariants[i]);
                 }else if(data.answersTypes[i] === 'semantic'){
-                    newSemanticChartBlock(data.answersStat[i], data.answersTitles[i]);
+                    newSemanticChartBlock(data.answersStat[i], data.answersTitles[i], data.answersVariants[i]);
                 }else if(data.answersTypes[i] === 'distribute'){
-                    newDistributeChartBlock(data.answersStat[i], data.answersTitles[i]);
+                    newDistributeChartBlock(data.answersStat[i], data.answersTitles[i], data.answersVariants[i]);
                 }
             }
             $('#acceptFilterButtonId').on('click', function (){ return false; });
@@ -183,7 +183,7 @@ function loadAnswersStatistic(){
     });
 }
 
-function newSingleChartBlock(data, title){
+function newSingleChartBlock(data, title, variants){
     var newChartId = "chart_" + Date.now();
     var newTriggerId = Date.now() + 1;
 
@@ -258,6 +258,13 @@ function newSingleChartBlock(data, title){
                         y: {
                             beginAtZero: true
                         }
+                    },
+                    tooltips: {
+                        callbacks: {
+                            title: function(tooltipItem, data) {
+                                return variants[tooltipItem[0].index];
+                            },
+                        }
                     }
                 }
             });
@@ -304,6 +311,13 @@ function newSingleChartBlock(data, title){
                     y: {
                         beginAtZero: true
                     }
+                },
+                tooltips: {
+                    callbacks: {
+                        title: function(tooltipItem, data) {
+                            return variants[tooltipItem[0].index];
+                        },
+                    }
                 }
             }
         });
@@ -345,12 +359,19 @@ function newSingleChartBlock(data, title){
                 y: {
                     beginAtZero: true
                 }
+            },
+            tooltips: {
+                callbacks: {
+                    title: function(tooltipItem, data) {
+                        return variants[tooltipItem[0].index];
+                    },
+                }
             }
         }
     });
 }
 
-function newMultiChartBlock(data, title){
+function newMultiChartBlock(data, title, variants){
     var newChartId = "chart_" + Date.now();
     var newTriggerId = Date.now() + 1;
 
@@ -418,6 +439,13 @@ function newMultiChartBlock(data, title){
                                 return value + "%";
                             }
                         }
+                    },
+                    tooltips: {
+                        callbacks: {
+                            title: function(tooltipItem, data) {
+                                return variants[tooltipItem[0].index];
+                            },
+                        }
                     }
                 }
             });
@@ -453,7 +481,14 @@ function newMultiChartBlock(data, title){
                 }]
             },
             options: {
-                responsive: true
+                responsive: true,
+                tooltips: {
+                    callbacks: {
+                        title: function(tooltipItem, data) {
+                            return variants[tooltipItem[0].index];
+                        },
+                    }
+                }
             }
         });
 
@@ -484,12 +519,19 @@ function newMultiChartBlock(data, title){
             }]
         },
         options: {
-            responsive: true
+            responsive: true,
+            tooltips: {
+                callbacks: {
+                    title: function(tooltipItem, data) {
+                        return variants[tooltipItem[0].index];
+                    },
+                }
+            }
         }
     });
 }
 
-function newRatingChartBlock(data, title){
+function newRatingChartBlock(data, title, variants){
     var newChartId = "chart_" + Date.now();
     var newTriggerId = Date.now() + 1;
 
@@ -548,7 +590,14 @@ function newRatingChartBlock(data, title){
                     }]
                 },
                 options: {
-                    responsive: true
+                    responsive: true,
+                    tooltips: {
+                        callbacks: {
+                            title: function(tooltipItem, data) {
+                                return variants[tooltipItem[0].index];
+                            },
+                        }
+                    }
                 }
             });
             $('#myModal').modal('show');
@@ -582,7 +631,14 @@ function newRatingChartBlock(data, title){
                 }]
             },
             options: {
-                responsive: true
+                responsive: true,
+                tooltips: {
+                    callbacks: {
+                        title: function(tooltipItem, data) {
+                            return variants[tooltipItem[0].index];
+                        },
+                    }
+                }
             }
         });
 
@@ -611,12 +667,19 @@ function newRatingChartBlock(data, title){
             }]
         },
         options: {
-            responsive: true
+            responsive: true,
+            tooltips: {
+                callbacks: {
+                    title: function(tooltipItem, data) {
+                        return variants[tooltipItem[0].index];
+                    },
+                }
+            }
         }
     });
 }
 
-function newSortedChartBlock(data, title){
+function newSortedChartBlock(data, title, variants){
     var newChartId = "chart_" + Date.now();
     var newTriggerId = Date.now() + 1;
 
@@ -691,6 +754,9 @@ function newSortedChartBlock(data, title){
                         displayColors: true,
                         callbacks:{
                             mode: 'x',
+                            title: function(tooltipItem, data) {
+                                return variants[tooltipItem[0].index];
+                            }
                         },
                     },
                     scales: {
@@ -759,6 +825,9 @@ function newSortedChartBlock(data, title){
                     displayColors: true,
                     callbacks:{
                         mode: 'x',
+                        title: function(tooltipItem, data) {
+                            return variants[tooltipItem[0].index];
+                        }
                     },
                 },
                 scales: {
@@ -819,6 +888,9 @@ function newSortedChartBlock(data, title){
                 displayColors: true,
                 callbacks:{
                     mode: 'x',
+                    title: function(tooltipItem, data) {
+                        return variants[tooltipItem[0].index];
+                    }
                 },
             },
             scales: {
@@ -843,7 +915,7 @@ function newSortedChartBlock(data, title){
     });
 }
 
-function newSemanticChartBlock(data, title){
+function newSemanticChartBlock(data, title, variants){
     var newChartId = "chart_" + Date.now();
     var newTriggerId = Date.now() + 1;
 
@@ -920,6 +992,13 @@ function newSemanticChartBlock(data, title){
                         }],
                         responsive: true,
                         maintainAspectRatio: false
+                    },
+                    tooltips: {
+                        callbacks: {
+                            title: function(tooltipItem, data) {
+                                return variants[tooltipItem[0].index];
+                            },
+                        }
                     }
                 }
             });
@@ -976,6 +1055,13 @@ function newSemanticChartBlock(data, title){
                     }],
                     responsive: true,
                     maintainAspectRatio: false
+                },
+                tooltips: {
+                    callbacks: {
+                        title: function(tooltipItem, data) {
+                            return variants[tooltipItem[0].index];
+                        }
+                    }
                 }
             }
         });
@@ -1027,12 +1113,19 @@ function newSemanticChartBlock(data, title){
                 }],
                 responsive: true,
                 maintainAspectRatio: false
+            },
+            tooltips: {
+                callbacks: {
+                    title: function(tooltipItem, data) {
+                        return variants[tooltipItem[0].index];
+                    }
+                }
             }
         }
     });
 }
 
-function newDistributeChartBlock(data, title){
+function newDistributeChartBlock(data, title, variants){
     var newChartId = "chart_" + Date.now();
     var newTriggerId = Date.now() + 1;
 
@@ -1176,7 +1269,14 @@ function newDistributeChartBlock(data, title){
             }]
         },
         options: {
-            responsive: true
+            responsive: true,
+            tooltips: {
+                callbacks: {
+                    title: function(tooltipItem, data) {
+                        return variants[tooltipItem[0].index];
+                    },
+                }
+            }
         }
     });
 }

@@ -22,6 +22,9 @@ function initLog(){
 
 function loginUser(){
 	const myTimeout = setTimeout(myGreeting, 1000);
+}
+
+function myGreeting() {
 	$.ajax({
 		type: "POST",
 		url: "/submit_login",
@@ -35,8 +38,4 @@ function loginUser(){
 		},
 		dataType: "json"
 	});
-}
-
-function myGreeting() {
-
 }
