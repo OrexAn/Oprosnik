@@ -103,7 +103,7 @@
                         <div class="row py-2">
                             <div class="col">
                                 <label for="newTitleInputId">Заголовок</label>
-                                <input id="newTitleInputId" class="form-control" type="text" value="">
+                                <input id="newTitleInputId" class="form-control" type="text" value="" required>
                             </div>
                         </div>
                         <div id="simpleSelectContainerID" class="row py-2 d-none">

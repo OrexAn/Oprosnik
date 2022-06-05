@@ -7,6 +7,21 @@ $(window).on('load',function(){
     $('#myTrigger').click(function (){
         $('#myModal').modal('show');
     });
+    $('#myModal').on("hidden.bs.modal", function() {
+        $('#addElementButtonId').unbind('click');
+        $('.btn-close').unbind('click');
+        var createStarContainer = $('#create-star-container-id').get();
+        $( createStarContainer ).empty();
+        createStar(createStarContainer, 0);
+        createStar(createStarContainer, 1);
+
+        $('#simpleSelectContainerID').addClass('d-none');
+        $('#simpleSelectContainerID').addClass('d-none');
+        $('#ratingContainerID').addClass('d-none');
+        $('#sortItemsContainerID').addClass('d-none');
+        $('#semanticContainerID').addClass('d-none');
+        $('#distributeContainerId').addClass('d-none');
+    });
 });
 
 $(document).ready(function(){
@@ -91,23 +106,28 @@ function typeSelected(typeName){
     $('#myModal').modal('show');
 }
 function createSelectedType(element){
-    var newQuestion = buildQuestion(element);
-    var selectQuestionTypeContainer = $('#selectQuestionType_' + carouselPage);
-    $(newQuestion).insertBefore(selectQuestionTypeContainer);
+    document.getElementById('newTitleInputId').reportValidity();
+    if($('#newTitleInputId').val() !== ''){
+        var newQuestion = buildQuestion(element);
+        var selectQuestionTypeContainer = $('#selectQuestionType_' + carouselPage);
+        $(newQuestion).insertBefore(selectQuestionTypeContainer);
 
-    var questions = $('.choose-question');
-    for(var i = 0; i < questions.length; i++){
-        questions[i].value = '';
+        var questions = $('.choose-question');
+        for(var i = 0; i < questions.length; i++){
+            questions[i].value = '';
+        }
+        $('#newTitleInputId').val('');
+        $('#myModal').modal('hide');
+
+        var createStarContainer = $('#create-star-container-id').get();
+        $( createStarContainer ).empty();
+        createStar(createStarContainer, 0);
+        createStar(createStarContainer, 1);
+
+        beforeCloseModal();
+    }else{
+        //Event.preventDefault();
     }
-    $('#newTitleInputId').val('');
-    $('#myModal').modal('hide');
-
-    var createStarContainer = $('#create-star-container-id').get();
-    $( createStarContainer ).empty();
-    createStar(createStarContainer, 0);
-    createStar(createStarContainer, 1);
-
-    beforeCloseModal();
 }
 function buildQuestion(element){
     var qType = $(element).attr("qType");

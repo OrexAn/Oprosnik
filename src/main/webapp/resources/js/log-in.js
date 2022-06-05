@@ -4,8 +4,6 @@ $(document).ready(function(){
 });
 
 function initLog(){
-
-
 	if(window.location.pathname === '/login'){
 		const queryString = window.location.search;
 		const urlParams = new URLSearchParams(queryString);
@@ -20,10 +18,6 @@ function initLog(){
 			urlParams.delete('error');
 		}
 	}
-
-	/*document.getElementById("inputUserName").style.display = "block";
-	document.getElementById("inputPassword").style.display = "block";*/
-	console.log("bbbbbbbbbbbb");
 }
 
 function loginUser(){
@@ -34,11 +28,15 @@ function loginUser(){
 		data: $('#loginForm').serialize(),
 		cache: false,
 		success: function(data){
-			alert(data);
+
 		},
 		error: function (data) {
 			console.error("Login failure");
 		},
 		dataType: "json"
 	});
+}
+
+function myGreeting() {
+
 }

@@ -16,19 +16,25 @@ function registerUser(){
 		"userName": username,
 		"password": password
 	};
-	$.ajax({
-		type: "POST",
-		url: "user/submit_register",
-		data: JSON.stringify(data),
-		success: function(data){
-			if(!data.errorMessage){
-				window.location.href = "/" + "registered";
-			}else{
-				failRegister(data.errorMessage);
-			}
-		},
-		contentType : "application/json"
-	});
+	document.getElementById('emailId').reportValidity();
+	document.getElementById('userNameId').reportValidity();
+	document.getElementById('passwordId').reportValidity();
+	if(email.includes('@') && email !== '' && username !== '' && password !== ''){
+		$.ajax({
+			type: "POST",
+			url: "user/submit_register",
+			data: JSON.stringify(data),
+			cache: false,
+			success: function(data){
+				if(!data.errorMessage){
+					window.location.href = "/" + "registered";
+				}else{
+					failRegister(data.errorMessage);
+				}
+			},
+			contentType : "application/json"
+		});
+	}
 }
 
 function failRegister(text){

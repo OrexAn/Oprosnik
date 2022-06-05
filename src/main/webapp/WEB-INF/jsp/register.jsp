@@ -26,27 +26,24 @@
     <div class="container d-flex align-items-center" style="width: 350px; height: calc(100% - 80px);">
         <div class="row w-100">
             <div class="col">
-                <form>
-                    <!--  fake fields are a workaround for chrome/opera autofill getting the wrong fields -->
-                    <input id="username" style="display:none" type="text" name="fakeusernameremembered">
-                    <input id="password" style="display:none" type="password" name="fakepasswordremembered">
+                <div>
                     <div class="form-group py-2">
                         <label for="userNameId">Имя пользователя</label>
-                        <input type="text" class="form-control" id="userNameId" autocomplete="off" required placeholder="Введите имя пользователя...">
+                        <input type="text" class="form-control" id="userNameId" autocomplete="off" required placeholder="Введите имя пользователя..." required>
                     </div>
                     <div class="form-group py-2">
                         <label for="emailId">Почта</label>
-                        <input type="text" class="form-control" id="emailId" name="email" autocomplete="off" placeholder="Введите email...">
+                        <input type="email" class="form-control" id="emailId" name="email" autocomplete="off" placeholder="Введите email..." required>
                     </div>
                     <div class="form-group py-2">
                         <label for="passwordId">Пароль</label>
-                        <input type="password" class="form-control" id="passwordId" name="password" required autocomplete="new-password" placeholder="Введите пароль...">
+                        <input type="password" class="form-control" id="passwordId" name="password" required autocomplete="new-password" placeholder="Введите пароль..." required>
                     </div>
                     <div class="form-group py-2">
-                        <button type="button" class="btn btn-primary py-2" onclick="registerUser()">Регистрация</button>
+                        <button class="btn btn-primary py-2" onclick="registerUser()">Регистрация</button>
                     </div>
                     <input type="hidden" name="page" id="page-url" value=""/>
-                </form>
+                </div>
             </div>
         </div>
     </div>

@@ -40,7 +40,7 @@
                             <form action="submit_login" method="post" class="m-0">
                                 <div class="form-group py-2 m-0">
                                     <label for="inputUserName">Почта</label>
-                                    <input type="text" class="form-control" id="inputUserName" name="username" autocomplete="off" placeholder="Введите почту">
+                                    <input type="email" class="form-control" id="inputUserName" name="username" autocomplete="off" placeholder="Введите почту">
                                 </div>
                                 <div class="form-group py-2 m-0">
                                     <label for="inputPassword">Пароль</label>

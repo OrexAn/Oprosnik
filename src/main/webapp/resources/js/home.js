@@ -14,23 +14,28 @@ function initHome(){
 	setStaticHomeTable();
 }
 function createQuestionnaire(){
-	var newQuestionnaireName = $("[name='newQuestionnaireName']").val();
-	var userName = $("#user_name").val();
-	var userId = $("#user_id").val();
-	var questionnaire = {
-		"creatorName": userName,
-		"title" : newQuestionnaireName,
-		"creatorID" : userId,
-		"questionnaireType" : "QUESTION",
-		"status" : "CREATED"
-	};
-	$.ajax({
-		type: "POST",
-		url: "/questionnaire/new/question",
-		data: JSON.stringify(questionnaire),
-		success: createCallback,
-		contentType: "application/json"
-	});
+	document.getElementById('newQuestionnaireNameId').reportValidity();
+	if($('#newQuestionnaireNameId').val() !== ''){
+		var newQuestionnaireName = $("[name='newQuestionnaireName']").val();
+		var userName = $("#user_name").val();
+		var userId = $("#user_id").val();
+		var questionnaire = {
+			"creatorName": userName,
+			"title" : newQuestionnaireName,
+			"creatorID" : userId,
+			"questionnaireType" : "QUESTION",
+			"status" : "CREATED"
+		};
+		$.ajax({
+			type: "POST",
+			url: "/questionnaire/new/question",
+			data: JSON.stringify(questionnaire),
+			success: createCallback,
+			contentType: "application/json"
+		});
+	}else{
+		//Event.preventDefault();
+	}
 }
 
 function createCallback(parameters){
